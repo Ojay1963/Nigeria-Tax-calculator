@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nigeria Tax Calculator 2026</title>
+<style>
+  body {
+    margin: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background-color: #dbe3ec;
+    color: #222;
+  }
+  /* ---------- Header ---------- */
+  header {
+    background: #004080;
+    color: white;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  header h1 { margin: 0; font-size: 1.4rem; }
+  nav ul {
+    list-style: none;
+    display: flex;
+    gap: 1.2rem;
+    margin: 0;
+    padding: 0;
+  }
+  nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+  }
+  nav a:hover { text-decoration: underline; }
+
+  /* ---------- Hero Section ---------- */
+  .hero {
+    position: relative;
+    background: url('https://images.unsplash.com/photo-1590926938512-6b25f1ecf0e5?auto=format&fit=crop&w=1400&q=80') center/cover no-repeat;
+    /* Replace above with your own Lagos skyline image if desired */
+    color: white;
+    text-align: center;
+    padding: 4rem 1rem;
+  }
+  .hero::after {
+    content: "";
+    position: absolute; top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
+  }
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 700px;
+    margin: auto;
+  }
+  .hero h2 { font-size: 2.2rem; margin-bottom: .5rem; }
+  .hero p { font-size: 1.1rem; }
+
+  /* ---------- Calculator Section ---------- */
+  .calc-section {
+    max-width: 800px;
+    margin: 2rem auto;
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  }
+  h3 { color: #004080; }
+  label {
+    display: block;
+    margin: 1rem 0 .3rem;
+    font-weight: 600;
+  }
+  input {
+    width: 100%;
+    padding: .7rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+  }
+  button {
+    background: #004080;
+    color: white;
+    border: none;
+    padding: .8rem 1.2rem;
+    font-size: 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 1rem;
+  }
+  button:hover { background: #0059b3; }
+
+  .result-box {
+    background: #b8d7ff;
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: 6px;
+    font-weight: 600;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity .4s ease, transform .4s ease;
+  }
+  .result-box.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ---------- NB Section ---------- */
+  .nb-section {
+    max-width: 800px;
+    margin: 3rem auto;
+    background: white;
+    padding: 1.5rem 2rem;
+    border-left: 5px solid #004080;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  }
+  .nb-section h4 { margin-top: 0; color: #004080; }
+
+  /* ---------- Footer ---------- */
+  footer {
+    text-align: center;
+    background: #004080;
+    color: white;
+    padding: 1.2rem;
+    margin-top: 3rem;
+  }
+
+  @media (max-width: 600px) {
+    header { flex-direction: column; align-items: flex-start; }
+    nav ul { flex-direction: column; gap: .5rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Tax Tools NG</h1>
+  <nav>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="calculator.html" class="active">Calculator</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="hero-content">
+    <h2>Nigeria TAX Calculator 2026</h2>
+    <p>Quickly estimate your individual or business tax under Nigeria’s new 2026 tax law.</p>
+  </div>
+</section>
+
+<main>
+  <section class="calc-section" id="individualTax">
+    <h3>Individual Tax Calculator</h3>
+    <label for="income">Annual Income (₦): <span title="Enter your total yearly income before tax">(?)</span></label>
+    <input type="number" id="income" placeholder="e.g. 2500000">
+    <button onclick="calculateIndividualTax()">Calculate TAX</button>
+    <div id="individualResult" class="result-box"></div>
+  </section>
+
+  <section class="calc-section" id="businessTax">
+    <h3>Business Tax Calculator</h3>
+    <label for="turnover">Annual Turnover (₦): <span title="Enter your company’s total yearly sales or revenue">(?)</span></label>
+    <input type="number" id="turnover" placeholder="e.g. 80000000">
+    <label for="assets">Fixed Assets (₦): <span title="Enter your total fixed assets, e.g. land, machinery">(?)</span></label>
+    <input type="number" id="assets" placeholder="e.g. 120000000">
+    <button onclick="calculateBusinessTax()">Calculate TAX</button>
+    <div id="businessResult" class="result-box"></div>
+  </section>
+
+  <section class="nb-section">
+    <h4>NB: Nigeria 2026 Tax Law Summary</h4>
+    <p><strong>Effective Date:</strong> January 1, 2026</p>
+    <p><strong>Individual Tax (Pay As You Earn):</strong></p>
+    <ul>
+      <li>₦0 – ₦800,000: <strong>0%</strong> (Tax Exempt)</li>
+      <li>₦800,001 – ₦3,000,000: <strong>15%</strong></li>
+      <li>₦3,000,001 – ₦12,000,000: <strong>18%</strong></li>
+      <li>₦12,000,001 – ₦25,000,000: <strong>21%</strong></li>
+      <li>₦25,000,001 – ₦50,000,000: <strong>23%</strong></li>
+      <li>Above ₦50,000,000: <strong>25%</strong></li>
+    </ul>
+
+    <p><strong>Business Tax:</strong></p>
+    <ul>
+      <li>Turnover ≤ ₦50 million: <strong>Exempt</strong></li>
+      <li>Turnover > ₦50 million: <strong>30% Corporate Tax + 4% Development Levy</strong></li>
+      <li>Large/multinational companies must meet a <strong>15% minimum effective tax rate</strong>.</li>
+    </ul>
+  </section>
+</main>
+
+<footer>
+  <p>&copy; 2026 Tax Tools NG. All Rights Reserved.</p>
+</footer>
+
+<script>
+function formatCurrency(num) {
+  return "₦" + num.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+}
+
+function calculateIndividualTax() {
+  const income = parseFloat(document.getElementById("income").value);
+  const resultBox = document.getElementById("individualResult");
+  if (!income || income <= 0) {
+    resultBox.textContent = "Please enter a valid income.";
+    resultBox.classList.add("show");
+    return;
+  }
+
+  let rate = 0;
+  if (income <= 800000) rate = 0;
+  else if (income <= 3000000) rate = 15;
+  else if (income <= 12000000) rate = 18;
+  else if (income <= 25000000) rate = 21;
+  else if (income <= 50000000) rate = 23;
+  else rate = 25;
+
+  const tax = income * (rate / 100);
+  resultBox.textContent = `Applicable Tax Rate: ${rate}% | Estimated Tax: ${formatCurrency(tax)}`;
+  resultBox.classList.add("show");
+}
+
+function calculateBusinessTax() {
+  const turnover = parseFloat(document.getElementById("turnover").value);
+  const assets = parseFloat(document.getElementById("assets").value);
+  const resultBox = document.getElementById("businessResult");
+
+  if (!turnover || turnover <= 0 || !assets || assets <= 0) {
+    resultBox.textContent = "Please fill in valid turnover and asset amounts.";
+    resultBox.classList.add("show");
+    return;
+  }
+
+  let tax = 0;
+  let details = "";
+
+  if (turnover <= 50000000 && assets <= 250000000) {
+    details = "Your business is classified as SMALL and exempt from company tax.";
+  } else {
+    const cit = turnover * 0.30;
+    const levy = turnover * 0.04;
+    tax = cit + levy;
+    details = `Corporate Income Tax (30%): ${formatCurrency(cit)} + Development Levy (4%): ${formatCurrency(levy)}`;
+  }
+
+  // Enforce minimum effective tax rate of 15% for large companies
+  const effectiveRate = (tax / turnover) * 100;
+  if (effectiveRate < 15 && tax > 0) {
+    const topUp = (0.15 * turnover) - tax;
+    tax += topUp;
+    details += ` | Adjusted to meet 15% minimum effective tax rate (+${formatCurrency(topUp)})`;
+  }
+
+  resultBox.innerHTML = `${details}<br><strong>Total Estimated Tax: ${formatCurrency(tax)}</strong>`;
+  resultBox.classList.add("show");
+}
+</script>
+
+</body>
+</html>

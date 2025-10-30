@@ -1,0 +1,87 @@
+/* css/style.css
+   Shared site stylesheet — deep-blue header, soft-blue background,
+   white cards, consistent spacing and responsive layout.
+   Edit variables below to change site-wide colors/spacing.
+*/
+
+:root{
+  --bg: #dbe3ec;        /* page background */
+  --surface: #ffffff;   /* card background */
+  --primary: #004080;   /* deep-blue header/footer */
+  --accent: #4f6ef5;    /* accent */
+  --result-blue: #b8d7ff; /* result box */
+  --muted: #6b7280;
+  --text: #0f172a;
+  --card-shadow: 0 10px 30px rgba(15,23,42,0.06);
+  --radius: 12px;
+  --container: 1100px;
+  --gap: 20px;
+  --transition: 0.28s ease;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;color:var(--text);background:var(--bg);-webkit-font-smoothing:antialiased}
+
+/* container */
+.container{max-width:var(--container);margin:0 auto;padding:0 20px}
+
+/* header / nav */
+.site-header{background:var(--primary);color:#fff;padding:16px 0;box-shadow:0 2px 8px rgba(0,0,0,0.08);position:sticky;top:0;z-index:50}
+.header-inner{display:flex;align-items:center;justify-content:space-between;max-width:var(--container);margin:0 auto;padding:0 20px}
+.brand a{color:#fff;text-decoration:none;font-weight:700;font-size:20px}
+.site-nav ul{list-style:none;display:flex;gap:18px;margin:0;padding:0}
+.site-nav a{color:#fff;text-decoration:none;padding:8px 12px;border-radius:8px;font-weight:600}
+.site-nav a.active, .site-nav a:hover{background:rgba(255,255,255,0.12);color:#fff}
+
+/* hero */
+.hero{position:relative;display:flex;align-items:center;justify-content:center;padding:64px 0;background-size:cover;background-position:center;color:#fff}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg, rgba(0,0,0,0.45), rgba(0,0,0,0.55));}
+.hero .hero-inner{position:relative;z-index:2;max-width:1000px;padding:0 20px;text-align:center}
+.hero h1{font-size:2.4rem;margin:0 0 12px}
+.hero p{margin:0 0 18px;color:rgba(255,255,255,0.95)}
+
+/* hero buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:10px 16px;border-radius:10px;font-weight:700;text-decoration:none;cursor:pointer;border:0}
+.btn-primary{background:var(--accent);color:#fff;box-shadow:0 8px 24px rgba(79,110,245,0.12)}
+.btn-ghost{background:transparent;color:#fff;border:1px solid rgba(255,255,255,0.14)}
+
+/* card & layout */
+.card{background:var(--surface);border-radius:var(--radius);padding:20px;box-shadow:var(--card-shadow);margin-bottom:var(--gap)}
+.section-title{font-size:1.35rem;color:var(--primary);margin-bottom:12px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+@media (max-width:1000px){.grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:700px){.grid{grid-template-columns:1fr}}
+
+/* features */
+.feature img{width:100%;height:200px;object-fit:cover;border-radius:8px;margin-bottom:12px}
+
+/* form & inputs */
+input[type="text"], input[type="email"], input[type="number"], textarea, select {
+  width:100%;padding:12px;border-radius:8px;border:1px solid #d1d5db;background:#fff;font-size:1rem;transition:box-shadow var(--transition),border-color var(--transition);
+}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 6px 18px rgba(79,110,245,0.12)}
+
+/* result box (used across site) */
+.result-box{background:var(--result-blue);padding:14px;border-radius:10px;font-weight:700;box-shadow:0 6px 20px rgba(15,23,42,0.06);opacity:0;transform:translateY(8px);transition:opacity .35s ease, transform .35s ease}
+.result-box.show{opacity:1;transform:translateY(0)}
+
+/* NB box style */
+.nb-box{background:var(--surface);border-left:6px solid var(--primary);padding:16px;border-radius:8px;box-shadow:var(--card-shadow);margin-top:12px}
+
+/* footer */
+.site-footer{background:var(--primary);color:#fff;padding:28px 0;margin-top:30px}
+.footer-grid{display:grid;grid-template-columns:1fr 220px 220px;gap:24px;align-items:start;max-width:var(--container);margin:0 auto;padding:0 20px}
+.footer-brand a{color:#fff;text-decoration:none;font-weight:800}
+.footer-links ul{list-style:none;padding:0;margin:0}
+.footer-links a{color:#fff;text-decoration:none;display:block;margin:6px 0}
+
+/* small */
+.small-muted{color:var(--muted);font-size:0.95rem}
+
+/* responsive */
+@media (max-width:880px){
+  .header-inner{padding:0 12px}
+  .hero{padding:40px 0}
+  .footer-grid{grid-template-columns:1fr}
+  .site-nav{display:none} /* hamburger controlled by js if using */
+}

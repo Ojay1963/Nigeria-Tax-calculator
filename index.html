@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Home — Tax Tools NG</title>
+  <meta name="description" content="Tax Tools NG — easy Nigerian tax calculator (Tax Reform Act 2026).">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* Center images in the grid */
+    .grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .grid div {
+      flex: 1 1 250px; /* Minimum 250px width */
+      max-width: 300px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .grid img {
+      width: 100%;
+      height: auto;
+      border-radius: 12px;
+      object-fit: cover;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .grid img:hover {
+      transform: scale(1.05);
+    }
+
+    /* Testimonials with images */
+    .testimonial {
+      display: flex;
+      align-items: flex-start;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .testimonial img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      object-fit: cover;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    }
+
+    .testimonial-text {
+      flex: 1;
+    }
+
+    .testimonial-text p {
+      margin: 2px 0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER (shared) -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand"><a href="index.html">Tax Tools NG</a></div>
+      <nav class="site-nav" id="site-nav">
+        <ul>
+          <li><a href="index.html" class="active">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="calculator.html">Calculator</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero" style="background-image:url('https://images.unsplash.com/photo-1590926938512-6b25f1ecf0e5?auto=format&fit=crop&w=1400&q=80');">
+    <div class="hero-inner">
+      <h1>Calculate your <span style="color:#cfe4ff;font-weight:800">TAX</span> — fast & simple</h1>
+      <p class="small-muted">Accurate PAYE and company tax estimates based on the Nigeria Tax Reform Act 2026 (effective Jan 1, 2026).</p>
+      <div style="margin-top:18px">
+        <a href="calculator.html" class="btn btn-primary">Get Started — Calculate TAX</a>
+        <a href="about.html" class="btn btn-ghost" style="margin-left:8px">Learn more</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN -->
+  <main class="container" style="padding:28px 20px;">
+    
+    <!-- WHY TAX TOOLS NG -->
+    <section class="card">
+      <div class="section-title" style="text-align:center;">Why Tax Tools NG?</div>
+      <div class="grid">
+        <div>
+          <img src="https://images.unsplash.com/photo-1559526324-593bc073d938?auto=format&fit=crop&w=900&q=80" alt="Business" />
+        </div>
+        <div>
+          <img src="https://images.unsplash.com/photo-1588776814546-6a8f21d7fa90?auto=format&fit=crop&w=900&q=80" alt="Individuals" />
+        </div>
+        <div>
+          <img src="https://upload.wikimedia.org/wikipedia/commons/0/01/Nigeria_map_with_states.svg" alt="Nigeria map" />
+        </div>
+      </div>
+    </section>
+
+    <!-- TIMELINE OF TAX REFORM -->
+    <section class="card" style="margin-top:20px">
+      <div class="section-title">Timeline of the 2026 Tax Reform</div>
+      <ul class="timeline">
+        <li><strong>Jan 2023:</strong> Proposal of the Tax Reform Act 2026 submitted to the National Assembly.</li>
+        <li><strong>Jun 2024:</strong> Public consultation with businesses and citizens to review proposed changes.</li>
+        <li><strong>Dec 2025:</strong> Bill passed and officially signed into law.</li>
+        <li><strong>Jan 2026:</strong> Tax Reform Act 2026 becomes effective nationwide.</li>
+      </ul>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section class="card" style="margin-top:20px">
+      <div class="section-title">What people say</div>
+
+      <div class="testimonial">
+        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Chinedu">
+        <div class="testimonial-text">
+          <p class="small-muted">"Tax Tools NG made it easy for me to see exactly what I owe and avoid surprises at tax season. Highly recommended!"</p>
+          <p><strong>— Chinedu, Lagos</strong></p>
+        </div>
+      </div>
+
+      <div class="testimonial">
+        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Aisha">
+        <div class="testimonial-text">
+          <p class="small-muted">"As a small business owner, this tool saves me hours every month. I can quickly check my tax obligations and focus on growing my company."</p>
+          <p><strong>— Aisha, Abuja</strong></p>
+        </div>
+      </div>
+
+      <div class="testimonial">
+        <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="Emeka">
+        <div class="testimonial-text">
+          <p class="small-muted">"Finally, a tool that explains taxes in simple language. I understand my net pay and deductions better than ever before."</p>
+          <p><strong>— Emeka, Port Harcourt</strong></p>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="card" style="margin-top:20px">
+      <div class="section-title">How it works</div>
+      <p class="small-muted">Choose a calculator (individual or business), enter your numbers, and get an estimate immediately. Results are estimates; consult FIRS or a tax professional for official filings.</p>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html">Tax Tools NG</a>
+        <p class="small-muted">Helping Nigerians understand the 2026 tax reform — simply.</p>
+      </div>
+
+      <div class="footer-links">
+        <h4>Site</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="calculator.html">Calculator</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-contact">
+        <h4>Contact</h4>
+        <p class="small-muted">support@taxtoolsng.com</p>
+        <p class="small-muted">+234 800 TAX HELP</p>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

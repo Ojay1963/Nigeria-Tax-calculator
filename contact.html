@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Contact — Tax Tools NG</title>
+  <meta name="description" content="Contact Tax Tools NG — support for the Nigeria Tax Calculator.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand"><a href="index.html">Tax Tools NG</a></div>
+      <nav class="site-nav">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="calculator.html">Calculator</a></li>
+          <li><a href="contact.html" class="active">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero" style="background-image:url('https://images.unsplash.com/photo-1570118341382-62f56ab1f930?auto=format&fit=crop&w=1400&q=80');">
+    <!-- REPLACE: city or office image -->
+    <div class="hero-inner">
+      <h1>Contact Tax Tools NG</h1>
+      <p class="small-muted">Questions, feedback, or corrections? Send us a message and we’ll respond quickly.</p>
+    </div>
+  </section>
+
+  <main class="container" style="padding:28px 20px;">
+    <section class="card">
+      <div class="section-title">Get in touch</div>
+      <p class="small-muted">Fill the form below — we use secure server-side handling to receive messages.</p>
+
+      <!-- Contact form posts to contact-handler.php -->
+      <form id="contactForm" method="post" action="contact-handler.php" class="card" style="padding:18px">
+        <label for="name">Name</label>
+        <input id="name" name="name" type="text" required placeholder="Your full name">
+
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" required placeholder="you@example.com">
+
+        <label for="message">Message</label>
+        <textarea id="message" name="message" rows="6" required placeholder="How can we help?"></textarea>
+
+        <button type="submit">Send Message</button>
+      </form>
+    </section>
+
+    <section class="card" style="margin-top:20px">
+      <div class="section-title">Office</div>
+      <p class="small-muted">No physical office — we operate online. For support use support@taxtoolsng.com or the form above.</p>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html">Tax Tools NG</a>
+        <p class="small-muted">Helping Nigerians understand the 2026 tax reform — simply.</p>
+      </div>
+
+      <div class="footer-links">
+        <h4>Site</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="calculator.html">Calculator</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-contact">
+        <h4>Contact</h4>
+        <p class="small-muted">support@taxtoolsng.com</p>
+        <p class="small-muted">+234 800 TAX HELP</p>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
