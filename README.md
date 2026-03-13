@@ -9,6 +9,7 @@ Production-oriented full-stack Nigerian tax calculator with a React client and E
 - MongoDB persistence
 - Brevo SMTP email verification
 - JWT authentication with roles
+- Paystack checkout for consultations, PDF reports, and business subscriptions
 
 ## Run locally
 
@@ -50,6 +51,8 @@ Copy `.env.example` to `.env` and adjust values if needed.
 - `SMTP_HOST` / `SMTP_PORT`: Brevo SMTP endpoint
 - `SMTP_USER` / `SMTP_PASS`: Brevo SMTP credentials
 - `SMTP_FROM_EMAIL` / `SMTP_FROM_NAME`: sender identity for verification emails
+- `PAYSTACK_SECRET_KEY`: secret key used to initialize and verify transactions
+- `PAYSTACK_PUBLIC_KEY`: reserved for future frontend Paystack features
 - `VITE_API_BASE_URL`: optional absolute API base for deployed frontend builds
 - `LOG_LEVEL`: reserved for future structured logging policy
 
@@ -80,7 +83,10 @@ Use a bearer token from an authenticated admin account.
 ## Monetization routes
 
 - `GET /api/monetization/plans`
-- `POST /api/monetization/request`
+- `POST /api/monetization/request` for free support leads
+- `POST /api/monetization/checkout` to initialize Paystack payments
+- `GET /api/monetization/verify?reference=...` to confirm a completed Paystack payment
+- `POST /api/monetization/webhook` for Paystack webhooks
 
 ## Tests
 

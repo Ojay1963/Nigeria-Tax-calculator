@@ -152,6 +152,7 @@ export default function DashboardPage() {
                   <p>{item.name}</p>
                   <p>{item.email}</p>
                   <p>Status: {item.status}</p>
+                  <p>Payment: {item.paymentStatus || "not_required"}</p>
                 </div>
               ))}
             </div>

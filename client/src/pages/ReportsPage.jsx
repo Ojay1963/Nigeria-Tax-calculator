@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { createMonetizationRequest } from "../api/http";
+import { initializePaystackCheckout } from "../api/http";
 import PageHero from "../components/PageHero";
 import SectionHeading from "../components/SectionHeading";
 import { useAuth } from "../context/AuthContext";
@@ -103,15 +103,12 @@ export default function ReportsPage() {
     setStatus({ type: "", message: "" });
 
     try {
-      await createMonetizationRequest({
+      const response = await initializePaystackCheckout({
         type: "pdf_report",
         ...order,
         context: location.state?.result ? { result: location.state.result, kind: location.state.kind } : {}
       });
-      setStatus({
-        type: "success",
-        message: "PDF report request submitted. You can follow up with pricing and delivery from the admin side."
-      });
+      window.location.assign(response.data.authorizationUrl);
     } catch (error) {
       setStatus({ type: "error", message: error.message });
     } finally {
@@ -142,6 +139,10 @@ export default function ReportsPage() {
               <h3>Why users pay</h3>
               <p>They want something printable, presentable, and easier to send to employers, finance teams, or clients.</p>
             </div>
+            <div className="feature-card">
+              <h3>Pricing</h3>
+              <p>Reviewed PDF summary starts at N5,000, branded management report at N15,000, and client-ready pack at N25,000.</p>
+            </div>
           </div>
           {previewReport ? (
             <button className="button-secondary" type="button" onClick={() => openPrintableReport(previewReport)}>
@@ -160,7 +161,7 @@ export default function ReportsPage() {
           <label className="field"><span>Report scope</span><select value={order.reportScope} onChange={event => setOrder({ ...order, reportScope: event.target.value })}><option>Reviewed PDF summary</option><option>Branded management report</option><option>Client-ready report pack</option></select></label>
           <label className="field field-wide"><span>Use case</span><textarea rows="4" value={order.taxUseCase} onChange={event => setOrder({ ...order, taxUseCase: event.target.value })} /></label>
           <label className="field field-wide"><span>Extra instructions</span><textarea rows="5" value={order.message} onChange={event => setOrder({ ...order, message: event.target.value })} /></label>
-          <button className="button-primary" type="submit" disabled={submitting}>{submitting ? "Submitting..." : "Request paid PDF report"}</button>
+          <button className="button-primary" type="submit" disabled={submitting}>{submitting ? "Redirecting..." : "Pay with Paystack"}</button>
           {status.message ? <p className={status.type === "error" ? "error-text" : "success-text"}>{status.message}</p> : null}
         </form>
       </section>

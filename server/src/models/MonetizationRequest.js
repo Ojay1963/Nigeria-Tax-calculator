@@ -73,6 +73,47 @@ const monetizationRequestSchema = new mongoose.Schema(
       enum: ["new", "contacted", "quoted", "booked", "paid", "closed"],
       default: "new"
     },
+    amount: {
+      type: Number,
+      default: 0
+    },
+    currency: {
+      type: String,
+      default: "NGN"
+    },
+    paymentProvider: {
+      type: String,
+      enum: ["", "paystack"],
+      default: ""
+    },
+    paymentReference: {
+      type: String,
+      trim: true,
+      default: ""
+    },
+    paymentAccessCode: {
+      type: String,
+      trim: true,
+      default: ""
+    },
+    paymentAuthorizationUrl: {
+      type: String,
+      trim: true,
+      default: ""
+    },
+    paymentStatus: {
+      type: String,
+      enum: ["not_required", "pending", "success", "failed", "abandoned", "refunded"],
+      default: "not_required"
+    },
+    paidAt: {
+      type: Date,
+      default: null
+    },
+    lastPaymentVerification: {
+      type: Date,
+      default: null
+    },
     context: {
       type: mongoose.Schema.Types.Mixed,
       default: {}

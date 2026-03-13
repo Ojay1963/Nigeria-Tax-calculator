@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { createMonetizationRequest, getPricingPlans } from "../api/http";
+import { getPricingPlans, initializePaystackCheckout } from "../api/http";
 import PageHero from "../components/PageHero";
 import SectionHeading from "../components/SectionHeading";
 
@@ -30,14 +30,11 @@ export default function PricingPage() {
     setStatus({ type: "", message: "" });
 
     try {
-      await createMonetizationRequest({
+      const response = await initializePaystackCheckout({
         type: "subscription",
         ...form
       });
-      setStatus({
-        type: "success",
-        message: "Business subscription request submitted. You can now follow up from the admin workflow."
-      });
+      window.location.assign(response.data.authorizationUrl);
     } catch (error) {
       setStatus({ type: "error", message: error.message });
     } finally {
@@ -128,6 +125,10 @@ export default function PricingPage() {
             title="Turn business interest into a recurring-revenue conversation"
             copy="Use this form when an SME, payroll team, or finance lead wants a recurring plan instead of a one-off calculation."
           />
+          <div className="hero-note-card">
+            <strong>Paystack checkout</strong>
+            <p>Business subscriptions are paid online with Paystack only. After payment, the site verifies the transaction and returns you to the dashboard.</p>
+          </div>
         </div>
         <form className="form-grid" onSubmit={handleSubmit}>
           <label className="field"><span>Name</span><input value={form.name} onChange={event => setForm({ ...form, name: event.target.value })} /></label>
@@ -137,7 +138,7 @@ export default function PricingPage() {
           <label className="field"><span>Plan interest</span><select value={form.selectedPlan} onChange={event => setForm({ ...form, selectedPlan: event.target.value })}><option>Business</option><option>Pro Report</option><option>Starter to Business migration</option></select></label>
           <label className="field field-wide"><span>Use case</span><textarea rows="4" value={form.taxUseCase} onChange={event => setForm({ ...form, taxUseCase: event.target.value })} /></label>
           <label className="field field-wide"><span>What do you need for your team?</span><textarea rows="5" value={form.message} onChange={event => setForm({ ...form, message: event.target.value })} /></label>
-          <button className="button-primary" type="submit" disabled={submitting}>{submitting ? "Submitting..." : "Request business subscription"}</button>
+          <button className="button-primary" type="submit" disabled={submitting}>{submitting ? "Redirecting..." : "Pay with Paystack"}</button>
           {status.message ? <p className={status.type === "error" ? "error-text" : "success-text"}>{status.message}</p> : null}
         </form>
       </section>

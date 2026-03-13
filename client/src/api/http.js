@@ -69,11 +69,22 @@ export function getPricingPlans() {
   return request("/api/monetization/plans");
 }
 
-export function createMonetizationRequest(payload) {
+export function createSupportLead(payload) {
   return request("/api/monetization/request", {
     method: "POST",
     body: JSON.stringify(payload)
   });
+}
+
+export function initializePaystackCheckout(payload) {
+  return request("/api/monetization/checkout", {
+    method: "POST",
+    body: JSON.stringify(payload)
+  });
+}
+
+export function verifyPaystackCheckout(reference) {
+  return request(`/api/monetization/verify?reference=${encodeURIComponent(reference)}`);
 }
 
 export function registerAccount(payload) {

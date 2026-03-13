@@ -16,7 +16,9 @@ const envSchema = z.object({
   SMTP_USER: z.string().default(""),
   SMTP_PASS: z.string().default(""),
   SMTP_FROM_EMAIL: z.string().email().default("noreply@example.com"),
-  SMTP_FROM_NAME: z.string().default("Naija Tax Calculator")
+  SMTP_FROM_NAME: z.string().default("Naija Tax Calculator"),
+  PAYSTACK_SECRET_KEY: z.string().default(""),
+  PAYSTACK_PUBLIC_KEY: z.string().default("")
 });
 
 const parsed = envSchema.safeParse(process.env);
@@ -53,6 +55,10 @@ if (parsed.data.NODE_ENV === "production") {
     productionErrors.push("SMTP_USER and SMTP_PASS must both be set together.");
   }
 
+  if (!parsed.data.PAYSTACK_SECRET_KEY) {
+    productionErrors.push("PAYSTACK_SECRET_KEY is required in production.");
+  }
+
   if (productionErrors.length > 0) {
     console.error("Invalid production environment configuration", productionErrors);
     process.exit(1);
@@ -64,6 +70,7 @@ export const config = {
   isProduction: parsed.data.NODE_ENV === "production",
   isTest: parsed.data.NODE_ENV === "test",
   isEmailConfigured: Boolean(parsed.data.SMTP_USER && parsed.data.SMTP_PASS),
+  isPaystackConfigured: Boolean(parsed.data.PAYSTACK_SECRET_KEY),
   allowedOrigins: parsed.data.ALLOWED_ORIGINS
     .split(",")
     .map(origin => origin.trim())

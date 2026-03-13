@@ -17,6 +17,9 @@ const server = app.listen(config.PORT, () => {
   if (!config.isEmailConfigured) {
     console.warn("SMTP is not configured. Verification emails will be skipped.");
   }
+  if (!config.isPaystackConfigured) {
+    console.warn("Paystack is not configured. Paid checkout flows will be unavailable.");
+  }
 });
 
 function shutdown(signal) {

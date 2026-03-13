@@ -1,6 +1,6 @@
 import { startTransition, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { createMonetizationRequest, sendContact } from "../api/http";
+import { createSupportLead, sendContact } from "../api/http";
 import PageHero from "../components/PageHero";
 import SectionHeading from "../components/SectionHeading";
 import { useAuth } from "../context/AuthContext";
@@ -53,7 +53,7 @@ export default function ContactPage() {
     setLeadStatus({ type: "", message: "" });
 
     try {
-      await createMonetizationRequest({
+      await createSupportLead({
         type: "support_lead",
         ...leadForm,
         context: location.state?.context || {}

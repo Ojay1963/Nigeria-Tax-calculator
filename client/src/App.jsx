@@ -11,6 +11,7 @@ import NotFoundPage from "./pages/NotFoundPage";
 import PrivacyPage from "./pages/PrivacyPage";
 import PricingPage from "./pages/PricingPage";
 import ProtectedRoute from "./components/ProtectedRoute";
+import PaymentVerifyPage from "./pages/PaymentVerifyPage";
 import RegisterPage from "./pages/RegisterPage";
 import ReportsPage from "./pages/ReportsPage";
 import TermsPage from "./pages/TermsPage";
@@ -29,6 +30,7 @@ export default function App() {
         <Route path="/pricing" element={<PricingPage />} />
         <Route path="/consultations" element={<ConsultationPage />} />
         <Route path="/reports" element={<ReportsPage />} />
+        <Route path="/payment/verify" element={<PaymentVerifyPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route

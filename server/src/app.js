@@ -11,6 +11,7 @@ import adminRoutes from "./routes/adminRoutes.js";
 import { config } from "./config.js";
 import { isDatabaseReady } from "./services/databaseService.js";
 import { isEmailReady } from "./services/emailService.js";
+import { isPaystackReady } from "./services/paystackService.js";
 import contactRoutes from "./routes/contactRoutes.js";
 import monetizationRoutes from "./routes/monetizationRoutes.js";
 import taxRoutes from "./routes/taxRoutes.js";
@@ -68,7 +69,14 @@ app.use(
     credentials: true
   })
 );
-app.use(express.json({ limit: "250kb" }));
+app.use(
+  express.json({
+    limit: "250kb",
+    verify(req, _res, buf) {
+      req.rawBody = buf.toString("utf8");
+    }
+  })
+);
 app.use(express.urlencoded({ extended: false, limit: "250kb" }));
 app.use(
   morgan(config.isProduction ? "combined" : "dev", {
@@ -96,7 +104,8 @@ app.get("/api/ready", (_req, res) => {
   res.status(ready ? 200 : 503).json({
     status: ready ? "ready" : "degraded",
     database: isDatabaseReady() ? "connected" : config.MONGODB_URI ? "disconnected" : "not-configured",
-    email: isEmailReady() ? "configured" : "not-configured"
+    email: isEmailReady() ? "configured" : "not-configured",
+    paystack: isPaystackReady() ? "configured" : "not-configured"
   });
 });
 
@@ -136,6 +145,8 @@ app.use((err, _req, res, _next) => {
   const status =
     message.includes("Database is not connected")
       ? 503
+      : message.includes("Paystack is not configured")
+        ? 503
       : message.includes("Origin not allowed")
         ? 403
       : message.includes("already exists") ||
