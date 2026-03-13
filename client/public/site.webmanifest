@@ -1,0 +1,9 @@
+{
+  "name": "Tax Tools NG",
+  "short_name": "Tax Tools NG",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#edf4fb",
+  "theme_color": "#125b9a",
+  "description": "Modern Nigerian tax calculator for PAYE and company tax estimates."
+}
