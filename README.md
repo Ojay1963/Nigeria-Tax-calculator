@@ -1,4 +1,4 @@
-# Tax Tools NG
+# Nigeria Tax Calculator
 
 Production-oriented full-stack Nigerian tax calculator with a React client and Express API.
 
