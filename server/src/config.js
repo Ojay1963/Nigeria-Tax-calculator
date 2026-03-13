@@ -16,7 +16,7 @@ const envSchema = z.object({
   SMTP_USER: z.string().default(""),
   SMTP_PASS: z.string().default(""),
   SMTP_FROM_EMAIL: z.string().email().default("noreply@example.com"),
-  SMTP_FROM_NAME: z.string().default("Tax Tools NG")
+  SMTP_FROM_NAME: z.string().default("Naija Tax Calculator")
 });
 
 const parsed = envSchema.safeParse(process.env);
@@ -26,10 +26,44 @@ if (!parsed.success) {
   process.exit(1);
 }
 
+function isLikelyPlaceholderSecret(secret) {
+  return secret.length < 32 || secret.includes("change-me") || secret.includes("replace-with");
+}
+
+if (parsed.data.NODE_ENV === "production") {
+  const productionErrors = [];
+
+  if (!parsed.data.MONGODB_URI) {
+    productionErrors.push("MONGODB_URI is required in production.");
+  }
+
+  if (isLikelyPlaceholderSecret(parsed.data.JWT_SECRET)) {
+    productionErrors.push("JWT_SECRET must be at least 32 characters and not a placeholder in production.");
+  }
+
+  if (!parsed.data.ALLOWED_ORIGINS.trim()) {
+    productionErrors.push("ALLOWED_ORIGINS must contain at least one allowed origin in production.");
+  }
+
+  if (!parsed.data.APP_BASE_URL.startsWith("https://")) {
+    productionErrors.push("APP_BASE_URL must use https in production.");
+  }
+
+  if ((parsed.data.SMTP_USER && !parsed.data.SMTP_PASS) || (!parsed.data.SMTP_USER && parsed.data.SMTP_PASS)) {
+    productionErrors.push("SMTP_USER and SMTP_PASS must both be set together.");
+  }
+
+  if (productionErrors.length > 0) {
+    console.error("Invalid production environment configuration", productionErrors);
+    process.exit(1);
+  }
+}
+
 export const config = {
   ...parsed.data,
   isProduction: parsed.data.NODE_ENV === "production",
   isTest: parsed.data.NODE_ENV === "test",
+  isEmailConfigured: Boolean(parsed.data.SMTP_USER && parsed.data.SMTP_PASS),
   allowedOrigins: parsed.data.ALLOWED_ORIGINS
     .split(",")
     .map(origin => origin.trim())

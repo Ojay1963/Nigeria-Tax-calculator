@@ -10,7 +10,9 @@ import authRoutes from "./routes/authRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import { config } from "./config.js";
 import { isDatabaseReady } from "./services/databaseService.js";
+import { isEmailReady } from "./services/emailService.js";
 import contactRoutes from "./routes/contactRoutes.js";
+import monetizationRoutes from "./routes/monetizationRoutes.js";
 import taxRoutes from "./routes/taxRoutes.js";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -23,7 +25,10 @@ const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 300,
   standardHeaders: true,
-  legacyHeaders: false
+  legacyHeaders: false,
+  message: {
+    message: "Too many requests from this IP. Please try again later."
+  }
 });
 
 const contactLimiter = rateLimit({
@@ -64,6 +69,7 @@ app.use(
   })
 );
 app.use(express.json({ limit: "250kb" }));
+app.use(express.urlencoded({ extended: false, limit: "250kb" }));
 app.use(
   morgan(config.isProduction ? "combined" : "dev", {
     skip: req => config.isTest && req.path === "/api/health"
@@ -78,21 +84,26 @@ app.use((req, res, next) => {
 app.get("/api/health", (_req, res) => {
   res.json({
     status: "ok",
-    service: "tax-tools-ng-api",
+    service: "naija-tax-calculator-api",
     timestamp: new Date().toISOString()
   });
 });
 
 app.get("/api/ready", (_req, res) => {
-  res.status(isDatabaseReady() || !config.MONGODB_URI ? 200 : 503).json({
-    status: isDatabaseReady() || !config.MONGODB_URI ? "ready" : "degraded",
-    database: isDatabaseReady() ? "connected" : config.MONGODB_URI ? "disconnected" : "not-configured"
+  const databaseReady = isDatabaseReady() || !config.MONGODB_URI;
+  const ready = databaseReady;
+
+  res.status(ready ? 200 : 503).json({
+    status: ready ? "ready" : "degraded",
+    database: isDatabaseReady() ? "connected" : config.MONGODB_URI ? "disconnected" : "not-configured",
+    email: isEmailReady() ? "configured" : "not-configured"
   });
 });
 
 app.use("/api/auth", authRoutes);
 app.use("/api/tax", taxRoutes);
 app.use("/api/contact", contactLimiter, contactRoutes);
+app.use("/api/monetization", monetizationRoutes);
 app.use("/api/admin", adminRoutes);
 
 app.use("/api", (_req, res) => {
@@ -123,15 +134,19 @@ app.use((err, _req, res, _next) => {
   console.error(err);
   const message = err instanceof Error ? err.message : "Unexpected server error.";
   const status =
-    message.includes("already exists") ||
-    message.includes("Verification") ||
-    message.includes("Invalid email or password") ||
-    message.includes("Please verify")
-      ? 400
-      : 500;
+    message.includes("Database is not connected")
+      ? 503
+      : message.includes("Origin not allowed")
+        ? 403
+      : message.includes("already exists") ||
+          message.includes("Verification") ||
+          message.includes("Invalid email or password") ||
+          message.includes("Please verify")
+        ? 400
+        : 500;
 
   res.status(status).json({
-    message
+    message: status === 500 && config.isProduction ? "Internal server error." : message
   });
 });
 

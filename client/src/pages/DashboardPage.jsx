@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { getAdminDashboard } from "../api/http";
+import { getAdminDashboard, getAdminMonetization } from "../api/http";
 import PageHero from "../components/PageHero";
 import SectionHeading from "../components/SectionHeading";
 import { useAuth } from "../context/AuthContext";
@@ -8,6 +8,7 @@ import { useAuth } from "../context/AuthContext";
 export default function DashboardPage() {
   const { user, token } = useAuth();
   const [adminStats, setAdminStats] = useState(null);
+  const [adminMonetization, setAdminMonetization] = useState([]);
   const [status, setStatus] = useState("");
 
   useEffect(() => {
@@ -15,9 +16,10 @@ export default function DashboardPage() {
       return;
     }
 
-    getAdminDashboard(token)
-      .then(response => {
-        setAdminStats(response);
+    Promise.all([getAdminDashboard(token), getAdminMonetization(token)])
+      .then(([dashboardResponse, monetizationResponse]) => {
+        setAdminStats(dashboardResponse);
+        setAdminMonetization(monetizationResponse.data ?? []);
       })
       .catch(error => {
         setStatus(error.message);
@@ -76,6 +78,18 @@ export default function DashboardPage() {
               <h3>Run calculations</h3>
               <p>Open PAYE and company tax tools.</p>
             </Link>
+            <Link className="feature-card feature-link-card" to="/pricing">
+              <h3>Explore plans</h3>
+              <p>View the monetization offers and business options.</p>
+            </Link>
+            <Link className="feature-card feature-link-card" to="/reports">
+              <h3>Order PDF report</h3>
+              <p>Request a reviewed or branded report.</p>
+            </Link>
+            <Link className="feature-card feature-link-card" to="/consultations">
+              <h3>Book consultation</h3>
+              <p>Turn a result into a paid service request.</p>
+            </Link>
             <Link className="feature-card feature-link-card" to="/guide">
               <h3>Review assumptions</h3>
               <p>Check the guide and source notes.</p>
@@ -113,7 +127,35 @@ export default function DashboardPage() {
               <h3>Company runs</h3>
               <p>{adminStats?.companyCalculations ?? "-"}</p>
             </div>
+            <div className="feature-card">
+              <h3>Support leads</h3>
+              <p>{adminStats?.supportLeads ?? "-"}</p>
+            </div>
+            <div className="feature-card">
+              <h3>Consultations</h3>
+              <p>{adminStats?.consultations ?? "-"}</p>
+            </div>
+            <div className="feature-card">
+              <h3>PDF reports</h3>
+              <p>{adminStats?.pdfReports ?? "-"}</p>
+            </div>
+            <div className="feature-card">
+              <h3>Subscription requests</h3>
+              <p>{adminStats?.subscriptionRequests ?? "-"}</p>
+            </div>
           </div>
+          {adminMonetization.length ? (
+            <div className="support-grid dashboard-grid">
+              {adminMonetization.slice(0, 6).map(item => (
+                <div className="feature-card" key={item._id}>
+                  <h3>{item.type.replaceAll("_", " ")}</h3>
+                  <p>{item.name}</p>
+                  <p>{item.email}</p>
+                  <p>Status: {item.status}</p>
+                </div>
+              ))}
+            </div>
+          ) : null}
           {status ? <p className="note-text">{status}</p> : null}
         </section>
       ) : null}

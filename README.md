@@ -29,6 +29,14 @@ If PowerShell blocks `npm`, use:
 
 In production, the Express server serves the built React app from `client/dist`.
 
+Before you deploy, make sure these production requirements are met:
+
+- `MONGODB_URI` points to a reachable MongoDB instance
+- `JWT_SECRET` is a strong secret of at least 32 characters
+- `APP_BASE_URL` uses your real `https://` domain
+- `ALLOWED_ORIGINS` contains your real frontend origin(s)
+- Brevo SMTP credentials are configured if you want email verification to work
+
 ## Environment
 
 Copy `.env.example` to `.env` and adjust values if needed.
@@ -48,7 +56,9 @@ Copy `.env.example` to `.env` and adjust values if needed.
 ## Notes
 
 - Users, contact messages, and calculator runs are stored in MongoDB.
+- Monetization requests for support, consultation, PDF reports, and subscriptions are stored in MongoDB.
 - Calculator outputs are estimates and should be reviewed against current official guidance before filing.
+- If the built frontend is served by the same Express process, leave `VITE_API_BASE_URL` empty.
 
 ## Auth routes
 
@@ -64,7 +74,13 @@ Use a bearer token from an authenticated admin account.
 
 - `GET /api/admin/messages`
 - `GET /api/admin/calculations`
+- `GET /api/admin/monetization`
 - `GET /api/admin/dashboard`
+
+## Monetization routes
+
+- `GET /api/monetization/plans`
+- `POST /api/monetization/request`
 
 ## Tests
 

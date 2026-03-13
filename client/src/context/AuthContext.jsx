@@ -6,8 +6,13 @@ const STORAGE_KEY = "tax-tools-ng-auth";
 
 export function AuthProvider({ children }) {
   const [auth, setAuth] = useState(() => {
-    const raw = window.localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : { token: "", user: null };
+    try {
+      const raw = window.localStorage.getItem(STORAGE_KEY);
+      return raw ? JSON.parse(raw) : { token: "", user: null };
+    } catch (_error) {
+      window.localStorage.removeItem(STORAGE_KEY);
+      return { token: "", user: null };
+    }
   });
   const [authLoading, setAuthLoading] = useState(Boolean(auth.token));
 

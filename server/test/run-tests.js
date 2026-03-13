@@ -20,31 +20,91 @@ async function run() {
   assert.equal(payeResult.annualTax, 197250);
   assert.equal(payeResult.monthlyTax, 16437.5);
   assert.equal(payeResult.marginalRate, 0.15);
+  assert.equal(payeResult.isMinimumWageExempt, false);
+
+  const minimumWagePayeResult = getPayeEstimate({
+    annualIncome: 840000,
+    rent: 0,
+    pension: 0,
+    nhf: 0,
+    nhis: 0,
+    lifeInsurance: 0,
+    housingLoanInterest: 0
+  });
+
+  assert.equal(minimumWagePayeResult.annualTax, 0);
+  assert.equal(minimumWagePayeResult.isMinimumWageExempt, true);
 
   const smallCompanyResult = getCompanyTaxEstimate({
     annualTurnover: 45000000,
+    assessableProfit: 6500000,
     taxableProfit: 6500000,
     frankedInvestmentIncome: 0,
-    fixedAssets: 5000000,
-    isLargeQualifyingEntity: false,
+    fixedAssets: 150000000,
+    netProfitBeforeTax: 7000000,
+    depreciationExpense: 250000,
+    personnelCost: 1800000,
+    isProfessionalServicesBusiness: false,
+    isMNEConstituentEntity: false,
     coveredTaxesPaid: 0
   });
 
   assert.equal(smallCompanyResult.classification, "Small company");
   assert.equal(smallCompanyResult.totalEstimatedTax, 0);
 
+  const professionalServicesResult = getCompanyTaxEstimate({
+    annualTurnover: 30000000,
+    assessableProfit: 12000000,
+    taxableProfit: 10000000,
+    frankedInvestmentIncome: 0,
+    fixedAssets: 18000000,
+    netProfitBeforeTax: 12500000,
+    depreciationExpense: 400000,
+    personnelCost: 5500000,
+    isProfessionalServicesBusiness: true,
+    isMNEConstituentEntity: false,
+    coveredTaxesPaid: 0
+  });
+
+  assert.equal(professionalServicesResult.classification, "Chargeable company");
+  assert.equal(professionalServicesResult.companyIncomeTax, 3000000);
+  assert.equal(professionalServicesResult.developmentLevy, 480000);
+
   const largeCompanyResult = getCompanyTaxEstimate({
     annualTurnover: 120000000,
+    assessableProfit: 22000000,
     taxableProfit: 20000000,
     frankedInvestmentIncome: 0,
-    fixedAssets: 0,
-    isLargeQualifyingEntity: false,
+    fixedAssets: 150000000,
+    netProfitBeforeTax: 25000000,
+    depreciationExpense: 1000000,
+    personnelCost: 7000000,
+    isProfessionalServicesBusiness: false,
+    isMNEConstituentEntity: false,
     coveredTaxesPaid: 0
   });
 
   assert.equal(largeCompanyResult.companyIncomeTax, 6000000);
-  assert.equal(largeCompanyResult.developmentLevy, 800000);
-  assert.equal(largeCompanyResult.totalEstimatedTax, 6800000);
+  assert.equal(largeCompanyResult.developmentLevy, 880000);
+  assert.equal(largeCompanyResult.totalEstimatedTax, 6880000);
+
+  const effectiveTaxRuleResult = getCompanyTaxEstimate({
+    annualTurnover: 23000000000,
+    assessableProfit: 180000000,
+    taxableProfit: 130000000,
+    frankedInvestmentIncome: 10000000,
+    fixedAssets: 260000000,
+    netProfitBeforeTax: 200000000,
+    depreciationExpense: 10000000,
+    personnelCost: 25000000,
+    isProfessionalServicesBusiness: false,
+    isMNEConstituentEntity: true,
+    coveredTaxesPaid: 12000000
+  });
+
+  assert.equal(effectiveTaxRuleResult.isEffectiveTaxRuleApplicable, true);
+  assert.equal(effectiveTaxRuleResult.globalMinimumTaxProfitBase, 198250000);
+  assert.equal(effectiveTaxRuleResult.globalMinimumTopUpTax, 17737500);
 
   const healthResponse = await request(app).get("/api/health");
   assert.equal(healthResponse.status, 200);

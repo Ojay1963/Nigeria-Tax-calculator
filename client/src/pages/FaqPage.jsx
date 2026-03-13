@@ -9,9 +9,9 @@ const faqs = [
       "No. It is designed for planning, communication, and estimation. Final filing should still be checked against official guidance and your exact facts."
   },
   {
-    question: "Why does the company calculator ask for taxable profit and turnover?",
+    question: "Why does the company calculator ask for turnover, assessable profit, and taxable profit?",
     answer:
-      "Turnover helps classify the business, while taxable profit is the more realistic base for company income tax in a standard estimate."
+      "Turnover is used for the small-company and 15% effective-tax-rate thresholds, assessable profit is used for the 4% development levy, and taxable profit is used for company income tax."
   },
   {
     question: "Can HR teams use this for salary conversations?",
@@ -19,9 +19,14 @@ const faqs = [
       "Yes. The PAYE view is built to make monthly impact easier to explain to employees during onboarding, raises, and payroll reviews."
   },
   {
+    question: "Which Nigerian tax facts are reflected on the site?",
+    answer:
+      "The calculator now follows the Nigeria Tax Act, 2025 more closely, including the minimum-wage PAYE exemption, the Fourth Schedule PIT rates, the small-company test at N50,000,000 turnover and N250,000,000 fixed assets, the 4% development levy, the 0.5% minimum tax, and the 15% effective-tax-rate rule for qualifying large groups."
+  },
+  {
     question: "What happens to contact messages?",
     answer:
-      "They are stored on the server in a local log file so you can review them later or wire them into email or CRM automation."
+      "They are sent to the backend, where they can be stored in the configured database and later reviewed from the admin workflow."
   }
 ];
 
@@ -41,8 +46,8 @@ export default function FaqPage() {
     <div className="page-stack">
       <PageHero
         eyebrow="FAQ"
-        title="A searchable answer bank for common tax-tool questions"
-        copy="This page stands on its own when someone just needs quick answers about trust, use cases, and calculator limits."
+        title="A searchable answer bank for common Nigerian tax-tool questions"
+        copy="This page stands on its own when someone just needs quick answers about trust, tax assumptions, use cases, and calculator limits."
         aside={
           <div className="hero-note-card">
             <strong>Independent use</strong>
@@ -54,7 +59,7 @@ export default function FaqPage() {
         <SectionHeading
           eyebrow="FAQ"
           title="Questions teams usually ask before they trust a tax tool"
-          copy="A production-ready calculator needs more than formulas. It needs enough explanation that people know when to use it and when to double-check."
+          copy="A production-ready calculator needs more than formulas. It needs enough explanation for users to know when to use it and when to verify with official guidance."
         />
         <label className="field faq-search">
           <span>Search FAQ</span>

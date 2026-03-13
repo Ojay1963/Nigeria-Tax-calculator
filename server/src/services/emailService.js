@@ -2,6 +2,7 @@ import nodemailer from "nodemailer";
 import { config } from "../config.js";
 
 let transporter;
+let hasLoggedSkip = false;
 
 function getTransporter() {
   if (!transporter) {
@@ -22,9 +23,16 @@ function getTransporter() {
   return transporter;
 }
 
+export function isEmailReady() {
+  return config.isEmailConfigured;
+}
+
 export async function sendVerificationEmail({ email, name, token }) {
-  if (!config.SMTP_USER || !config.SMTP_PASS) {
-    console.warn("SMTP credentials are not configured. Verification email was skipped.");
+  if (!config.isEmailConfigured) {
+    if (!hasLoggedSkip) {
+      console.warn("SMTP credentials are not configured. Verification email was skipped.");
+      hasLoggedSkip = true;
+    }
     return;
   }
 
@@ -33,11 +41,11 @@ export async function sendVerificationEmail({ email, name, token }) {
   await getTransporter().sendMail({
     from: `"${config.SMTP_FROM_NAME}" <${config.SMTP_FROM_EMAIL}>`,
     to: email,
-    subject: "Verify your Tax Tools NG account",
+    subject: "Verify your Naija Tax Calculator account",
     text: `Hello ${name}, verify your account by opening this link: ${verificationUrl}`,
     html: `
       <div style="font-family: Arial, sans-serif; line-height: 1.6;">
-        <h2>Verify your Tax Tools NG account</h2>
+        <h2>Verify your Naija Tax Calculator account</h2>
         <p>Hello ${name},</p>
         <p>Click the link below to verify your email address:</p>
         <p><a href="${verificationUrl}">${verificationUrl}</a></p>

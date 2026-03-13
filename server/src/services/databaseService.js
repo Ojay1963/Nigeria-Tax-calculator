@@ -18,7 +18,8 @@ export async function connectToDatabase() {
   }
 
   await mongoose.connect(config.MONGODB_URI, {
-    serverSelectionTimeoutMS: 10000
+    serverSelectionTimeoutMS: 10000,
+    autoIndex: !config.isProduction
   });
 
   return true;

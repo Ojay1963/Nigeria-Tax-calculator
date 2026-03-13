@@ -98,6 +98,8 @@ textarea {
   grid-template-columns: auto 1fr auto;
   gap: 18px;
   align-items: center;
+  position: relative;
+  z-index: 21;
   background: linear-gradient(180deg, rgba(3, 7, 12, 0.96), rgba(5, 10, 18, 0.96));
   border: 1px solid rgba(240, 138, 36, 0.14);
   border-radius: 18px;
@@ -145,30 +147,14 @@ textarea {
 }
 
 .brand-logo {
-  position: relative;
-  display: grid;
-  place-items: center;
-  width: 42px;
-  height: 42px;
+  width: 52px;
+  height: 52px;
+  object-fit: cover;
   border-radius: 14px;
-  background: linear-gradient(135deg, rgba(240, 138, 36, 0.16), rgba(18, 91, 154, 0.22));
   border: 1px solid rgba(255, 255, 255, 0.16);
-  overflow: hidden;
-}
-
-.brand-logo-ring {
-  position: absolute;
-  inset: 6px;
-  border: 1px solid rgba(255, 215, 158, 0.28);
-  border-radius: 10px;
-}
-
-.brand-logo-core {
-  position: relative;
-  z-index: 1;
-  font-family: "Fraunces", serif;
-  font-size: 1.08rem;
-  color: #ffe5ba;
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.18);
+  flex-shrink: 0;
 }
 
 .hero-copy h2,
@@ -257,7 +243,6 @@ textarea {
   inset: 0;
   border: 0;
   background: rgba(4, 10, 18, 0.5);
-  backdrop-filter: blur(4px);
   z-index: 19;
 }
 
@@ -392,7 +377,7 @@ textarea {
   min-height: 680px;
   background:
     linear-gradient(90deg, rgba(7, 12, 18, 0.88) 0%, rgba(10, 18, 28, 0.55) 54%, rgba(18, 20, 26, 0.92) 100%),
-    url("https://images.unsplash.com/photo-1556740749-887f6717d7e4?auto=format&fit=crop&w=1600&q=80")
+    url("https://commons.wikimedia.org/wiki/Special:FilePath/City%20gate.png")
       center/cover no-repeat;
   box-shadow: 0 34px 90px rgba(5, 10, 18, 0.28);
 }
@@ -762,9 +747,45 @@ textarea {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
+.homepage-band {
+  background:
+    radial-gradient(circle at top right, rgba(255, 184, 77, 0.14), transparent 34%),
+    linear-gradient(180deg, rgba(214, 231, 249, 0.72), rgba(255, 255, 255, 0.94));
+}
+
+.homepage-band-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.homepage-band-card {
+  min-height: 100%;
+}
+
+.homepage-path-card {
+  display: grid;
+  gap: 14px;
+}
+
+.text-link {
+  color: var(--brand-deep);
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.text-link:hover {
+  text-decoration: underline;
+}
+
 .feature-card h3 {
   margin: 0 0 12px;
   font-size: 1.4rem;
+}
+
+.pricing-card {
+  display: grid;
+  gap: 14px;
 }
 
 .split-card {
@@ -898,6 +919,12 @@ button:hover {
   gap: 14px;
 }
 
+.result-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
 .result-highlight {
   background: linear-gradient(135deg, var(--brand-deep) 0%, var(--brand) 100%);
   color: white;
@@ -975,6 +1002,44 @@ button:hover {
   margin-top: 18px;
 }
 
+.journey-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.journey-card {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(228, 239, 248, 0.76));
+  border: 1px solid rgba(20, 33, 38, 0.08);
+  border-radius: 24px;
+  padding: 24px;
+}
+
+.journey-step {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  background: rgba(18, 91, 154, 0.12);
+  color: var(--brand-deep);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  margin-bottom: 16px;
+}
+
+.journey-card h3 {
+  margin: 0 0 10px;
+  font-size: 1.35rem;
+}
+
+.journey-card p {
+  margin: 0;
+  color: var(--muted);
+}
+
 .support-grid,
 .tax-highlight-stack {
   display: grid;
@@ -984,6 +1049,11 @@ button:hover {
 .support-card {
   padding: 18px 20px;
   color: #fff9ef;
+}
+
+.homepage-guardrail-card {
+  background:
+    linear-gradient(180deg, rgba(255, 245, 229, 0.62), rgba(255, 255, 255, 0.94));
 }
 
 .tax-highlight-card {
@@ -1053,6 +1123,8 @@ button:hover {
   .hero-card,
   .split-card,
   .auth-layout,
+  .homepage-band-grid,
+  .journey-grid,
   .calculator-grid,
   .site-footer {
     grid-template-columns: 1fr;

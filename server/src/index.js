@@ -10,7 +10,13 @@ await connectToDatabase().catch(error => {
 });
 
 const server = app.listen(config.PORT, () => {
-  console.log(`Tax Tools NG API listening on http://localhost:${config.PORT}`);
+  console.log(`Naija Tax Calculator API listening on port ${config.PORT}`);
+  if (!config.MONGODB_URI) {
+    console.warn("MongoDB is not configured. Auth, contact, admin, and monetization features will return 503.");
+  }
+  if (!config.isEmailConfigured) {
+    console.warn("SMTP is not configured. Verification emails will be skipped.");
+  }
 });
 
 function shutdown(signal) {

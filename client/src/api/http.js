@@ -1,4 +1,5 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
+const configuredBaseUrl = import.meta.env.VITE_API_BASE_URL || "";
+const API_BASE_URL = configuredBaseUrl.endsWith("/") ? configuredBaseUrl.slice(0, -1) : configuredBaseUrl;
 
 const defaultHeaders = {
   "Content-Type": "application/json"
@@ -7,25 +8,36 @@ const defaultHeaders = {
 async function request(path, options = {}) {
   const controller = new AbortController();
   const timeout = window.setTimeout(() => controller.abort(), 12000);
+  try {
+    const response = await fetch(`${API_BASE_URL}${path}`, {
+      headers: defaultHeaders,
+      ...options,
+      signal: controller.signal
+    });
 
-  const response = await fetch(`${API_BASE_URL}${path}`, {
-    headers: defaultHeaders,
-    ...options,
-    signal: controller.signal
-  });
+    const contentType = response.headers.get("content-type") || "";
+    const data = contentType.includes("application/json")
+      ? await response.json()
+      : { message: "Unexpected server response. Please confirm the API server is running." };
 
-  window.clearTimeout(timeout);
+    if (!response.ok) {
+      throw new Error(data.message || "Something went wrong.");
+    }
 
-  const contentType = response.headers.get("content-type") || "";
-  const data = contentType.includes("application/json")
-    ? await response.json()
-    : { message: "Unexpected server response." };
+    return data;
+  } catch (error) {
+    if (error instanceof DOMException && error.name === "AbortError") {
+      throw new Error("The server took too long to respond. Please try again.");
+    }
 
-  if (!response.ok) {
-    throw new Error(data.message || "Something went wrong.");
+    if (error instanceof TypeError) {
+      throw new Error("Unable to reach the server. Please confirm the API is running and reachable.");
+    }
+
+    throw error;
+  } finally {
+    window.clearTimeout(timeout);
   }
-
-  return data;
 }
 
 export function calculatePaye(payload) {
@@ -51,6 +63,17 @@ export function sendContact(payload) {
 
 export function getTaxAssumptions() {
   return request("/api/tax/assumptions");
+}
+
+export function getPricingPlans() {
+  return request("/api/monetization/plans");
+}
+
+export function createMonetizationRequest(payload) {
+  return request("/api/monetization/request", {
+    method: "POST",
+    body: JSON.stringify(payload)
+  });
 }
 
 export function registerAccount(payload) {
@@ -92,6 +115,15 @@ export function getCurrentUser(token) {
 
 export function getAdminDashboard(token) {
   return request("/api/admin/dashboard", {
+    headers: {
+      ...defaultHeaders,
+      Authorization: `Bearer ${token}`
+    }
+  });
+}
+
+export function getAdminMonetization(token) {
+  return request("/api/admin/monetization", {
     headers: {
       ...defaultHeaders,
       Authorization: `Bearer ${token}`

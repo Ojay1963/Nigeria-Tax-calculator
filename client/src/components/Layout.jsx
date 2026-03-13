@@ -11,6 +11,7 @@ function Header() {
   const navItems = [
     ["Home", "/"],
     ["Calculator", "/calculator"],
+    ["Pricing", "/pricing"],
     ["Contact", "/contact"]
   ];
   const resourceItems = [
@@ -57,13 +58,10 @@ function Header() {
       <div className="header-main">
         <div className="brand-block">
           <div className="brand-identity">
-            <div className="brand-logo" aria-hidden="true">
-              <span className="brand-logo-ring" />
-              <span className="brand-logo-core">T</span>
-            </div>
+            <img className="brand-logo" src="/naija-tax-calculator-logo.png" alt="Naija Tax Calculator logo" />
             <div className="brand-wordmark">
-              <span className="brand-kicker">Tax Tools NG</span>
-              <strong>TAX TOOLS</strong>
+              <span className="brand-kicker">Naija Tax Calculator</span>
+              <strong>NAIJA TAX CALCULATOR</strong>
             </div>
           </div>
         </div>
@@ -160,6 +158,7 @@ function Footer() {
       title: "Product",
       links: [
         ["Calculator", "/calculator"],
+        ["Pricing", "/pricing"],
         ["Tax Guide", "/guide"],
         ["FAQ", "/faq"]
       ]
@@ -193,8 +192,8 @@ function Footer() {
   return (
     <footer className="site-footer">
       <div className="footer-brand">
-        <strong>Tax Tools NG</strong>
-        <p>Built for quick estimates, planning conversations, and cleaner tax onboarding across Nigerian payroll and SME workflows.</p>
+        <strong>Naija Tax Calculator</strong>
+        <p>Built for Nigerian PAYE and company-tax estimates, with guide pages that point users back to FIRS and LIRS reference materials.</p>
       </div>
       <div className="footer-grid">
         {footerGroups.map(group => (
@@ -210,8 +209,8 @@ function Footer() {
       </div>
       <div className="footer-meta">
         <p>
-          Estimates only. For filing, confirm your case with FIRS, your state revenue service, or a licensed
-          tax adviser.
+          Estimates only. For filing, confirm your case with FIRS, the relevant state internal revenue service,
+          or a licensed tax adviser.
         </p>
       </div>
     </footer>

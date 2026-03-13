@@ -7,19 +7,19 @@ import { implementationNotes, sourceLinks } from "../lib/assumptions";
 const guideRows = [
   {
     title: "PAYE model",
-    text: "The calculator treats the employee result as annual tax first, then derives a monthly PAYE estimate."
+    text: "The calculator treats the employee result as annual tax first, then derives a monthly PAYE estimate for payroll discussion."
   },
   {
-    title: "Harmonised deductions",
-    text: "Rent, pension, NHF, NHIS, life insurance, and housing-loan interest are collected explicitly instead of being hidden assumptions."
+    title: "Visible relief items",
+    text: "Relief lines such as rent relief, pension, NHF, NHIS, life assurance, and owner-occupied mortgage interest are shown explicitly instead of being buried in the formula."
   },
   {
     title: "Company logic",
-    text: "Company tax uses turnover to decide whether the business is treated as small, then uses taxable profit for the tax base."
+    text: "Company tax uses turnover, fixed assets, and professional-services status for the small-company test, then applies company income tax, development levy, minimum tax, and the 15% effective-tax-rate rule where relevant."
   },
   {
     title: "Compliance warning",
-    text: "The site is for estimating and explaining, not for filing final returns without a professional review."
+    text: "The site is for estimating and explaining, not for filing final returns without checking the latest official guidance and your exact facts."
   }
 ];
 
@@ -41,12 +41,12 @@ export default function GuidePage() {
     <div className="page-stack">
       <PageHero
         eyebrow="Guide"
-        title="Use the tax guide as a standalone briefing page"
+        title="Use the tax guide as a standalone Nigerian tax briefing page"
         copy="This page is for teams that need context before calculation. It works as a quick briefing document, a pre-meeting reference, and a source list you can share directly."
         aside={
           <div className="hero-note-card">
             <strong>Best use cases</strong>
-            <p>Client onboarding, payroll team briefings, internal tax explainers, and prep before using the calculator.</p>
+            <p>Client onboarding, payroll briefings, internal tax explainers, and prep before using the calculator.</p>
           </div>
         }
       />
@@ -71,7 +71,7 @@ export default function GuidePage() {
           <SectionHeading
             eyebrow="Current assumptions"
             title="What the calculator assumes today"
-            copy="These should be reviewed whenever the tax authorities publish more detailed implementation guidance."
+            copy="These should be reviewed whenever FIRS, LIRS, or another relevant revenue authority publishes more detailed implementation guidance."
           />
           <ul className="source-list">
             {(apiAssumptions.length ? apiAssumptions : implementationNotes).map(note => (
@@ -84,7 +84,7 @@ export default function GuidePage() {
           <SectionHeading
             eyebrow="Official reading"
             title="Primary sources to keep nearby"
-            copy="These are the same references used to shape the revised calculator experience."
+            copy="These are the main public references used to replace placeholder copy with real Nigerian tax information."
           />
           <ul className="source-list">
             {sourceLinks.map(source => (
@@ -111,7 +111,7 @@ export default function GuidePage() {
           </article>
           <article className="feature-card">
             <h3>Share official links</h3>
-            <p>Use the source section when finance teams want to verify the basis before using the estimate in a meeting.</p>
+            <p>Use the source section when finance teams want to verify the basis before using the estimate in a meeting or memo.</p>
           </article>
           <article className="feature-card">
             <h3>Then move to scenarios</h3>

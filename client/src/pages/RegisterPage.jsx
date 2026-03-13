@@ -33,7 +33,7 @@ export default function RegisterPage() {
         <div>
           <SectionHeading
             eyebrow="Create account"
-            title="Register for a verified Tax Tools NG account"
+            title="Register for a verified Naija Tax Calculator account"
             copy="Each account is email-verified so contact records and future saved tools are tied to a real user."
           />
         </div>

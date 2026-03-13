@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "nodemon src/index.js",
+    "dev": "node src/index.js",
     "build": "node -e \"console.log('Server build step not required')\"",
     "start": "node src/index.js",
     "test": "node test/run-tests.js"

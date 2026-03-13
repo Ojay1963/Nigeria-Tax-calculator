@@ -1,9 +1,16 @@
 {
-  "name": "Tax Tools NG",
-  "short_name": "Tax Tools NG",
+  "name": "Naija Tax Calculator",
+  "short_name": "Naija Tax",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#edf4fb",
   "theme_color": "#125b9a",
-  "description": "Modern Nigerian tax calculator for PAYE and company tax estimates."
+  "description": "Modern Nigerian tax calculator for PAYE and company tax estimates.",
+  "icons": [
+    {
+      "src": "/naija-tax-calculator-logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
 }

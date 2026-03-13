@@ -21,10 +21,15 @@ const payeSchema = z.object({
 
 const companySchema = z.object({
   annualTurnover: currencyField,
+  assessableProfit: z.coerce.number(),
   taxableProfit: z.coerce.number(),
   frankedInvestmentIncome: currencyField.default(0),
   fixedAssets: currencyField.default(0),
-  isLargeQualifyingEntity: z.coerce.boolean().default(false),
+  netProfitBeforeTax: z.coerce.number().default(0),
+  depreciationExpense: currencyField.default(0),
+  personnelCost: currencyField.default(0),
+  isProfessionalServicesBusiness: z.coerce.boolean().default(false),
+  isMNEConstituentEntity: z.coerce.boolean().default(false),
   coveredTaxesPaid: currencyField.default(0)
 });
 
