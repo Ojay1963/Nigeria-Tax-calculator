@@ -100,3 +100,35 @@ Build:
 
 Run:
 `docker run -p 4000:4000 --env-file .env tax-tools-ng`
+
+## Deploy backend on Render
+
+You can deploy the backend as a Render web service from this repository.
+
+Recommended Render settings:
+
+- Root directory: repository root
+- Environment: `Node`
+- Build command: `npm ci && npm run build --workspace server`
+- Start command: `npm run start --workspace server`
+- Health check path: `/api/health`
+
+This repo also includes [render.yaml](/c:/Users/user/Desktop/SOFTWARE/TX%20CALCULATOR/render.yaml) if you prefer a Render Blueprint deploy.
+
+Minimum environment variables to set in Render:
+
+- `NODE_ENV=production`
+- `ALLOWED_ORIGINS=https://your-frontend-domain.com`
+- `MONGODB_URI=...`
+- `JWT_SECRET=...`
+- `APP_BASE_URL=https://your-frontend-domain.com`
+- `SMTP_USER=...`
+- `SMTP_PASS=...`
+- `SMTP_FROM_EMAIL=...`
+- `PAYSTACK_SECRET_KEY=...`
+- `PAYSTACK_PUBLIC_KEY=...`
+
+Important deployment note:
+
+- `APP_BASE_URL` should be your frontend URL, not the Render backend URL, because email verification links and the Paystack payment callback currently return users to the frontend route `/payment/verify`.
+- If you deploy only the backend and not the frontend yet, tax calculation APIs will work, but the full auth and Paystack user flow will not be complete until the frontend is hosted too.
