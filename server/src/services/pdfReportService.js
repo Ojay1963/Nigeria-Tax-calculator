@@ -5,11 +5,10 @@ import PDFDocument from "pdfkit";
 import { config } from "../config.js";
 
 function formatCurrency(value) {
-  return new Intl.NumberFormat("en-NG", {
-    style: "currency",
-    currency: "NGN",
+  return `₦${Number(value || 0).toLocaleString("en-NG", {
+    minimumFractionDigits: 0,
     maximumFractionDigits: 2
-  }).format(Number(value || 0));
+  })}`;
 }
 
 function formatDateTime(value) {
@@ -73,7 +72,7 @@ function writeOrderSummary(doc, record) {
   addKeyValue(doc, "Email:", record.email);
   addKeyValue(doc, "Company:", record.companyName || "-");
   addKeyValue(doc, "Reference:", record.paymentReference || "-");
-  addKeyValue(doc, "Amount paid:", `${record.currency || "NGN"} ${Number(record.amount || 0).toLocaleString()}`);
+  addKeyValue(doc, "Amount paid:", formatCurrency(record.amount));
   addKeyValue(doc, "Paid at:", formatDateTime(record.paidAt));
   addKeyValue(doc, "Report scope:", record.reportScope || "Reviewed PDF summary");
   addKeyValue(doc, "Requested use case:", record.taxUseCase || "-");
