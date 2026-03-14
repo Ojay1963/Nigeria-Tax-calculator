@@ -5,7 +5,7 @@ import PDFDocument from "pdfkit";
 import { config } from "../config.js";
 
 function formatCurrency(value) {
-  return `₦${Number(value || 0).toLocaleString("en-NG", {
+  return `NGN ${Number(value || 0).toLocaleString("en-NG", {
     minimumFractionDigits: 0,
     maximumFractionDigits: 2
   })}`;
