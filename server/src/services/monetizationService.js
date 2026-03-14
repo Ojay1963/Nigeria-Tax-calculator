@@ -2,6 +2,7 @@ import crypto from "crypto";
 import { MonetizationRequest } from "../models/MonetizationRequest.js";
 import { config } from "../config.js";
 import { isDatabaseReady } from "./databaseService.js";
+import { generatePaidPdfReport, hasGeneratedReport } from "./pdfReportService.js";
 import { initializePaystackTransaction, isPaystackReady, verifyPaystackTransaction } from "./paystackService.js";
 
 const MONETIZATION_CATALOG = {
@@ -86,6 +87,24 @@ export function getMonetizationPlans() {
       features: ["Saved scenarios", "Priority support", "Team and workflow setup"]
     }
   ];
+}
+
+export async function ensurePaidReportGenerated(record) {
+  if (!record || record.type !== "pdf_report" || record.paymentStatus !== "success") {
+    return record;
+  }
+
+  if (await hasGeneratedReport(record)) {
+    return record;
+  }
+
+  const generated = await generatePaidPdfReport(record);
+  record.generatedFileName = generated.fileName;
+  record.generatedFilePath = generated.filePath;
+  record.generatedAt = new Date();
+  await record.save();
+
+  return record;
 }
 
 export async function createMonetizationRequest(payload, requestedByUserId = null) {
@@ -192,6 +211,7 @@ export async function verifyMonetizationPayment(reference) {
   }
 
   await record.save();
+  await ensurePaidReportGenerated(record);
 
   return {
     record,
@@ -223,6 +243,7 @@ export async function markMonetizationFromWebhook(eventData) {
   }
 
   await record.save();
+  await ensurePaidReportGenerated(record);
   return record;
 }
 

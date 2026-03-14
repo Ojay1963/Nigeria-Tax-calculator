@@ -53,6 +53,7 @@ Copy `.env.example` to `.env` and adjust values if needed.
 - `SMTP_FROM_EMAIL` / `SMTP_FROM_NAME`: sender identity for verification emails
 - `PAYSTACK_SECRET_KEY`: secret key used to initialize and verify transactions
 - `PAYSTACK_PUBLIC_KEY`: reserved for future frontend Paystack features
+- `REPORT_STORAGE_DIR`: optional absolute path for storing generated paid PDF reports
 - `VITE_API_BASE_URL`: optional absolute API base for deployed frontend builds
 - `LOG_LEVEL`: reserved for future structured logging policy
 
@@ -86,6 +87,7 @@ Use a bearer token from an authenticated admin account.
 - `POST /api/monetization/request` for free support leads
 - `POST /api/monetization/checkout` to initialize Paystack payments
 - `GET /api/monetization/verify?reference=...` to confirm a completed Paystack payment
+- `GET /api/monetization/download/:reference` to download a generated paid PDF report
 - `POST /api/monetization/webhook` for Paystack webhooks
 
 ## Tests

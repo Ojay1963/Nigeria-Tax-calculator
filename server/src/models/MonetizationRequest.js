@@ -114,6 +114,20 @@ const monetizationRequestSchema = new mongoose.Schema(
       type: Date,
       default: null
     },
+    generatedFileName: {
+      type: String,
+      trim: true,
+      default: ""
+    },
+    generatedFilePath: {
+      type: String,
+      trim: true,
+      default: ""
+    },
+    generatedAt: {
+      type: Date,
+      default: null
+    },
     context: {
       type: mongoose.Schema.Types.Mixed,
       default: {}

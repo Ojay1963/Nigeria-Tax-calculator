@@ -1,4 +1,5 @@
 import "dotenv/config";
+import path from "path";
 import { z } from "zod";
 
 const envSchema = z.object({
@@ -18,7 +19,8 @@ const envSchema = z.object({
   SMTP_FROM_EMAIL: z.string().email().default("noreply@example.com"),
   SMTP_FROM_NAME: z.string().default("Naija Tax Calculator"),
   PAYSTACK_SECRET_KEY: z.string().default(""),
-  PAYSTACK_PUBLIC_KEY: z.string().default("")
+  PAYSTACK_PUBLIC_KEY: z.string().default(""),
+  REPORT_STORAGE_DIR: z.string().default("")
 });
 
 const parsed = envSchema.safeParse(process.env);
@@ -71,6 +73,7 @@ export const config = {
   isTest: parsed.data.NODE_ENV === "test",
   isEmailConfigured: Boolean(parsed.data.SMTP_USER && parsed.data.SMTP_PASS),
   isPaystackConfigured: Boolean(parsed.data.PAYSTACK_SECRET_KEY),
+  reportStorageDir: parsed.data.REPORT_STORAGE_DIR || path.resolve(process.cwd(), "server/storage/reports"),
   allowedOrigins: parsed.data.ALLOWED_ORIGINS
     .split(",")
     .map(origin => origin.trim())

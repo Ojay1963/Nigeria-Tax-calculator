@@ -1,12 +1,16 @@
 import express from "express";
+import fs from "fs";
 import { z } from "zod";
 import {
   createMonetizationRequest,
+  ensurePaidReportGenerated,
   getMonetizationPlans,
   initializeMonetizationCheckout,
   markMonetizationFromWebhook,
   verifyMonetizationPayment
 } from "../services/monetizationService.js";
+import { MonetizationRequest } from "../models/MonetizationRequest.js";
+import { isDatabaseReady } from "../services/databaseService.js";
 import { isValidPaystackWebhook } from "../services/paystackService.js";
 
 const router = express.Router();
@@ -44,6 +48,10 @@ const subscriptionSchema = baseSchema.extend({
 });
 
 const paymentSchema = z.discriminatedUnion("type", [consultationSchema, pdfReportSchema, subscriptionSchema]);
+
+function buildDownloadUrl(req, reference) {
+  return `${req.protocol}://${req.get("host")}/api/monetization/download/${encodeURIComponent(reference)}`;
+}
 
 router.get("/plans", (_req, res) => {
   res.json({
@@ -130,7 +138,11 @@ router.get("/verify", async (req, res, next) => {
         paymentStatus: record.paymentStatus,
         amount: record.amount,
         currency: record.currency,
-        reference: record.paymentReference
+        reference: record.paymentReference,
+        downloadUrl:
+          record.type === "pdf_report" && record.generatedFilePath
+            ? buildDownloadUrl(req, record.paymentReference)
+            : ""
       }
     });
   } catch (error) {
@@ -155,6 +167,61 @@ router.post("/webhook", async (req, res, next) => {
     }
 
     res.status(200).json({ received: true });
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get("/download/:reference", async (req, res, next) => {
+  const reference = typeof req.params.reference === "string" ? req.params.reference.trim() : "";
+
+  if (!reference) {
+    res.status(400).json({
+      message: "Payment reference is required."
+    });
+    return;
+  }
+
+  try {
+    if (!isDatabaseReady()) {
+      res.status(503).json({
+        message: "Database is not connected."
+      });
+      return;
+    }
+
+    const record = await MonetizationRequest.findOne({ paymentReference: reference });
+    if (!record) {
+      res.status(404).json({
+        message: "Paid report not found."
+      });
+      return;
+    }
+
+    if (record.type !== "pdf_report") {
+      res.status(400).json({
+        message: "This payment does not have a downloadable PDF."
+      });
+      return;
+    }
+
+    if (record.paymentStatus !== "success") {
+      res.status(402).json({
+        message: "Payment has not been confirmed for this report yet."
+      });
+      return;
+    }
+
+    await ensurePaidReportGenerated(record);
+
+    if (!record.generatedFilePath || !fs.existsSync(record.generatedFilePath)) {
+      res.status(404).json({
+        message: "The PDF report is not available yet."
+      });
+      return;
+    }
+
+    res.download(record.generatedFilePath, record.generatedFileName || `${reference}.pdf`);
   } catch (error) {
     next(error);
   }

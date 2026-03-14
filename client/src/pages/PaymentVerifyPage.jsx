@@ -73,6 +73,11 @@ export default function PaymentVerifyPage() {
               ? "Your request has been recorded as paid, and the team can continue with delivery or follow-up."
               : "If you were charged but this page still shows an error, check the dashboard later or contact support with your reference."}
           </div>
+          {status === "success" && payment?.type === "pdf_report" && payment?.downloadUrl ? (
+            <a className="button-primary" href={payment.downloadUrl} target="_blank" rel="noreferrer">
+              Download paid PDF
+            </a>
+          ) : null}
           <Link className="button-primary" to="/dashboard">
             Go to dashboard
           </Link>
