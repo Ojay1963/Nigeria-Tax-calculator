@@ -43,11 +43,13 @@ function DashboardRow({ title, meta, badge, children, actions }) {
 }
 
 export default function DashboardPage() {
-  const { user, token } = useAuth();
+  const { resendVerification, user, token } = useAuth();
   const [accountData, setAccountData] = useState(null);
   const [adminStats, setAdminStats] = useState(null);
   const [adminMonetization, setAdminMonetization] = useState([]);
   const [status, setStatus] = useState("");
+  const [verificationStatus, setVerificationStatus] = useState({ type: "", message: "" });
+  const [resendingVerification, setResendingVerification] = useState(false);
 
   useEffect(() => {
     if (!token) {
@@ -87,6 +89,24 @@ export default function DashboardPage() {
   const messages = accountData?.messages || [];
   const billingItems = monetization.filter(item => item.paymentStatus === "success");
 
+  async function handleResendVerification() {
+    if (!user?.email) {
+      return;
+    }
+
+    setResendingVerification(true);
+    setVerificationStatus({ type: "", message: "" });
+
+    try {
+      const response = await resendVerification({ email: user.email });
+      setVerificationStatus({ type: "success", message: response.message });
+    } catch (error) {
+      setVerificationStatus({ type: "error", message: error.message });
+    } finally {
+      setResendingVerification(false);
+    }
+  }
+
   return (
     <div className="page-stack">
       <PageHero
@@ -100,6 +120,23 @@ export default function DashboardPage() {
           </div>
         }
       />
+
+      {!user?.isVerified ? (
+        <section className="content-card verification-banner">
+          <div>
+            <strong>Finish verifying your account</strong>
+            <p>Some account features work better once your email address is verified.</p>
+            {verificationStatus.message ? (
+              <p className={verificationStatus.type === "error" ? "error-text" : "success-text"}>
+                {verificationStatus.message}
+              </p>
+            ) : null}
+          </div>
+          <button className="button-primary" type="button" onClick={handleResendVerification} disabled={resendingVerification}>
+            {resendingVerification ? "Sending..." : "Resend verification email"}
+          </button>
+        </section>
+      ) : null}
 
       <section className="content-card">
         <SectionHeading eyebrow="Overview" title="Summary" copy="Your latest account activity." />

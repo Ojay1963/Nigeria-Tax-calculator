@@ -16,8 +16,7 @@ function Header() {
   ];
   const resourceItems = [
     ["Tax Guide", "/guide"],
-    ["FAQ", "/faq"],
-    ["Verify Email", "/verify-email"]
+    ["FAQ", "/faq"]
   ];
   const resourcesActive = resourceItems.some(([, path]) => location.pathname.startsWith(path));
 
@@ -141,9 +140,6 @@ function Header() {
               <NavLink to="/login" className="nav-link action-link" onClick={closeMenu}>
                 Login
               </NavLink>
-              <NavLink to="/register" className="nav-link action-link" onClick={closeMenu}>
-                Sign Up
-              </NavLink>
             </>
           )}
         </div>
@@ -176,8 +172,7 @@ function Footer() {
       links: [
         ["Dashboard", "/dashboard"],
         ["Login", "/login"],
-        ["Sign Up", "/register"],
-        ["Verify Email", "/verify-email"]
+        ["Sign Up", "/register"]
       ]
     },
     {

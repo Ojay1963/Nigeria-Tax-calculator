@@ -1,14 +1,20 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import SectionHeading from "../components/SectionHeading";
 import { useAuth } from "../context/AuthContext";
 
 export default function LoginPage() {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { isAuthenticated, login } = useAuth();
   const [form, setForm] = useState({ email: "", password: "" });
   const [status, setStatus] = useState({ type: "", message: "" });
   const [submitting, setSubmitting] = useState(false);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/dashboard", { replace: true });
+    }
+  }, [isAuthenticated, navigate]);
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -53,12 +59,26 @@ export default function LoginPage() {
               onChange={event => setForm({ ...form, password: event.target.value })}
             />
           </label>
+          <div className="auth-helper-row">
+            <Link to="/forgot-password" className="text-link">
+              Forgot password?
+            </Link>
+            <Link to="/verify-email" className="text-link">
+              Need a new verification email?
+            </Link>
+          </div>
           <button className="button-primary" type="submit" disabled={submitting}>
             {submitting ? "Logging in..." : "Log in"}
           </button>
           {status.message ? (
             <p className={status.type === "error" ? "error-text" : "success-text"}>{status.message}</p>
           ) : null}
+          <p className="auth-switch-text">
+            Don&apos;t have an account?{" "}
+            <Link to="/register" className="text-link">
+              Create one
+            </Link>
+          </p>
         </form>
       </section>
     </div>

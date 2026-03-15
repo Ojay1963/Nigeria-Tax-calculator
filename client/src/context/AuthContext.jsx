@@ -1,5 +1,13 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { getCurrentUser, loginAccount, registerAccount, resendVerificationEmail, verifyEmailToken } from "../api/http";
+import {
+  getCurrentUser,
+  loginAccount,
+  registerAccount,
+  requestPasswordReset,
+  resendVerificationEmail,
+  resetPasswordAccount,
+  verifyEmailToken
+} from "../api/http";
 
 const AuthContext = createContext(null);
 const STORAGE_KEY = "tax-tools-ng-auth";
@@ -72,6 +80,14 @@ export function AuthProvider({ children }) {
     return resendVerificationEmail(values);
   }
 
+  async function forgotPassword(values) {
+    return requestPasswordReset(values);
+  }
+
+  async function resetPassword(values) {
+    return resetPasswordAccount(values);
+  }
+
   function logout() {
     window.localStorage.removeItem(STORAGE_KEY);
     setAuth({ token: "", user: null });
@@ -88,6 +104,8 @@ export function AuthProvider({ children }) {
         register,
         verifyEmail,
         resendVerification,
+        forgotPassword,
+        resetPassword,
         logout
       }}
     >

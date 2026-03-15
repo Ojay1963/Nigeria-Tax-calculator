@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { config } from "../config.js";
 import { User } from "../models/User.js";
-import { sendVerificationEmail } from "./emailService.js";
+import { sendPasswordResetEmail, sendVerificationEmail } from "./emailService.js";
 
 function hashToken(token) {
   return crypto.createHash("sha256").update(token).digest("hex");
@@ -15,6 +15,15 @@ function createVerificationToken() {
     rawToken,
     tokenHash: hashToken(rawToken),
     expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000)
+  };
+}
+
+function createPasswordResetToken() {
+  const rawToken = crypto.randomBytes(32).toString("hex");
+  return {
+    rawToken,
+    tokenHash: hashToken(rawToken),
+    expiresAt: new Date(Date.now() + 60 * 60 * 1000)
   };
 }
 
@@ -101,6 +110,43 @@ export async function resendVerification(email) {
   return user;
 }
 
+export async function requestPasswordReset(email) {
+  const user = await User.findOne({ email: email.toLowerCase() });
+  if (!user) {
+    return;
+  }
+
+  const reset = createPasswordResetToken();
+  user.passwordResetTokenHash = reset.tokenHash;
+  user.passwordResetTokenExpiresAt = reset.expiresAt;
+  await user.save();
+
+  await sendPasswordResetEmail({
+    email: user.email,
+    name: user.name,
+    token: reset.rawToken
+  });
+}
+
+export async function resetPassword({ token, password }) {
+  const tokenHash = hashToken(token);
+  const user = await User.findOne({
+    passwordResetTokenHash: tokenHash,
+    passwordResetTokenExpiresAt: { $gt: new Date() }
+  });
+
+  if (!user) {
+    throw new Error("Password reset link is invalid or expired.");
+  }
+
+  user.passwordHash = await bcrypt.hash(password, 12);
+  user.passwordResetTokenHash = undefined;
+  user.passwordResetTokenExpiresAt = undefined;
+  await user.save();
+
+  return user;
+}
+
 export async function loginUser({ email, password }) {
   const user = await User.findOne({ email: email.toLowerCase() });
   if (!user) {
@@ -126,5 +172,7 @@ export async function loginUser({ email, password }) {
 }
 
 export async function getUserById(userId) {
-  return User.findById(userId).select("-passwordHash -verificationTokenHash");
+  return User.findById(userId).select(
+    "-passwordHash -verificationTokenHash -passwordResetTokenHash"
+  );
 }

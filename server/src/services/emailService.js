@@ -54,3 +54,31 @@ export async function sendVerificationEmail({ email, name, token }) {
     `
   });
 }
+
+export async function sendPasswordResetEmail({ email, name, token }) {
+  if (!config.isEmailConfigured) {
+    if (!hasLoggedSkip) {
+      console.warn("SMTP credentials are not configured. Password reset email was skipped.");
+      hasLoggedSkip = true;
+    }
+    return;
+  }
+
+  const resetUrl = `${config.APP_BASE_URL}/reset-password?token=${encodeURIComponent(token)}`;
+
+  await getTransporter().sendMail({
+    from: `"${config.SMTP_FROM_NAME}" <${config.SMTP_FROM_EMAIL}>`,
+    to: email,
+    subject: "Reset your Naija Tax Calculator password",
+    text: `Hello ${name}, reset your password by opening this link: ${resetUrl}`,
+    html: `
+      <div style="font-family: Arial, sans-serif; line-height: 1.6;">
+        <h2>Reset your Naija Tax Calculator password</h2>
+        <p>Hello ${name},</p>
+        <p>Click the link below to set a new password:</p>
+        <p><a href="${resetUrl}">${resetUrl}</a></p>
+        <p>This link expires in 1 hour.</p>
+      </div>
+    `
+  });
+}

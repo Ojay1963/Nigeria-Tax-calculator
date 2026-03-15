@@ -129,6 +129,20 @@ export function loginAccount(payload) {
   });
 }
 
+export function requestPasswordReset(payload) {
+  return request("/api/auth/forgot-password", {
+    method: "POST",
+    body: JSON.stringify(payload)
+  });
+}
+
+export function resetPasswordAccount(payload) {
+  return request("/api/auth/reset-password", {
+    method: "POST",
+    body: JSON.stringify(payload)
+  });
+}
+
 export function getCurrentUser(token) {
   return request("/api/auth/me", {
     headers: {

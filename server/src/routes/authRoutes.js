@@ -5,7 +5,9 @@ import { requireDatabase } from "../middleware/databaseMiddleware.js";
 import {
   getUserById,
   loginUser,
+  requestPasswordReset,
   registerUser,
+  resetPassword,
   resendVerification,
   verifyUserEmail
 } from "../services/authService.js";
@@ -29,6 +31,15 @@ const verificationSchema = z.object({
 
 const resendSchema = z.object({
   email: z.string().trim().email()
+});
+
+const passwordResetRequestSchema = z.object({
+  email: z.string().trim().email()
+});
+
+const passwordResetSchema = z.object({
+  token: z.string().min(20),
+  password: z.string().min(8)
 });
 
 router.use(requireDatabase);
@@ -123,6 +134,44 @@ router.post("/login", async (req, res, next) => {
           isVerified: user.isVerified
         }
       }
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.post("/forgot-password", async (req, res, next) => {
+  const parsed = passwordResetRequestSchema.safeParse(req.body);
+  if (!parsed.success) {
+    res.status(400).json({
+      message: "A valid email address is required."
+    });
+    return;
+  }
+
+  try {
+    await requestPasswordReset(parsed.data.email);
+    res.json({
+      message: "If an account exists for that email, a password reset link has been sent."
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.post("/reset-password", async (req, res, next) => {
+  const parsed = passwordResetSchema.safeParse(req.body);
+  if (!parsed.success) {
+    res.status(400).json({
+      message: "Please provide a valid reset token and a password with at least 8 characters."
+    });
+    return;
+  }
+
+  try {
+    await resetPassword(parsed.data);
+    res.json({
+      message: "Password reset successful. You can now log in with your new password."
     });
   } catch (error) {
     next(error);

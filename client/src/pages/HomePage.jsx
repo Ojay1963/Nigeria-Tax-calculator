@@ -124,14 +124,14 @@ export default function HomePage() {
             </div>
 
             <div className="cta-row">
-              <Link className="button-accent" to="/calculator">
+              <Link className="button-accent" to="/login">
+                Login
+              </Link>
+              <Link className="button-outline-light" to="/calculator">
                 Start calculating
               </Link>
-              <Link className="button-outline-light" to="/guide">
+              <Link className="button-ghost-dark" to="/guide">
                 Explore tax guide
-              </Link>
-              <Link className="button-ghost-dark" to="/register">
-                Create account
               </Link>
             </div>
           </div>

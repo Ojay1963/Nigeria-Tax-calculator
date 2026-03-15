@@ -3,10 +3,10 @@ import { Link, useNavigate } from "react-router-dom";
 import SectionHeading from "../components/SectionHeading";
 import { useAuth } from "../context/AuthContext";
 
-export default function RegisterPage() {
+export default function ForgotPasswordPage() {
   const navigate = useNavigate();
-  const { isAuthenticated, register } = useAuth();
-  const [form, setForm] = useState({ name: "", email: "", password: "" });
+  const { forgotPassword, isAuthenticated } = useAuth();
+  const [email, setEmail] = useState("");
   const [status, setStatus] = useState({ type: "", message: "" });
   const [submitting, setSubmitting] = useState(false);
 
@@ -22,12 +22,8 @@ export default function RegisterPage() {
     setStatus({ type: "", message: "" });
 
     try {
-      await register(form);
-      setStatus({
-        type: "success",
-        message: "Account created. Check your inbox for the Brevo verification email."
-      });
-      setForm({ name: "", email: "", password: "" });
+      const response = await forgotPassword({ email });
+      setStatus({ type: "success", message: response.message });
     } catch (error) {
       setStatus({ type: "error", message: error.message });
     } finally {
@@ -40,49 +36,27 @@ export default function RegisterPage() {
       <section className="content-card auth-layout">
         <div>
           <SectionHeading
-            eyebrow="Create account"
-            title="Register for a verified Naija Tax Calculator account"
-            copy="Each account is email-verified so contact records and future saved tools are tied to a real user."
+            eyebrow="Password reset"
+            title="Request a reset link"
+            copy="Enter the email address tied to your account and we will send a password reset link if it exists."
           />
         </div>
         <form className="form-grid" onSubmit={handleSubmit}>
           <label className="field">
-            <span>Full name</span>
-            <input value={form.name} onChange={event => setForm({ ...form, name: event.target.value })} />
-          </label>
-          <label className="field">
             <span>Email</span>
-            <input
-              type="email"
-              value={form.email}
-              onChange={event => setForm({ ...form, email: event.target.value })}
-            />
-          </label>
-          <label className="field">
-            <span>Password</span>
-            <input
-              type="password"
-              value={form.password}
-              onChange={event => setForm({ ...form, password: event.target.value })}
-            />
+            <input type="email" value={email} onChange={event => setEmail(event.target.value)} />
           </label>
           <button className="button-primary" type="submit" disabled={submitting}>
-            {submitting ? "Creating..." : "Create account"}
+            {submitting ? "Sending..." : "Send reset link"}
           </button>
           {status.message ? (
             <p className={status.type === "error" ? "error-text" : "success-text"}>{status.message}</p>
           ) : null}
           <div className="auth-helper-row auth-helper-row-stack">
             <p className="auth-switch-text">
-              Already have an account?{" "}
+              Remembered your password?{" "}
               <Link to="/login" className="text-link">
                 Log in
-              </Link>
-            </p>
-            <p className="auth-switch-text">
-              Need another verification email?{" "}
-              <Link to="/verify-email" className="text-link">
-                Resend verification
               </Link>
             </p>
           </div>
