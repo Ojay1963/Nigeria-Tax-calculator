@@ -1052,6 +1052,8 @@ button:hover {
 .improvement-list {
   display: grid;
   gap: 14px;
+  justify-items: start;
+  align-content: start;
 }
 
 .improvement-item {
