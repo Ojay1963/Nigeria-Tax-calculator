@@ -21,6 +21,27 @@ function prettyType(value) {
   return String(value || "").replaceAll("_", " ");
 }
 
+function DashboardRow({ title, meta, badge, children, actions }) {
+  return (
+    <details className="dashboard-row">
+      <summary className="dashboard-row-summary">
+        <div className="dashboard-row-main">
+          <strong>{title}</strong>
+          <span>{meta}</span>
+        </div>
+        <div className="dashboard-row-side">
+          {badge ? <span className={`dashboard-badge ${badge.kind || "neutral"}`}>{badge.label}</span> : null}
+          <span className="dashboard-row-toggle">View</span>
+        </div>
+      </summary>
+      <div className="dashboard-row-body">
+        <div className="dashboard-row-content">{children}</div>
+        {actions ? <div className="dashboard-actions">{actions}</div> : null}
+      </div>
+    </details>
+  );
+}
+
 export default function DashboardPage() {
   const { user, token } = useAuth();
   const [accountData, setAccountData] = useState(null);
@@ -61,36 +82,35 @@ export default function DashboardPage() {
   const paidReports = accountData?.paidReports || [];
   const calculations = accountData?.calculations || [];
   const monetization = accountData?.monetization || [];
+  const consultations = accountData?.consultations || [];
+  const supportRequests = accountData?.supportRequests || [];
   const messages = accountData?.messages || [];
+  const billingItems = monetization.filter(item => item.paymentStatus === "success");
 
   return (
     <div className="page-stack">
       <PageHero
         eyebrow="Dashboard"
         title="Your dashboard"
-        copy="Track recent calculations, paid PDF reports, consultations, and support requests from one place."
+        copy="Track reports, payments, support, and calculations from one place."
         aside={
           <div className="hero-note-card">
-            <strong>Signed in as</strong>
+            <strong>{user?.name || "Account"}</strong>
             <p>{user?.email}</p>
           </div>
         }
       />
 
       <section className="content-card">
-        <SectionHeading
-          eyebrow="Overview"
-          title="Account summary"
-          copy="Your recent activity and paid items."
-        />
+        <SectionHeading eyebrow="Overview" title="Summary" copy="Your latest account activity." />
         <div className="feature-grid dashboard-stat-grid">
           <article className="feature-card">
             <h3>{stats.paidReports ?? 0}</h3>
-            <p>Paid PDF reports</p>
+            <p>Paid reports</p>
           </article>
           <article className="feature-card">
-            <h3>{stats.consultations ?? 0}</h3>
-            <p>Consultation requests</p>
+            <h3>{billingItems.length}</h3>
+            <p>Successful payments</p>
           </article>
           <article className="feature-card">
             <h3>{stats.calculations ?? 0}</h3>
@@ -98,58 +118,48 @@ export default function DashboardPage() {
           </article>
           <article className="feature-card">
             <h3>{stats.supportRequests ?? 0}</h3>
-            <p>Support requests</p>
+            <p>Support tickets</p>
           </article>
         </div>
       </section>
 
       <section className="content-card split-card">
         <div>
-          <SectionHeading
-            eyebrow="Paid reports"
-            title="Your PDF orders"
-            copy="Download paid reports and review payment status."
-          />
+          <SectionHeading eyebrow="Paid reports" title="PDF history" copy="Compact rows. Click any row for full details." />
           {paidReports.length ? (
-            <div className="support-grid">
+            <div className="dashboard-list">
               {paidReports.map(item => (
-                <article className="feature-card dashboard-record-card" key={item._id}>
-                  <div className="dashboard-record-head">
-                    <h3>{item.reportScope || "Paid PDF report"}</h3>
-                    <span className="dashboard-badge success">{item.paymentStatus}</span>
-                  </div>
-                  <p>Amount: {formatCurrency(item.amount || 0)}</p>
-                  <p>Paid: {formatDate(item.paidAt)}</p>
-                  <p>Reference: {item.paymentReference}</p>
-                  <div className="dashboard-actions">
-                    {item.downloadUrl ? (
+                <DashboardRow
+                  key={item._id}
+                  title={item.reportScope || "Paid PDF report"}
+                  meta={`${formatCurrency(item.amount || 0)} • ${formatDate(item.paidAt)}`}
+                  badge={{ label: "paid", kind: "success" }}
+                  actions={
+                    item.downloadUrl ? (
                       <a className="button-primary" href={item.downloadUrl} target="_blank" rel="noreferrer">
                         Download PDF
                       </a>
                     ) : (
                       <span className="note-text">PDF is being prepared.</span>
-                    )}
-                  </div>
-                </article>
+                    )
+                  }
+                >
+                  <p>Reference: {item.paymentReference}</p>
+                  <p>Type: {item.calculationType || "PAYE"}</p>
+                  <p>Use case: {item.taxUseCase || "-"}</p>
+                </DashboardRow>
               ))}
             </div>
           ) : (
             <div className="feature-card">
               <h3>No paid PDF yet</h3>
-              <p>Your paid report history will appear here after checkout.</p>
-              <Link className="button-secondary" to="/reports">
-                Order a PDF report
-              </Link>
+              <p>Your paid reports will appear here after checkout.</p>
             </div>
           )}
         </div>
 
         <div>
-          <SectionHeading
-            eyebrow="Profile"
-            title="Account details"
-            copy="Basic account information and verification status."
-          />
+          <SectionHeading eyebrow="Profile" title="Profile and settings" copy="Your account details." />
           <div className="support-grid">
             <div className="feature-card">
               <h3>Name</h3>
@@ -164,8 +174,8 @@ export default function DashboardPage() {
               <p>{user?.role}</p>
             </div>
             <div className="feature-card">
-              <h3>Verification</h3>
-              <p>{user?.isVerified ? "Verified" : "Pending"}</p>
+              <h3>Status</h3>
+              <p>{user?.isVerified ? "Verified" : "Pending verification"}</p>
             </div>
           </div>
         </div>
@@ -173,64 +183,54 @@ export default function DashboardPage() {
 
       <section className="content-card split-card">
         <div>
-          <SectionHeading
-            eyebrow="Recent activity"
-            title="Requests and payments"
-            copy="Recent consultations, support requests, subscriptions, and paid items."
-          />
-          {monetization.length ? (
-            <div className="support-grid">
-              {monetization.slice(0, 6).map(item => (
-                <article className="feature-card dashboard-record-card" key={item._id}>
-                  <div className="dashboard-record-head">
-                    <h3>{prettyType(item.type)}</h3>
-                    <span className={`dashboard-badge ${item.paymentStatus === "success" ? "success" : "neutral"}`}>
-                      {item.paymentStatus || item.status}
-                    </span>
-                  </div>
+          <SectionHeading eyebrow="Billing" title="Payment history" copy="Successful paid items from your account." />
+          {billingItems.length ? (
+            <div className="dashboard-list">
+              {billingItems.map(item => (
+                <DashboardRow
+                  key={item._id}
+                  title={prettyType(item.type)}
+                  meta={`${formatCurrency(item.amount || 0)} • ${formatDate(item.paidAt || item.createdAt)}`}
+                  badge={{ label: item.paymentStatus, kind: "success" }}
+                >
+                  <p>Reference: {item.paymentReference || "-"}</p>
                   <p>Status: {item.status}</p>
-                  <p>Created: {formatDate(item.createdAt)}</p>
-                  <p>{item.taxUseCase || item.message || item.reportScope || item.selectedPlan || "-"}</p>
-                </article>
+                  <p>Description: {item.reportScope || item.selectedPlan || item.consultationType || "-"}</p>
+                </DashboardRow>
               ))}
             </div>
           ) : (
             <div className="feature-card">
-              <h3>No recent requests</h3>
-              <p>Your consultations, support requests, and purchases will appear here.</p>
+              <h3>No payment history yet</h3>
+              <p>Your successful payments will appear here.</p>
             </div>
           )}
         </div>
 
         <div>
-          <SectionHeading
-            eyebrow="Calculations"
-            title="Recent saved calculations"
-            copy="Calculation history is saved when you run estimates while signed in."
-          />
-          {calculations.length ? (
-            <div className="support-grid">
-              {calculations.slice(0, 6).map(item => (
-                <article className="feature-card dashboard-record-card" key={item._id}>
-                  <div className="dashboard-record-head">
-                    <h3>{item.type === "paye" ? "PAYE estimate" : "Company tax estimate"}</h3>
-                    <span className="dashboard-badge neutral">{formatDate(item.createdAt)}</span>
-                  </div>
-                  {item.type === "paye" ? (
-                    <p>Monthly PAYE: {formatCurrency(item.output?.monthlyTax || 0)}</p>
-                  ) : (
-                    <p>Total estimate: {formatCurrency(item.output?.totalEstimatedTax || 0)}</p>
-                  )}
-                </article>
+          <SectionHeading eyebrow="Consultations" title="Consultation requests" copy="Booked and pending consultation items." />
+          {consultations.length ? (
+            <div className="dashboard-list">
+              {consultations.map(item => (
+                <DashboardRow
+                  key={item._id}
+                  title={item.consultationType || "Consultation"}
+                  meta={`${formatDate(item.createdAt)}${item.preferredDate ? ` • ${item.preferredDate}` : ""}`}
+                  badge={{
+                    label: item.paymentStatus || item.status,
+                    kind: item.paymentStatus === "success" ? "success" : "neutral"
+                  }}
+                >
+                  <p>Status: {item.status}</p>
+                  <p>Preferred time: {item.preferredTime || "-"}</p>
+                  <p>Use case: {item.taxUseCase || "-"}</p>
+                </DashboardRow>
               ))}
             </div>
           ) : (
             <div className="feature-card">
-              <h3>No saved calculations yet</h3>
-              <p>Run the calculator while signed in to build your history.</p>
-              <Link className="button-secondary" to="/calculator">
-                Open calculator
-              </Link>
+              <h3>No consultation request yet</h3>
+              <p>Booked or pending consultations will appear here.</p>
             </div>
           )}
         </div>
@@ -238,37 +238,127 @@ export default function DashboardPage() {
 
       <section className="content-card split-card">
         <div>
-          <SectionHeading
-            eyebrow="Support"
-            title="Messages"
-            copy="Recent messages sent from your account."
-          />
-          {messages.length ? (
-            <div className="support-grid">
-              {messages.slice(0, 4).map(item => (
-                <article className="feature-card dashboard-record-card" key={item._id}>
-                  <div className="dashboard-record-head">
-                    <h3>{item.audience}</h3>
-                    <span className="dashboard-badge neutral">{formatDate(item.createdAt)}</span>
-                  </div>
+          <SectionHeading eyebrow="Support" title="Support tickets" copy="Compact ticket rows with status." />
+          {supportRequests.length || messages.length ? (
+            <div className="dashboard-list">
+              {supportRequests.map(item => (
+                <DashboardRow
+                  key={item._id}
+                  title={item.taxUseCase || "Support request"}
+                  meta={formatDate(item.createdAt)}
+                  badge={{ label: item.status || "new", kind: "neutral" }}
+                >
+                  <p>Request type: {prettyType(item.type)}</p>
+                  <p>Message: {item.message || "-"}</p>
+                </DashboardRow>
+              ))}
+              {messages.map(item => (
+                <DashboardRow
+                  key={item._id}
+                  title={item.audience || "Message"}
+                  meta={formatDate(item.createdAt)}
+                  badge={{ label: "received", kind: "neutral" }}
+                >
                   <p>{item.message}</p>
-                </article>
+                </DashboardRow>
               ))}
             </div>
           ) : (
             <div className="feature-card">
-              <h3>No messages yet</h3>
-              <p>Contact support and your message history will show here.</p>
+              <h3>No support ticket yet</h3>
+              <p>Your support requests and messages will appear here.</p>
             </div>
           )}
         </div>
 
         <div>
-          <SectionHeading
-            eyebrow="Quick actions"
-            title="Next steps"
-            copy="Jump into your most common tasks."
-          />
+          <SectionHeading eyebrow="Calculations" title="Saved calculations history" copy="Click a row to see the saved output." />
+          {calculations.length ? (
+            <div className="dashboard-list">
+              {calculations.map(item => (
+                <DashboardRow
+                  key={item._id}
+                  title={item.type === "paye" ? "PAYE estimate" : "Company tax estimate"}
+                  meta={formatDate(item.createdAt)}
+                  badge={{
+                    label: item.type === "paye" ? formatCurrency(item.output?.monthlyTax || 0) : formatCurrency(item.output?.totalEstimatedTax || 0),
+                    kind: "neutral"
+                  }}
+                >
+                  {item.type === "paye" ? (
+                    <>
+                      <p>Annual income: {formatCurrency(item.input?.annualIncome || 0)}</p>
+                      <p>Monthly PAYE: {formatCurrency(item.output?.monthlyTax || 0)}</p>
+                      <p>Annual tax: {formatCurrency(item.output?.annualTax || 0)}</p>
+                    </>
+                  ) : (
+                    <>
+                      <p>Annual turnover: {formatCurrency(item.input?.annualTurnover || 0)}</p>
+                      <p>Total estimate: {formatCurrency(item.output?.totalEstimatedTax || 0)}</p>
+                      <p>Classification: {item.output?.classification || "-"}</p>
+                    </>
+                  )}
+                </DashboardRow>
+              ))}
+            </div>
+          ) : (
+            <div className="feature-card">
+              <h3>No saved calculations yet</h3>
+              <p>Run the calculator while signed in and your history will appear here.</p>
+            </div>
+          )}
+        </div>
+      </section>
+
+      <section className="content-card split-card">
+        <div>
+          <SectionHeading eyebrow="Timeline" title="Recent activity timeline" copy="Your latest account activity in one stream." />
+          {monetization.length || calculations.length || messages.length ? (
+            <div className="dashboard-list">
+              {[...monetization, ...calculations, ...messages]
+                .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+                .slice(0, 10)
+                .map(item => {
+                  const title =
+                    item.type === "paye"
+                      ? "PAYE calculation"
+                      : item.type === "company"
+                        ? "Company tax calculation"
+                        : prettyType(item.type || item.audience || "activity");
+
+                  const meta =
+                    item.paymentReference ||
+                    item.taxUseCase ||
+                    item.message ||
+                    item.reportScope ||
+                    item.selectedPlan ||
+                    "-";
+
+                  return (
+                    <DashboardRow
+                      key={item._id}
+                      title={title}
+                      meta={formatDate(item.createdAt)}
+                      badge={{
+                        label: item.paymentStatus || item.status || "saved",
+                        kind: item.paymentStatus === "success" ? "success" : "neutral"
+                      }}
+                    >
+                      <p>{meta}</p>
+                    </DashboardRow>
+                  );
+                })}
+            </div>
+          ) : (
+            <div className="feature-card">
+              <h3>No recent activity yet</h3>
+              <p>Your calculations, requests, and purchases will show here.</p>
+            </div>
+          )}
+        </div>
+
+        <div>
+          <SectionHeading eyebrow="Quick actions" title="Next steps" copy="Jump into your common tasks." />
           <div className="support-grid">
             <Link className="feature-card feature-link-card" to="/calculator">
               <h3>Run calculations</h3>
@@ -292,11 +382,7 @@ export default function DashboardPage() {
 
       {user?.role === "admin" ? (
         <section className="content-card">
-          <SectionHeading
-            eyebrow="Admin"
-            title="Admin summary"
-            copy="Workspace-level metrics for administrators."
-          />
+          <SectionHeading eyebrow="Admin" title="Admin summary" copy="Workspace-level metrics for administrators." />
           <div className="support-grid dashboard-grid">
             <div className="feature-card"><h3>Messages</h3><p>{adminStats?.messages ?? "-"}</p></div>
             <div className="feature-card"><h3>Calculations</h3><p>{adminStats?.calculations ?? "-"}</p></div>
@@ -306,18 +392,20 @@ export default function DashboardPage() {
             <div className="feature-card"><h3>Subscriptions</h3><p>{adminStats?.subscriptionRequests ?? "-"}</p></div>
           </div>
           {adminMonetization.length ? (
-            <div className="support-grid dashboard-grid">
-              {adminMonetization.slice(0, 6).map(item => (
-                <article className="feature-card dashboard-record-card" key={item._id}>
-                  <div className="dashboard-record-head">
-                    <h3>{prettyType(item.type)}</h3>
-                    <span className={`dashboard-badge ${item.paymentStatus === "success" ? "success" : "neutral"}`}>
-                      {item.paymentStatus || item.status}
-                    </span>
-                  </div>
-                  <p>{item.name}</p>
-                  <p>{item.email}</p>
-                </article>
+            <div className="dashboard-list">
+              {adminMonetization.slice(0, 8).map(item => (
+                <DashboardRow
+                  key={item._id}
+                  title={prettyType(item.type)}
+                  meta={`${item.name} • ${item.email}`}
+                  badge={{
+                    label: item.paymentStatus || item.status,
+                    kind: item.paymentStatus === "success" ? "success" : "neutral"
+                  }}
+                >
+                  <p>Reference: {item.paymentReference || "-"}</p>
+                  <p>Created: {formatDate(item.createdAt)}</p>
+                </DashboardRow>
               ))}
             </div>
           ) : null}

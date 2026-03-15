@@ -846,6 +846,77 @@ textarea {
   gap: 10px;
 }
 
+.dashboard-list {
+  display: grid;
+  gap: 10px;
+}
+
+.dashboard-row {
+  border: 1px solid rgba(20, 33, 38, 0.08);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.92);
+  overflow: hidden;
+}
+
+.dashboard-row-summary {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 16px;
+  cursor: pointer;
+}
+
+.dashboard-row-summary::-webkit-details-marker {
+  display: none;
+}
+
+.dashboard-row-main {
+  display: grid;
+  gap: 4px;
+}
+
+.dashboard-row-main strong {
+  font-size: 0.98rem;
+}
+
+.dashboard-row-main span,
+.dashboard-row-toggle,
+.dashboard-row-content p {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.dashboard-row-side {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.dashboard-row-toggle {
+  color: var(--brand-deep);
+  font-weight: 700;
+}
+
+.dashboard-row-body {
+  display: grid;
+  gap: 12px;
+  padding: 0 16px 16px;
+  border-top: 1px solid rgba(20, 33, 38, 0.06);
+}
+
+.dashboard-row-content {
+  display: grid;
+  gap: 8px;
+  padding-top: 12px;
+}
+
+.dashboard-row-content p {
+  margin: 0;
+}
+
 .dashboard-record-head {
   display: flex;
   align-items: flex-start;
