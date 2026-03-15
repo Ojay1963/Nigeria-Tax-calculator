@@ -852,6 +852,21 @@ textarea {
   margin: 0;
 }
 
+.success-panel {
+  display: grid;
+  gap: 8px;
+  padding: 18px 20px;
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.success-panel strong,
+.success-panel p,
+.success-panel span {
+  margin: 0;
+}
+
 @media (max-width: 760px) {
   .verification-banner {
     flex-direction: column;

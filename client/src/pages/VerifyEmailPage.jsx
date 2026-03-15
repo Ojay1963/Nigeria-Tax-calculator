@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 import SectionHeading from "../components/SectionHeading";
 import { useAuth } from "../context/AuthContext";
 
 export default function VerifyEmailPage() {
   const { verifyEmail, resendVerification } = useAuth();
+  const location = useLocation();
   const [searchParams] = useSearchParams();
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState(location.state?.email || "");
   const [status, setStatus] = useState({ type: "", message: "" });
   const [resending, setResending] = useState(false);
 

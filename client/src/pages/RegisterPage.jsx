@@ -22,12 +22,14 @@ export default function RegisterPage() {
     setStatus({ type: "", message: "" });
 
     try {
+      const submittedEmail = form.email;
       await register(form);
-      setStatus({
-        type: "success",
-        message: "Account created. Check your inbox for the Brevo verification email."
+      navigate("/register/success", {
+        replace: true,
+        state: {
+          email: submittedEmail
+        }
       });
-      setForm({ name: "", email: "", password: "" });
     } catch (error) {
       setStatus({ type: "error", message: error.message });
     } finally {
