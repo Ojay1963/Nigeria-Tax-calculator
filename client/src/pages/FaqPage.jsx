@@ -46,20 +46,20 @@ export default function FaqPage() {
     <div className="page-stack">
       <PageHero
         eyebrow="FAQ"
-        title="A searchable answer bank for common Nigerian tax-tool questions"
-        copy="This page stands on its own when someone just needs quick answers about trust, tax assumptions, use cases, and calculator limits."
+        title="Frequently asked questions"
+        copy="Quick answers about the calculator and tax assumptions."
         aside={
           <div className="hero-note-card">
-            <strong>Independent use</strong>
-            <p>Share this route directly with teams that want answers before they touch the calculators.</p>
+            <strong>Tip</strong>
+            <p>Search by keyword to find an answer faster.</p>
           </div>
         }
       />
       <section className="content-card">
         <SectionHeading
           eyebrow="FAQ"
-          title="Questions teams usually ask before they trust a tax tool"
-          copy="A production-ready calculator needs more than formulas. It needs enough explanation for users to know when to use it and when to verify with official guidance."
+          title="Common questions"
+          copy="Short answers before you calculate or contact support."
         />
         <label className="field faq-search">
           <span>Search FAQ</span>

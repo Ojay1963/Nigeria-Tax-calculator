@@ -6,7 +6,7 @@ import SectionHeading from "../components/SectionHeading";
 import { useAuth } from "../context/AuthContext";
 
 function openPrintableReport(report) {
-  const reportWindow = window.open("", "_blank", "noopener,noreferrer,width=900,height=700");
+  const reportWindow = window.open("", "_blank", "width=900,height=700");
   if (!reportWindow) {
     return false;
   }
@@ -21,6 +21,10 @@ function openPrintableReport(report) {
           .card { border: 1px solid #d9e3ee; border-radius: 16px; padding: 20px; margin-bottom: 20px; }
           .row { display: flex; justify-content: space-between; gap: 16px; margin: 8px 0; }
           .muted { color: #62748a; }
+          .actions { margin-top: 24px; display: flex; gap: 12px; }
+          .button { border: 0; border-radius: 10px; padding: 12px 16px; cursor: pointer; font-size: 14px; }
+          .button-primary { background: #125b9a; color: white; }
+          .button-light { background: #eef4fb; color: #16212b; }
         </style>
       </head>
       <body>
@@ -34,12 +38,15 @@ function openPrintableReport(report) {
           <h2>Note</h2>
           <p class="muted">This preview is useful for internal sharing. The paid PDF workflow can be used when you need a reviewed, branded, or client-ready version.</p>
         </div>
+        <div class="actions">
+          <button class="button button-primary" onclick="window.print()">Print preview</button>
+          <button class="button button-light" onclick="window.close()">Close</button>
+        </div>
       </body>
     </html>
   `);
   reportWindow.document.close();
   reportWindow.focus();
-  reportWindow.print();
   return true;
 }
 
@@ -116,6 +123,24 @@ export default function ReportsPage() {
     }
   }
 
+  function handleOpenPreview() {
+    if (!previewReport) {
+      setStatus({ type: "error", message: "Run a calculation first to generate a preview." });
+      return;
+    }
+
+    const opened = openPrintableReport(previewReport);
+    if (!opened) {
+      setStatus({
+        type: "error",
+        message: "The preview window was blocked by your browser. Allow popups for this site and try again."
+      });
+      return;
+    }
+
+    setStatus({ type: "", message: "" });
+  }
+
   return (
     <div className="page-stack">
       <PageHero
@@ -145,7 +170,7 @@ export default function ReportsPage() {
             </div>
           </div>
           {previewReport ? (
-            <button className="button-secondary" type="button" onClick={() => openPrintableReport(previewReport)}>
+            <button className="button-secondary" type="button" onClick={handleOpenPreview}>
               Open printable preview
             </button>
           ) : (

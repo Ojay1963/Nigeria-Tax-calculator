@@ -73,12 +73,12 @@ export default function ContactPage() {
     <div className="page-stack">
       <PageHero
         eyebrow="Contact"
-        title="Send a real support or tax-calculation question"
-        copy="Use this page for support, product feedback, payroll questions, or a request to review a PAYE or company-tax scenario."
+        title="Contact support"
+        copy="Send a question, support request, or tax review enquiry."
         aside={
           <div className="hero-note-card">
-            <strong>What this page does</strong>
-            <p>Collects structured messages and explains whether the request is linked to a signed-in account.</p>
+            <strong>Need help?</strong>
+            <p>Use the first form for support and the second for follow-up leads.</p>
           </div>
         }
       />
@@ -86,23 +86,20 @@ export default function ContactPage() {
         <div>
           <SectionHeading
             eyebrow="Contact"
-            title="Use the form for support, workflow questions, or tax-estimate follow-up"
-            copy="This works for payroll clarification, SME estimate questions, product feedback, or implementation requests."
+            title="Support form"
+            copy="Best for product questions and tax-estimate follow-up."
           />
           <div className="contact-aside">
-            <p>Useful information to include in your message:</p>
+            <p>Helpful details to include:</p>
             <ul className="source-list">
               <li>Whether your question is about PAYE or company tax.</li>
-              <li>The tax year or payroll period you are reviewing.</li>
-              <li>The turnover, taxable profit, or income figures involved.</li>
+              <li>The tax year or payroll period.</li>
+              <li>The key figures involved.</li>
             </ul>
             <p className="note-text">
               {isAuthenticated
-                ? `Signed in as ${user?.email}. Your message can be associated with your account on the backend.`
-                : "You can send a message without signing in, but registered users can later have a cleaner support history."}
-            </p>
-            <p className="note-text">
-              For official public guidance, you can also review FIRS and LIRS materials linked on the guide page.
+                ? `Signed in as ${user?.email}.`
+                : "You can send a message without signing in."}
             </p>
           </div>
         </div>
@@ -155,19 +152,9 @@ export default function ContactPage() {
         <div>
           <SectionHeading
             eyebrow="Tax support leads"
-            title="Capture users who need paid help after seeing a tax result"
-            copy="This form turns interested visitors into leads you can contact later for support, review, or paid services."
+            title="Request a follow-up"
+            copy="Use this if you want us to get back to you later."
           />
-          <div className="support-grid">
-            <div className="feature-card">
-              <h3>Best use</h3>
-              <p>For users who want help but are not ready to book a consultation immediately.</p>
-            </div>
-            <div className="feature-card">
-              <h3>Good monetization path</h3>
-              <p>Support leads often become consultations, PDF report orders, or business-plan conversations.</p>
-            </div>
-          </div>
         </div>
 
         <form className="form-grid" onSubmit={handleLeadSubmit}>

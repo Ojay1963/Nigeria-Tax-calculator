@@ -175,51 +175,30 @@ export default function CalculatorPage() {
     <div className="page-stack">
       <PageHero
         eyebrow="Calculator"
-        title="Run employee and business tax scenarios from one place"
-        copy="Use the employee and company calculators for payroll reviews, SME planning, and tax-preparation discussions. The company form now follows the key thresholds and charge rules in the Nigeria Tax Act, 2025."
+        title="PAYE and company tax calculator"
+        copy="Run quick employee and business tax estimates in one place."
         aside={
           <div className="hero-stat-grid">
             <div className="metric-card">
-              <span>Individual calculator</span>
+              <span>Individual</span>
               <strong>PAYE estimate</strong>
-              <p>Deduction-aware output with monthly and annual views.</p>
+              <p>Monthly and annual output.</p>
             </div>
             <div className="metric-card">
-              <span>Business calculator</span>
+              <span>Business</span>
               <strong>Company tax estimate</strong>
-              <p>Small-company test, company income tax, development levy, minimum tax, and 15% effective-tax-rule checks in one place.</p>
+              <p>CIT, levy, minimum tax, and 15% rule checks.</p>
             </div>
           </div>
         }
       />
-      <section className="content-card">
-        <SectionHeading
-          eyebrow="Calculator suite"
-          title="Estimate PAYE and company tax from the same workspace"
-          copy="These figures are for planning and discussion. Filing outcomes can differ if your exact tax facts, reliefs, professional-services status, or group-tax profile change."
-        />
-        <div className="trust-strip">
-          <div className="trust-chip">
-            <strong>Real Nigerian inputs</strong>
-            <span>Reliefs, small-company tests, assessable profit, and tax bases are separated more clearly.</span>
-          </div>
-          <div className="trust-chip">
-            <strong>Useful for teams</strong>
-            <span>Preset scenarios make payroll and planning demos faster.</span>
-          </div>
-          <div className="trust-chip">
-            <strong>Explains the result</strong>
-            <span>Key totals are surfaced before the detailed breakdown.</span>
-          </div>
-        </div>
-      </section>
 
       <section className="calculator-grid">
         <article className="calculator-card">
           <SectionHeading
             eyebrow="PAYE"
             title="Individual tax estimate"
-            copy="Use annual gross income and add the relief or deduction lines that match your situation under the Nigeria Tax Act, 2025."
+            copy="Enter annual income and any reliefs that apply."
           />
 
           <div className="preset-row">
@@ -368,7 +347,7 @@ export default function CalculatorPage() {
           <SectionHeading
             eyebrow="Company tax"
             title="Business estimate"
-            copy="Use turnover, fixed assets, assessable profit, and taxable profit to apply the company-tax rules in the Act more accurately."
+            copy="Enter turnover, profit, and any relevant company details."
           />
 
           <div className="preset-row">
@@ -579,27 +558,6 @@ export default function CalculatorPage() {
         </article>
       </section>
 
-      <section className="content-card">
-        <SectionHeading
-          eyebrow="How to use this page"
-          title="Use the inputs that match the Act"
-          copy="The most accurate estimates come from using the same income and profit bases the Act uses for each charge."
-        />
-        <div className="feature-grid">
-          <article className="feature-card">
-            <h3>Separate profit bases</h3>
-            <p>Use taxable profit for company income tax and assessable profit for development levy where both figures are available.</p>
-          </article>
-          <article className="feature-card">
-            <h3>Check the small-company test</h3>
-            <p>Turnover, fixed assets, and professional-services status all matter before a company can qualify as small under the Act.</p>
-          </article>
-          <article className="feature-card">
-            <h3>Use the 15% rule carefully</h3>
-            <p>The effective-tax-rate top-up needs the adjusted net-profit base and is only relevant for very large groups or qualifying MNE entities.</p>
-          </article>
-        </div>
-      </section>
     </div>
   );
 }

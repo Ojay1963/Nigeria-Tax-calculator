@@ -5,51 +5,51 @@ const homepageStats = [
   {
     label: "Small company CIT",
     value: "0% under Act test",
-    copy: "Applies only where turnover is at most N50m, fixed assets are at most N250m, and the company is not in professional services."
+    copy: "Applies only where the Act's small-company conditions are met."
   },
   {
     label: "Development levy",
     value: "4% assessable profit",
-    copy: "Shown separately for chargeable companies under the Act."
+    copy: "Shown separately for chargeable companies."
   },
   {
     label: "15% ETR rule",
     value: "N20bn or MNE",
-    copy: "Checked only for qualifying large groups or constituent MNE entities."
+    copy: "Checked only for qualifying large groups."
   }
 ];
 
 const quickFacts = [
   {
     title: "PAYE relief lines",
-    text: "The employee calculator surfaces rent relief, pension, NHF, NHIS, life assurance, and mortgage-interest fields."
+    text: "Rent relief, pension, NHF, NHIS, life assurance, and mortgage-interest fields."
   },
   {
     title: "Company classification",
-    text: "The business calculator checks turnover, fixed assets, and professional-services status before deciding whether the company qualifies as small."
+    text: "Turnover, fixed assets, and professional-services status are checked first."
   },
   {
     title: "Source-backed guidance",
-    text: "The guide page points users back to FIRS and LIRS materials before they rely on an estimate in payroll or finance discussions."
+    text: "The guide links back to FIRS and LIRS materials."
   }
 ];
 
 const workflowPaths = [
   {
     title: "Employees and payroll teams",
-    text: "Check how annual income and relief items affect monthly PAYE before salary reviews, onboarding, or payroll updates.",
+    text: "Check how income and relief items affect monthly PAYE.",
     cta: "/calculator",
     ctaLabel: "Open PAYE calculator"
   },
   {
     title: "SMEs and finance leads",
-    text: "Estimate company income tax, development levy, minimum-tax exposure, and the 15% effective-tax-rate top-up before a formal computation or adviser meeting.",
+    text: "Estimate company tax, levy, minimum tax, and top-up exposure.",
     cta: "/calculator",
     ctaLabel: "Open company calculator"
   },
   {
-    title: "Founders and operations teams",
-    text: "Use the guide and FAQ to verify thresholds, assumptions, and workflow questions before sharing figures internally.",
+    title: "Questions and guidance",
+    text: "Use the guide and FAQ to verify thresholds and assumptions.",
     cta: "/guide",
     ctaLabel: "Read the guide"
   }
@@ -67,27 +67,27 @@ const audienceCards = [
 const processSteps = [
   {
     step: "01",
-    title: "Choose the tax path",
-    text: "Start with PAYE if you are reviewing salary impact, or switch to company tax if you are planning for a business."
+    title: "Pick a calculator",
+    text: "Use PAYE for salary reviews or company tax for business planning."
   },
   {
     step: "02",
-    title: "Enter real figures",
-    text: "Use actual income, turnover, taxable profit, and relief figures instead of guessing from net pay or rough percentages."
+    title: "Enter your figures",
+    text: "Use actual income, turnover, profit, and relief values."
   },
   {
     step: "03",
-    title: "Verify before action",
-    text: "Read the assumptions, cross-check the guide, and contact support if the scenario needs a closer look before filing."
+    title: "Review the result",
+    text: "Check the guide or contact support if you need a second look."
   }
 ];
 
 const coveragePoints = [
-  "PAYE estimate with visible relief lines and monthly output",
-  "Company income tax with the Act's small-company conditions",
-  "Development levy, minimum-tax, and 15% ETR checks",
-  "Guide page with public reference links",
-  "FAQ, contact flow, and verified account access"
+  "PAYE estimate",
+  "Company tax estimate",
+  "Guide and FAQ",
+  "Support and consultation",
+  "Verified accounts"
 ];
 
 const guardrails = [
@@ -105,15 +105,12 @@ export default function HomePage() {
           <div className="landing-hero-main fade-up">
             <span className="eyebrow light-eyebrow">Nigeria tax platform</span>
             <h2>NAIJA TAX CALCULATOR</h2>
-            <p>
-              Estimate Nigerian PAYE and company tax with clearer assumptions, official-source guidance, and
-              separate views for reliefs, thresholds, and minimum-tax checks.
-            </p>
+            <p>Estimate Nigerian PAYE and company tax in one place.</p>
 
             <div className="landing-floating-row">
               <div className="floating-alert-card fade-up fade-up-delay-1">
-                <strong>Built around real Nigerian tax decision points</strong>
-                <span>Use the same platform for payroll reviews, SME planning, and source-backed tax explainers.</span>
+                <strong>Built for payroll and business tax checks</strong>
+                <span>Use one platform for PAYE, company tax, and follow-up support.</span>
               </div>
               {homepageStats.map((item, index) => (
                 <div
@@ -140,19 +137,19 @@ export default function HomePage() {
           </div>
 
           <aside className="landing-hero-side fade-up fade-up-delay-3">
-            <h3>Designed for payroll reviews, SME tax planning, and practical verification before filing.</h3>
+            <h3>Built for payroll reviews, SME planning, and quick tax checks.</h3>
             <div className="landing-side-list">
               <div>
-                <span>Primary use</span>
-                <strong>PAYE, company income tax, and minimum-tax estimates</strong>
+                <span>Tools</span>
+                <strong>PAYE and company tax estimates</strong>
               </div>
               <div>
                 <span>Audience</span>
                 <strong>Employees, founders, payroll teams, and finance managers</strong>
               </div>
               <div>
-                <span>Reference points</span>
-                <strong>LIRS guidance, FIRS rate circulars, and calculator assumptions in one place</strong>
+                <span>Support</span>
+                <strong>Guide, FAQ, consultation, and paid reports</strong>
               </div>
             </div>
             <Link className="side-cta-link" to="/contact">
@@ -165,8 +162,8 @@ export default function HomePage() {
       <section className="content-card homepage-band">
         <SectionHeading
           eyebrow="Snapshot"
-          title="A practical view of what this website helps Nigerian users do"
-          copy="Get quick tax reference points before you move into calculation, support, or deeper tax reading."
+          title="What you can do here"
+          copy="Quick tax checks without unnecessary steps."
         />
         <div className="homepage-band-grid">
           {quickFacts.map(item => (
@@ -181,10 +178,10 @@ export default function HomePage() {
       <section className="content-card split-card">
         <div>
           <SectionHeading
-            eyebrow="User paths"
-            title="Choose the task that matches your tax question"
-            copy="Start with the calculator, review the guide, or move into support depending on the kind of decision you need to make."
-          />
+          eyebrow="User paths"
+          title="Choose your next step"
+          copy="Start with a calculator, then move to guidance or support."
+        />
           <div className="feature-grid compact-feature-grid">
             {workflowPaths.map(path => (
               <article className="feature-card homepage-path-card" key={path.title}>
@@ -199,10 +196,10 @@ export default function HomePage() {
         </div>
         <div>
           <SectionHeading
-            eyebrow="Who it serves"
-            title="Built for real Nigerian tax conversations"
-            copy="Useful for salary reviews, tax planning, internal finance discussions, and client-facing explanations."
-          />
+          eyebrow="Who it serves"
+          title="Who it serves"
+          copy="Useful for payroll, planning, and internal review."
+        />
           <div className="audience-grid">
             {audienceCards.map(item => (
               <div key={item} className="audience-chip">
@@ -216,8 +213,8 @@ export default function HomePage() {
       <section className="content-card">
         <SectionHeading
           eyebrow="Process"
-          title="A simple way to use the platform"
-          copy="Follow these steps to move from estimate to verification with less back-and-forth."
+          title="How it works"
+          copy="Three quick steps."
         />
         <div className="journey-grid">
           {processSteps.map(item => (
@@ -232,12 +229,12 @@ export default function HomePage() {
 
       <section className="content-card split-card">
         <div>
-          <SectionHeading
-            eyebrow="Coverage"
-            title="What the platform covers today"
-            copy="The platform covers the most common areas users need before payroll, planning, and review meetings."
-          />
-          <div className="support-grid">
+        <SectionHeading
+          eyebrow="Coverage"
+          title="Included"
+          copy="Core tax tools and support features."
+        />
+        <div className="support-grid">
             {coveragePoints.map(item => (
               <div key={item} className="support-card">
                 {item}
@@ -248,13 +245,8 @@ export default function HomePage() {
         <div className="tax-highlight-stack">
           <article className="tax-highlight-card">
             <span>Use case</span>
-            <strong>Trust before conversion</strong>
-            <p>See what the calculator covers, who it is for, and where official guidance still matters before you rely on an estimate.</p>
-          </article>
-          <article className="tax-highlight-card">
-            <span>Operational value</span>
-            <strong>Useful before payroll and finance decisions</strong>
-            <p>Use the platform to prepare for payroll updates, finance reviews, adviser calls, and internal tax planning discussions.</p>
+            <strong>Before payroll or finance reviews</strong>
+            <p>Use the calculator before meetings, salary updates, or internal planning.</p>
           </article>
         </div>
       </section>
@@ -263,8 +255,8 @@ export default function HomePage() {
         <div>
           <SectionHeading
             eyebrow="Important"
-            title="Use the estimates with the right expectation"
-            copy="A tax site should not oversell certainty. It should help users move faster while still reminding them where verification matters."
+            title="Use estimates as estimates"
+            copy="Check official guidance before filing."
           />
         </div>
         <div className="improvement-list">

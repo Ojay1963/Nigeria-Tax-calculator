@@ -193,7 +193,7 @@ function Footer() {
     <footer className="site-footer">
       <div className="footer-brand">
         <strong>Naija Tax Calculator</strong>
-        <p>Built for Nigerian PAYE and company-tax estimates, with guide pages that point users back to FIRS and LIRS reference materials.</p>
+        <p>Nigerian PAYE and company-tax estimates.</p>
       </div>
       <div className="footer-grid">
         {footerGroups.map(group => (
@@ -208,10 +208,7 @@ function Footer() {
         ))}
       </div>
       <div className="footer-meta">
-        <p>
-          Estimates only. For filing, confirm your case with FIRS, the relevant state internal revenue service,
-          or a licensed tax adviser.
-        </p>
+        <p>Estimates only. Confirm final filing with the relevant tax authority or an adviser.</p>
       </div>
     </footer>
   );
