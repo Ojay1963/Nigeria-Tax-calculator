@@ -149,6 +149,8 @@ function Header() {
 }
 
 function Footer() {
+  const { isAuthenticated } = useAuth();
+  const year = new Date().getFullYear();
   const footerGroups = [
     {
       title: "Product",
@@ -161,23 +163,13 @@ function Footer() {
     },
     {
       title: "Company",
-      links: [
-        ["Home", "/"],
-        ["Contact", "/contact"],
-        ["Register", "/register"]
-      ]
+      links: [["Home", "/"], ["Contact", "/contact"], ...(isAuthenticated ? [] : [["Create account", "/register"]])]
     },
     {
       title: "Account",
       links: [
         ["Dashboard", "/dashboard"],
         ["Login", "/login"],
-        ["Sign Up", "/register"]
-      ]
-    },
-    {
-      title: "Legal",
-      links: [
         ["Privacy", "/privacy"],
         ["Terms", "/terms"]
       ]
@@ -187,8 +179,13 @@ function Footer() {
   return (
     <footer className="site-footer">
       <div className="footer-brand">
-        <strong>Naija Tax Calculator</strong>
-        <p>Nigerian PAYE and company-tax estimates.</p>
+        <div className="footer-brand-lockup">
+          <img className="footer-logo" src="/naija-tax-calculator-logo.png" alt="Naija Tax Calculator logo" />
+          <div>
+            <strong>Naija Tax Calculator</strong>
+            <p>Nigerian PAYE and company-tax estimates in one place.</p>
+          </div>
+        </div>
       </div>
       <div className="footer-grid">
         {footerGroups.map(group => (
@@ -203,6 +200,8 @@ function Footer() {
         ))}
       </div>
       <div className="footer-meta">
+        <p>{year} Naija Tax Calculator</p>
+        <span className="footer-meta-dot" aria-hidden="true" />
         <p>Estimates only. Confirm final filing with the relevant tax authority or an adviser.</p>
       </div>
     </footer>
