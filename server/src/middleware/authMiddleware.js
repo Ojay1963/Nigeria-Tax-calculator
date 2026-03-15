@@ -32,6 +32,28 @@ export async function requireAuth(req, res, next) {
   }
 }
 
+export async function optionalAuth(req, _res, next) {
+  try {
+    const authHeader = req.get("authorization");
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      next();
+      return;
+    }
+
+    const token = authHeader.slice("Bearer ".length);
+    const payload = jwt.verify(token, config.JWT_SECRET);
+    const user = await getUserById(payload.sub);
+
+    if (user) {
+      req.user = user;
+    }
+  } catch (_error) {
+    req.user = undefined;
+  }
+
+  next();
+}
+
 export function requireRole(...roles) {
   return (req, res, next) => {
     if (!req.user || !roles.includes(req.user.role)) {

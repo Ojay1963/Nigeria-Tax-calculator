@@ -13,7 +13,7 @@ const initialForm = {
 };
 
 export default function ContactPage() {
-  const { user, isAuthenticated } = useAuth();
+  const { user, isAuthenticated, token } = useAuth();
   const location = useLocation();
   const [form, setForm] = useState(initialForm);
   const [status, setStatus] = useState({ type: "", message: "" });
@@ -35,7 +35,7 @@ export default function ContactPage() {
     setStatus({ type: "", message: "" });
 
     try {
-      const response = await sendContact(form);
+      const response = await sendContact(form, token);
       startTransition(() => {
         setStatus({ type: "success", message: response.message });
         setForm(initialForm);
@@ -57,7 +57,7 @@ export default function ContactPage() {
         type: "support_lead",
         ...leadForm,
         context: location.state?.context || {}
-      });
+      }, token);
       setLeadStatus({
         type: "success",
         message: "Support lead submitted. You can now follow up from the admin workflow."

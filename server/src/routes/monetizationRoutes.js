@@ -1,6 +1,7 @@
 import express from "express";
 import fs from "fs";
 import { z } from "zod";
+import { optionalAuth } from "../middleware/authMiddleware.js";
 import {
   createMonetizationRequest,
   ensurePaidReportGenerated,
@@ -48,6 +49,8 @@ const subscriptionSchema = baseSchema.extend({
 });
 
 const paymentSchema = z.discriminatedUnion("type", [consultationSchema, pdfReportSchema, subscriptionSchema]);
+
+router.use(optionalAuth);
 
 function buildDownloadUrl(req, reference) {
   return `${req.protocol}://${req.get("host")}/api/monetization/download/${encodeURIComponent(reference)}`;

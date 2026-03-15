@@ -1,7 +1,7 @@
 import express from "express";
 import { z } from "zod";
 import { requireDatabase } from "../middleware/databaseMiddleware.js";
-import { requireAuth, requireRole } from "../middleware/authMiddleware.js";
+import { optionalAuth, requireAuth, requireRole } from "../middleware/authMiddleware.js";
 import { listContactMessages, saveContactMessage } from "../services/contactService.js";
 
 const router = express.Router();
@@ -14,6 +14,7 @@ const contactSchema = z.object({
 });
 
 router.use(requireDatabase);
+router.use(optionalAuth);
 
 router.post("/", async (req, res, next) => {
   const parsed = contactSchema.safeParse(req.body);

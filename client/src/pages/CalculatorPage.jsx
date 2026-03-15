@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { calculateCompanyTax, calculatePaye } from "../api/http";
 import PageHero from "../components/PageHero";
 import SectionHeading from "../components/SectionHeading";
+import { useAuth } from "../context/AuthContext";
 import { formatCurrency, formatPercent } from "../lib/format";
 
 const initialPayeForm = {
@@ -130,6 +131,7 @@ function NumberField({ id, label, value, onChange, hint }) {
 }
 
 export default function CalculatorPage() {
+  const { token } = useAuth();
   const [payeForm, setPayeForm] = useState(initialPayeForm);
   const [companyForm, setCompanyForm] = useState(initialCompanyForm);
   const [payeResult, setPayeResult] = useState(null);
@@ -147,7 +149,7 @@ export default function CalculatorPage() {
     setError(current => ({ ...current, paye: "" }));
 
     try {
-      const response = await calculatePaye(payeForm);
+      const response = await calculatePaye(payeForm, token);
       startTransition(() => setPayeResult(response.data));
     } catch (submitError) {
       setError(current => ({ ...current, paye: submitError.message }));
@@ -162,7 +164,7 @@ export default function CalculatorPage() {
     setError(current => ({ ...current, company: "" }));
 
     try {
-      const response = await calculateCompanyTax(companyForm);
+      const response = await calculateCompanyTax(companyForm, token);
       startTransition(() => setCompanyResult(response.data));
     } catch (submitError) {
       setError(current => ({ ...current, company: submitError.message }));

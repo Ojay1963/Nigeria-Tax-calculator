@@ -62,7 +62,7 @@ const initialOrder = {
 };
 
 export default function ReportsPage() {
-  const { user } = useAuth();
+  const { user, token } = useAuth();
   const location = useLocation();
   const [order, setOrder] = useState({
     ...initialOrder,
@@ -114,7 +114,7 @@ export default function ReportsPage() {
         type: "pdf_report",
         ...order,
         context: location.state?.result ? { result: location.state.result, kind: location.state.kind } : {}
-      });
+      }, token);
       window.location.assign(response.data.authorizationUrl);
     } catch (error) {
       setStatus({ type: "error", message: error.message });

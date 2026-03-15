@@ -3,8 +3,10 @@ import { Link } from "react-router-dom";
 import { getPricingPlans, initializePaystackCheckout } from "../api/http";
 import PageHero from "../components/PageHero";
 import SectionHeading from "../components/SectionHeading";
+import { useAuth } from "../context/AuthContext";
 
 export default function PricingPage() {
+  const { token } = useAuth();
   const [plans, setPlans] = useState([]);
   const [form, setForm] = useState({
     name: "",
@@ -33,7 +35,7 @@ export default function PricingPage() {
       const response = await initializePaystackCheckout({
         type: "subscription",
         ...form
-      });
+      }, token);
       window.location.assign(response.data.authorizationUrl);
     } catch (error) {
       setStatus({ type: "error", message: error.message });

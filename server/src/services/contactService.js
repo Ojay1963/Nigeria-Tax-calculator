@@ -22,3 +22,28 @@ export async function listContactMessages(limit = 50) {
     .limit(limit)
     .lean();
 }
+
+export async function listContactMessagesForUser(userId, email, limit = 20) {
+  if (!isDatabaseReady()) {
+    return [];
+  }
+
+  const filters = [];
+
+  if (userId) {
+    filters.push({ submittedByUserId: userId });
+  }
+
+  if (email) {
+    filters.push({ email: email.toLowerCase() });
+  }
+
+  if (filters.length === 0) {
+    return [];
+  }
+
+  return ContactMessage.find({ $or: filters })
+    .sort({ createdAt: -1 })
+    .limit(limit)
+    .lean();
+}

@@ -1,5 +1,6 @@
 import express from "express";
 import { z } from "zod";
+import { optionalAuth } from "../middleware/authMiddleware.js";
 import { CalculationRun } from "../models/CalculationRun.js";
 import { TAX_ASSUMPTIONS } from "../data/taxConfig.js";
 import { isDatabaseReady } from "../services/databaseService.js";
@@ -32,6 +33,8 @@ const companySchema = z.object({
   isMNEConstituentEntity: z.coerce.boolean().default(false),
   coveredTaxesPaid: currencyField.default(0)
 });
+
+router.use(optionalAuth);
 
 router.get("/assumptions", (_req, res) => {
   res.json({

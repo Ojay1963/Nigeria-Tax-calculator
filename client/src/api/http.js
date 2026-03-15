@@ -5,6 +5,15 @@ const defaultHeaders = {
   "Content-Type": "application/json"
 };
 
+function withAuthHeaders(token) {
+  return token
+    ? {
+        ...defaultHeaders,
+        Authorization: `Bearer ${token}`
+      }
+    : defaultHeaders;
+}
+
 async function request(path, options = {}) {
   const controller = new AbortController();
   const timeout = window.setTimeout(() => controller.abort(), 12000);
@@ -40,22 +49,25 @@ async function request(path, options = {}) {
   }
 }
 
-export function calculatePaye(payload) {
+export function calculatePaye(payload, token = "") {
   return request("/api/tax/paye", {
+    headers: withAuthHeaders(token),
     method: "POST",
     body: JSON.stringify(payload)
   });
 }
 
-export function calculateCompanyTax(payload) {
+export function calculateCompanyTax(payload, token = "") {
   return request("/api/tax/company", {
+    headers: withAuthHeaders(token),
     method: "POST",
     body: JSON.stringify(payload)
   });
 }
 
-export function sendContact(payload) {
+export function sendContact(payload, token = "") {
   return request("/api/contact", {
+    headers: withAuthHeaders(token),
     method: "POST",
     body: JSON.stringify(payload)
   });
@@ -69,15 +81,17 @@ export function getPricingPlans() {
   return request("/api/monetization/plans");
 }
 
-export function createSupportLead(payload) {
+export function createSupportLead(payload, token = "") {
   return request("/api/monetization/request", {
+    headers: withAuthHeaders(token),
     method: "POST",
     body: JSON.stringify(payload)
   });
 }
 
-export function initializePaystackCheckout(payload) {
+export function initializePaystackCheckout(payload, token = "") {
   return request("/api/monetization/checkout", {
+    headers: withAuthHeaders(token),
     method: "POST",
     body: JSON.stringify(payload)
   });
@@ -139,5 +153,11 @@ export function getAdminMonetization(token) {
       ...defaultHeaders,
       Authorization: `Bearer ${token}`
     }
+  });
+}
+
+export function getAccountDashboard(token) {
+  return request("/api/account/dashboard", {
+    headers: withAuthHeaders(token)
   });
 }

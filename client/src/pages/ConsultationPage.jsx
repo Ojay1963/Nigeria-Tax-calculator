@@ -18,7 +18,7 @@ const initialForm = {
 };
 
 export default function ConsultationPage() {
-  const { user } = useAuth();
+  const { user, token } = useAuth();
   const location = useLocation();
   const preset = location.state?.prefill || {};
   const [form, setForm] = useState({
@@ -41,7 +41,7 @@ export default function ConsultationPage() {
         type: "consultation",
         ...form,
         context: location.state?.context || {}
-      });
+      }, token);
       window.location.assign(response.data.authorizationUrl);
     } catch (error) {
       setStatus({ type: "error", message: error.message });

@@ -8,6 +8,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import authRoutes from "./routes/authRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
+import accountRoutes from "./routes/accountRoutes.js";
 import { config } from "./config.js";
 import { isDatabaseReady } from "./services/databaseService.js";
 import { isEmailReady } from "./services/emailService.js";
@@ -110,6 +111,7 @@ app.get("/api/ready", (_req, res) => {
 });
 
 app.use("/api/auth", authRoutes);
+app.use("/api/account", accountRoutes);
 app.use("/api/tax", taxRoutes);
 app.use("/api/contact", contactLimiter, contactRoutes);
 app.use("/api/monetization", monetizationRoutes);

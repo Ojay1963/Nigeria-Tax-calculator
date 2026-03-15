@@ -259,3 +259,28 @@ export async function listMonetizationRequests(limit = 50, type = "") {
     .limit(limit)
     .lean();
 }
+
+export async function listMonetizationRequestsForUser(userId, email, limit = 20) {
+  if (!isDatabaseReady()) {
+    return [];
+  }
+
+  const filters = [];
+
+  if (userId) {
+    filters.push({ requestedByUserId: userId });
+  }
+
+  if (email) {
+    filters.push({ email: email.toLowerCase() });
+  }
+
+  if (filters.length === 0) {
+    return [];
+  }
+
+  return MonetizationRequest.find({ $or: filters })
+    .sort({ createdAt: -1 })
+    .limit(limit)
+    .lean();
+}
