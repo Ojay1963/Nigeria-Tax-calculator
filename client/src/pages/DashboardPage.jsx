@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getAccountDashboard, getAdminDashboard, getAdminMonetization } from "../api/http";
+import EmptyState from "../components/EmptyState";
 import PageHero from "../components/PageHero";
+import SeoHead from "../components/SeoHead";
 import SectionHeading from "../components/SectionHeading";
+import StatusPill from "../components/StatusPill";
 import { useAuth } from "../context/AuthContext";
 import { formatCurrency } from "../lib/format";
 
@@ -30,7 +33,7 @@ function DashboardRow({ title, meta, badge, children, actions }) {
           <span>{meta}</span>
         </div>
         <div className="dashboard-row-side">
-          {badge ? <span className={`dashboard-badge ${badge.kind || "neutral"}`}>{badge.label}</span> : null}
+          {badge ? <StatusPill label={badge.label} variant={badge.kind || "neutral"} compact /> : null}
           <span className="dashboard-row-toggle">View</span>
         </div>
       </summary>
@@ -109,6 +112,11 @@ export default function DashboardPage() {
 
   return (
     <div className="page-stack">
+      <SeoHead
+        title="Dashboard | Naija Tax Calculator"
+        description="Review your Naija Tax Calculator account activity, saved calculations, support requests, and payments."
+        canonicalPath="/dashboard"
+      />
       <PageHero
         eyebrow="Dashboard"
         title="Your dashboard"
@@ -127,10 +135,13 @@ export default function DashboardPage() {
             <strong>Finish verifying your account</strong>
             <p>Some account features work better once your email address is verified.</p>
             {verificationStatus.message ? (
-              <p className={verificationStatus.type === "error" ? "error-text" : "success-text"}>
-                {verificationStatus.message}
-              </p>
-            ) : null}
+              <StatusPill
+                label={verificationStatus.message}
+                variant={verificationStatus.type === "error" ? "warning" : "success"}
+              />
+            ) : (
+              <StatusPill label="Pending verification" variant="warning" />
+            )}
           </div>
           <button className="button-primary" type="button" onClick={handleResendVerification} disabled={resendingVerification}>
             {resendingVerification ? "Sending..." : "Resend verification email"}
@@ -140,28 +151,32 @@ export default function DashboardPage() {
 
       <section className="content-card">
         <SectionHeading eyebrow="Overview" title="Summary" copy="Your latest account activity." />
-        <div className="feature-grid dashboard-stat-grid">
-          <article className="feature-card">
-            <h3>{stats.paidReports ?? 0}</h3>
-            <p>Paid reports</p>
-          </article>
-          <article className="feature-card">
-            <h3>{billingItems.length}</h3>
-            <p>Successful payments</p>
-          </article>
-          <article className="feature-card">
-            <h3>{stats.calculations ?? 0}</h3>
-            <p>Saved calculations</p>
-          </article>
-          <article className="feature-card">
-            <h3>{stats.supportRequests ?? 0}</h3>
-            <p>Support tickets</p>
-          </article>
+          <div className="feature-grid dashboard-stat-grid">
+            <a className="feature-card feature-link-card stat-link-card" href="#paid-reports">
+              <span className="card-icon">PDF</span>
+              <h3>{stats.paidReports ?? 0}</h3>
+              <p>Paid reports</p>
+            </a>
+            <a className="feature-card feature-link-card stat-link-card" href="#billing-history">
+              <span className="card-icon">PAY</span>
+              <h3>{billingItems.length}</h3>
+              <p>Successful payments</p>
+            </a>
+            <a className="feature-card feature-link-card stat-link-card" href="#saved-calculations">
+              <span className="card-icon">CALC</span>
+              <h3>{stats.calculations ?? 0}</h3>
+              <p>Saved calculations</p>
+            </a>
+            <a className="feature-card feature-link-card stat-link-card" href="#support-tickets">
+              <span className="card-icon">SUP</span>
+              <h3>{stats.supportRequests ?? 0}</h3>
+              <p>Support tickets</p>
+            </a>
         </div>
       </section>
 
       <section className="content-card split-card">
-        <div>
+        <div id="paid-reports">
           <SectionHeading eyebrow="Paid reports" title="PDF history" copy="Compact rows. Click any row for full details." />
           {paidReports.length ? (
             <div className="dashboard-list">
@@ -188,10 +203,12 @@ export default function DashboardPage() {
               ))}
             </div>
           ) : (
-            <div className="feature-card">
-              <h3>No paid PDF yet</h3>
-              <p>Your paid reports will appear here after checkout.</p>
-            </div>
+            <EmptyState
+              title="No paid PDF yet"
+              copy="Your paid reports will appear here after checkout."
+              icon="PDF"
+              action={<Link className="button-secondary" to="/reports">Order PDF report</Link>}
+            />
           )}
         </div>
 
@@ -212,14 +229,14 @@ export default function DashboardPage() {
             </div>
             <div className="feature-card">
               <h3>Status</h3>
-              <p>{user?.isVerified ? "Verified" : "Pending verification"}</p>
+              <StatusPill label={user?.isVerified ? "Verified" : "Pending verification"} variant={user?.isVerified ? "success" : "warning"} compact />
             </div>
           </div>
         </div>
       </section>
 
       <section className="content-card split-card">
-        <div>
+        <div id="billing-history">
           <SectionHeading eyebrow="Billing" title="Payment history" copy="Successful paid items from your account." />
           {billingItems.length ? (
             <div className="dashboard-list">
@@ -237,10 +254,7 @@ export default function DashboardPage() {
               ))}
             </div>
           ) : (
-            <div className="feature-card">
-              <h3>No payment history yet</h3>
-              <p>Your successful payments will appear here.</p>
-            </div>
+            <EmptyState title="No payment history yet" copy="Your successful payments will appear here." icon="PAY" />
           )}
         </div>
 
@@ -265,16 +279,18 @@ export default function DashboardPage() {
               ))}
             </div>
           ) : (
-            <div className="feature-card">
-              <h3>No consultation request yet</h3>
-              <p>Booked or pending consultations will appear here.</p>
-            </div>
+            <EmptyState
+              title="No consultation request yet"
+              copy="Booked or pending consultations will appear here."
+              icon="CALL"
+              action={<Link className="button-secondary" to="/consultations">Book consultation</Link>}
+            />
           )}
         </div>
       </section>
 
       <section className="content-card split-card">
-        <div>
+        <div id="support-tickets">
           <SectionHeading eyebrow="Support" title="Support tickets" copy="Compact ticket rows with status." />
           {supportRequests.length || messages.length ? (
             <div className="dashboard-list">
@@ -301,14 +317,16 @@ export default function DashboardPage() {
               ))}
             </div>
           ) : (
-            <div className="feature-card">
-              <h3>No support ticket yet</h3>
-              <p>Your support requests and messages will appear here.</p>
-            </div>
+            <EmptyState
+              title="No support ticket yet"
+              copy="Your support requests and messages will appear here."
+              icon="SUP"
+              action={<Link className="button-secondary" to="/contact">Contact support</Link>}
+            />
           )}
         </div>
 
-        <div>
+        <div id="saved-calculations">
           <SectionHeading eyebrow="Calculations" title="Saved calculations history" copy="Click a row to see the saved output." />
           {calculations.length ? (
             <div className="dashboard-list">
@@ -339,10 +357,12 @@ export default function DashboardPage() {
               ))}
             </div>
           ) : (
-            <div className="feature-card">
-              <h3>No saved calculations yet</h3>
-              <p>Run the calculator while signed in and your history will appear here.</p>
-            </div>
+            <EmptyState
+              title="No saved calculations yet"
+              copy="Run the calculator while signed in and your history will appear here."
+              icon="CALC"
+              action={<Link className="button-secondary" to="/calculator">Open calculator</Link>}
+            />
           )}
         </div>
       </section>
@@ -387,10 +407,7 @@ export default function DashboardPage() {
                 })}
             </div>
           ) : (
-            <div className="feature-card">
-              <h3>No recent activity yet</h3>
-              <p>Your calculations, requests, and purchases will show here.</p>
-            </div>
+            <EmptyState title="No recent activity yet" copy="Your calculations, requests, and purchases will show here." icon="LOG" />
           )}
         </div>
 

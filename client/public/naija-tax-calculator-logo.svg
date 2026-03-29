@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title desc">
+  <title id="title">Naija Tax Calculator</title>
+  <desc id="desc">Blue and orange rounded square logo with NTC initials.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a3154"/>
+      <stop offset="68%" stop-color="#125b9a"/>
+      <stop offset="100%" stop-color="#f08a24"/>
+    </linearGradient>
+  </defs>
+  <rect x="8" y="8" width="112" height="112" rx="28" fill="url(#bg)"/>
+  <path d="M34 91V37h16l24 30V37h20v54H78L54 61v30H34Z" fill="#fff7ea"/>
+  <path d="M74 37h20v20H74z" fill="#ffd9a1" opacity=".92"/>
+</svg>

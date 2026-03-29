@@ -7,7 +7,9 @@ mongoose.set("bufferCommands", false);
 export async function connectToDatabase() {
   if (!config.MONGODB_URI) {
     if (!hasLoggedSkip) {
-      console.warn("MONGODB_URI is not set. Database-backed features will be unavailable.");
+      console.warn(
+        `Database-backed features will be unavailable. Missing env key(s): ${config.missingIntegrationKeys.database.join(", ")}.`
+      );
       hasLoggedSkip = true;
     }
     return false;

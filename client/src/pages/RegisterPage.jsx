@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import SeoHead from "../components/SeoHead";
 import SectionHeading from "../components/SectionHeading";
 import { useAuth } from "../context/AuthContext";
 
@@ -39,6 +40,11 @@ export default function RegisterPage() {
 
   return (
     <div className="page-stack">
+      <SeoHead
+        title="Create Account | Naija Tax Calculator"
+        description="Create a Naija Tax Calculator account to manage calculations, reports, and support requests."
+        canonicalPath="/register"
+      />
       <section className="content-card auth-layout">
         <div>
           <SectionHeading

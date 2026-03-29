@@ -2,7 +2,9 @@ import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { verifyPaystackCheckout } from "../api/http";
 import PageHero from "../components/PageHero";
+import SeoHead from "../components/SeoHead";
 import SectionHeading from "../components/SectionHeading";
+import StatusPill from "../components/StatusPill";
 
 export default function PaymentVerifyPage() {
   const [searchParams] = useSearchParams();
@@ -32,6 +34,15 @@ export default function PaymentVerifyPage() {
 
   return (
     <div className="page-stack">
+      <SeoHead
+        title="Payment Status | Naija Tax Calculator"
+        description="Verify your Paystack payment status for reports, subscriptions, or support services on Naija Tax Calculator."
+        schema={[
+          { "@context": "https://schema.org", "@type": "WebPage", name: "Payment Status", description: "Payment verification page for Naija Tax Calculator.", url: "/payment/verify" },
+          { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: "/" }, { "@type": "ListItem", position: 2, name: "Payment Status", item: "/payment/verify" }] }
+        ]}
+        canonicalPath="/payment/verify"
+      />
       <PageHero
         eyebrow="Payment"
         title="Paystack payment status"
@@ -45,6 +56,8 @@ export default function PaymentVerifyPage() {
             title={status === "success" ? "Payment confirmed" : status === "loading" ? "Checking payment" : "Payment could not be confirmed"}
             copy={message}
           />
+          {status === "success" ? <StatusPill label="Verified payment received" variant="success" /> : null}
+          {status === "error" ? <StatusPill label="Payment needs attention" variant="warning" /> : null}
           {payment ? (
             <div className="support-grid">
               <div className="feature-card">
@@ -57,7 +70,11 @@ export default function PaymentVerifyPage() {
               </div>
               <div className="feature-card">
                 <h3>Payment status</h3>
-                <p>{payment.paymentStatus}</p>
+                <StatusPill
+                  label={payment.paymentStatus}
+                  variant={payment.paymentStatus === "success" ? "success" : "warning"}
+                  compact
+                />
               </div>
               <div className="feature-card">
                 <h3>Request status</h3>

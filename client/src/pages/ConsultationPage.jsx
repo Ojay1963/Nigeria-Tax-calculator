@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { initializePaystackCheckout } from "../api/http";
 import PageHero from "../components/PageHero";
+import SeoHead from "../components/SeoHead";
 import SectionHeading from "../components/SectionHeading";
 import { useAuth } from "../context/AuthContext";
 
@@ -52,6 +53,11 @@ export default function ConsultationPage() {
 
   return (
     <div className="page-stack">
+      <SeoHead
+        title="Book a Tax Consultation Nigeria | Naija Tax Calculator"
+        description="Book a paid tax consultation for PAYE, company tax, filing guidance, and Nigerian business tax questions."
+        canonicalPath="/consultations"
+      />
       <PageHero
         eyebrow="Consultation"
         title="Book a paid tax consultation"

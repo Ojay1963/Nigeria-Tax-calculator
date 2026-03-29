@@ -12,13 +12,19 @@ await connectToDatabase().catch(error => {
 const server = app.listen(config.PORT, () => {
   console.log(`Naija Tax Calculator API listening on port ${config.PORT}`);
   if (!config.MONGODB_URI) {
-    console.warn("MongoDB is not configured. Auth, contact, admin, and monetization features will return 503.");
+    console.warn(
+      `MongoDB is not configured. Auth, contact, admin, and monetization features will return 503. Missing env key(s): ${config.missingIntegrationKeys.database.join(", ")}.`
+    );
   }
   if (!config.isEmailConfigured) {
-    console.warn("SMTP is not configured. Verification emails will be skipped.");
+    console.warn(
+      `SMTP is not fully configured. Verification emails will be skipped. Missing env key(s): ${config.missingIntegrationKeys.email.join(", ")}.`
+    );
   }
   if (!config.isPaystackConfigured) {
-    console.warn("Paystack is not configured. Paid checkout flows will be unavailable.");
+    console.warn(
+      `Paystack is not fully configured. Paid checkout flows will be unavailable. Missing env key(s): ${config.missingIntegrationKeys.paystack.join(", ")}.`
+    );
   }
 });
 

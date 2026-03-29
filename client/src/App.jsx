@@ -20,6 +20,12 @@ import ResetPasswordPage from "./pages/ResetPasswordPage";
 import TermsPage from "./pages/TermsPage";
 import VerifyEmailPage from "./pages/VerifyEmailPage";
 import ConsultationPage from "./pages/ConsultationPage";
+import BusinessProfitCalculatorPage from "./pages/BusinessProfitCalculatorPage";
+import BusinessExpenseTrackerPage from "./pages/BusinessExpenseTrackerPage";
+import PayeCalculatorNigeriaPage from "./pages/PayeCalculatorNigeriaPage";
+import VatCalculatorNigeriaPage from "./pages/VatCalculatorNigeriaPage";
+import LoanCalculatorNigeriaPage from "./pages/LoanCalculatorNigeriaPage";
+import AboutPage from "./pages/AboutPage";
 
 export default function App() {
   return (
@@ -27,7 +33,14 @@ export default function App() {
       <Route element={<Layout />}>
         <Route index element={<HomePage />} />
         <Route path="/calculator" element={<CalculatorPage />} />
+        <Route path="/paye-calculator-nigeria" element={<PayeCalculatorNigeriaPage />} />
+        <Route path="/vat-calculator-nigeria" element={<VatCalculatorNigeriaPage />} />
+        <Route path="/loan-calculator-nigeria" element={<LoanCalculatorNigeriaPage />} />
+        <Route path="/profit-calculator-nigeria" element={<BusinessProfitCalculatorPage />} />
+        <Route path="/business-expense-tracker" element={<BusinessExpenseTrackerPage />} />
+        <Route path="/business-profit-calculator" element={<BusinessProfitCalculatorPage />} />
         <Route path="/guide" element={<GuidePage />} />
+        <Route path="/about" element={<AboutPage />} />
         <Route path="/faq" element={<FaqPage />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/pricing" element={<PricingPage />} />

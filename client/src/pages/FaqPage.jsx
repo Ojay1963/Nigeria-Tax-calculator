@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import PageHero from "../components/PageHero";
+import SeoHead from "../components/SeoHead";
 import SectionHeading from "../components/SectionHeading";
 
 const faqs = [
@@ -21,12 +22,12 @@ const faqs = [
   {
     question: "Which Nigerian tax facts are reflected on the site?",
     answer:
-      "The calculator now follows the Nigeria Tax Act, 2025 more closely, including the minimum-wage PAYE exemption, the Fourth Schedule PIT rates, the small-company test at N50,000,000 turnover and N250,000,000 fixed assets, the 4% development levy, the 0.5% minimum tax, and the 15% effective-tax-rate rule for qualifying large groups."
+      "The calculator follows the Nigeria Tax Act, 2025 more closely, including the minimum-wage PAYE exemption, the Fourth Schedule PIT rates, the small-company test at N50,000,000 turnover and N250,000,000 fixed assets, the 4% development levy, the 0.5% minimum tax, and the 15% effective-tax-rate rule for qualifying large groups."
   },
   {
     question: "What happens to contact messages?",
     answer:
-      "They are sent to the backend, where they can be stored in the configured database and later reviewed from the admin workflow."
+      "They are sent to the backend, where they can be stored in the configured database and later reviewed through the support workflow."
   }
 ];
 
@@ -44,10 +45,45 @@ export default function FaqPage() {
 
   return (
     <div className="page-stack">
+      <SeoHead
+        title="Naija Tax Calculator FAQ | PAYE, Company Tax, and Tool Questions"
+        description="Read common questions about Naija Tax Calculator, including PAYE, company tax, assumptions, and support flows."
+        schema={[
+          {
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            name: "Naija Tax Calculator FAQ",
+            description: "Frequently asked questions about Naija Tax Calculator and its Nigerian tax tools.",
+            url: "/faq"
+          },
+          {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              { "@type": "ListItem", position: 1, name: "Home", item: "/" },
+              { "@type": "ListItem", position: 2, name: "FAQ", item: "/faq" }
+            ]
+          },
+          {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: faqs.map(item => ({
+              "@type": "Question",
+              name: item.question,
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: item.answer
+              }
+            }))
+          }
+        ]}
+        canonicalPath="/faq"
+      />
+
       <PageHero
         eyebrow="FAQ"
         title="Frequently asked questions"
-        copy="Quick answers about the calculator and tax assumptions."
+        copy="Quick answers about the calculator, Nigerian tax assumptions, and how to use the site more confidently."
         aside={
           <div className="hero-note-card">
             <strong>Tip</strong>
@@ -63,12 +99,7 @@ export default function FaqPage() {
         />
         <label className="field faq-search">
           <span>Search FAQ</span>
-          <input
-            type="search"
-            placeholder="Search by question or keyword"
-            value={query}
-            onChange={event => setQuery(event.target.value)}
-          />
+          <input type="search" placeholder="Search by question or keyword" value={query} onChange={event => setQuery(event.target.value)} />
         </label>
         <div className="faq-list">
           {filteredFaqs.map(item => (

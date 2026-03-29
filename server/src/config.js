@@ -1,6 +1,15 @@
-import "dotenv/config";
+import dotenv from "dotenv";
 import path from "path";
+import { fileURLToPath } from "url";
 import { z } from "zod";
+
+const currentFile = fileURLToPath(import.meta.url);
+const currentDir = path.dirname(currentFile);
+const serverRoot = path.resolve(currentDir, "..");
+const workspaceRoot = path.resolve(serverRoot, "..");
+
+dotenv.config({ path: path.join(workspaceRoot, ".env") });
+dotenv.config({ path: path.join(serverRoot, ".env"), override: false });
 
 const envSchema = z.object({
   NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
@@ -73,7 +82,21 @@ export const config = {
   isTest: parsed.data.NODE_ENV === "test",
   isEmailConfigured: Boolean(parsed.data.SMTP_USER && parsed.data.SMTP_PASS),
   isPaystackConfigured: Boolean(parsed.data.PAYSTACK_SECRET_KEY),
-  reportStorageDir: parsed.data.REPORT_STORAGE_DIR || path.resolve(process.cwd(), "server/storage/reports"),
+  missingIntegrationKeys: {
+    database: parsed.data.MONGODB_URI ? [] : ["MONGODB_URI"],
+    email: [
+      ...(parsed.data.SMTP_USER ? [] : ["SMTP_USER"]),
+      ...(parsed.data.SMTP_PASS ? [] : ["SMTP_PASS"]),
+      ...(parsed.data.SMTP_FROM_EMAIL && parsed.data.SMTP_FROM_EMAIL !== "noreply@example.com"
+        ? []
+        : ["SMTP_FROM_EMAIL"])
+    ],
+    paystack: [
+      ...(parsed.data.PAYSTACK_SECRET_KEY ? [] : ["PAYSTACK_SECRET_KEY"]),
+      ...(parsed.data.PAYSTACK_PUBLIC_KEY ? [] : ["PAYSTACK_PUBLIC_KEY"])
+    ]
+  },
+  reportStorageDir: parsed.data.REPORT_STORAGE_DIR || path.resolve(serverRoot, "storage/reports"),
   allowedOrigins: parsed.data.ALLOWED_ORIGINS
     .split(",")
     .map(origin => origin.trim())

@@ -1,6 +1,8 @@
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
+import AdSlot from "./AdSlot";
+import StickyMobileCta from "./StickyMobileCta";
 
 function Header() {
   const { isAuthenticated, user, logout, authLoading } = useAuth();
@@ -8,14 +10,25 @@ function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isResourcesOpen, setIsResourcesOpen] = useState(false);
+  const [deferredInstallPrompt, setDeferredInstallPrompt] = useState(null);
+  const [installMessage, setInstallMessage] = useState("");
+  const [isInstalled, setIsInstalled] = useState(() =>
+    typeof window !== "undefined" &&
+    (window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true)
+  );
   const navItems = [
     ["Home", "/"],
     ["Calculator", "/calculator"],
-    ["Pricing", "/pricing"],
+    ["PAYE Nigeria", "/paye-calculator-nigeria"],
+    ["About", "/about"],
+    ["Guide", "/guide"],
     ["Contact", "/contact"]
   ];
   const resourceItems = [
-    ["Tax Guide", "/guide"],
+    ["VAT calculator", "/vat-calculator-nigeria"],
+    ["Profit calculator", "/profit-calculator-nigeria"],
+    ["Loan calculator", "/loan-calculator-nigeria"],
+    ["Expense tracker", "/business-expense-tracker"],
     ["FAQ", "/faq"]
   ];
   const resourcesActive = resourceItems.some(([, path]) => location.pathname.startsWith(path));
@@ -42,6 +55,28 @@ function Header() {
   }, []);
 
   useEffect(() => {
+    function handleBeforeInstallPrompt(event) {
+      event.preventDefault();
+      setDeferredInstallPrompt(event);
+      setInstallMessage("");
+    }
+
+    function handleAppInstalled() {
+      setDeferredInstallPrompt(null);
+      setIsInstalled(true);
+      setInstallMessage("App installed.");
+    }
+
+    window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+    window.addEventListener("appinstalled", handleAppInstalled);
+
+    return () => {
+      window.removeEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+      window.removeEventListener("appinstalled", handleAppInstalled);
+    };
+  }, []);
+
+  useEffect(() => {
     setIsMenuOpen(false);
     setIsResourcesOpen(false);
   }, [location.pathname]);
@@ -51,18 +86,39 @@ function Header() {
     setIsResourcesOpen(false);
   }
 
+  async function handleInstallClick() {
+    if (isInstalled) {
+      setInstallMessage("App already installed.");
+      return;
+    }
+
+    if (deferredInstallPrompt) {
+      deferredInstallPrompt.prompt();
+      const choiceResult = await deferredInstallPrompt.userChoice.catch(() => null);
+      if (choiceResult?.outcome === "accepted") {
+        setInstallMessage("Install started.");
+      } else if (choiceResult?.outcome === "dismissed") {
+        setInstallMessage("Install dismissed.");
+      }
+      setDeferredInstallPrompt(null);
+      return;
+    }
+
+    setInstallMessage("Use your browser menu to install or add this app to your home screen.");
+  }
+
   return (
     <header className={isScrolled ? "site-header is-scrolled" : "site-header"}>
       {isMenuOpen ? <button className="menu-backdrop" type="button" aria-label="Close menu" onClick={closeMenu} /> : null}
       <div className="header-main">
         <div className="brand-block">
-          <div className="brand-identity">
-            <img className="brand-logo" src="/naija-tax-calculator-logo.png" alt="Naija Tax Calculator logo" />
+          <NavLink to="/" className="brand-identity" onClick={closeMenu}>
+            <img className="brand-logo" src="/naija-tax-calculator-logo.svg" alt="Naija Tax Calculator logo" width="48" height="48" fetchpriority="high" />
             <div className="brand-wordmark">
               <span className="brand-kicker">Naija Tax Calculator</span>
               <strong>NAIJA TAX CALCULATOR</strong>
             </div>
-          </div>
+          </NavLink>
         </div>
 
         <button
@@ -100,7 +156,7 @@ function Header() {
               aria-expanded={isResourcesOpen}
               onClick={() => setIsResourcesOpen(current => !current)}
             >
-              Resources
+              Tools
             </button>
             <div className="nav-dropdown-menu">
               {resourceItems.map(([label, path]) => (
@@ -118,6 +174,11 @@ function Header() {
         </nav>
 
         <div className={isMenuOpen ? "header-actions actions-open fade-up fade-up-delay-3" : "header-actions fade-up fade-up-delay-3"}>
+          {!isInstalled ? (
+            <button className="nav-button install-button" type="button" onClick={handleInstallClick}>
+              Install app
+            </button>
+          ) : null}
           {authLoading ? null : isAuthenticated ? (
             <>
               <NavLink to="/dashboard" className="nav-link action-link" onClick={closeMenu}>
@@ -143,6 +204,7 @@ function Header() {
             </>
           )}
         </div>
+        {installMessage ? <p className="install-hint">{installMessage}</p> : null}
       </div>
     </header>
   );
@@ -153,23 +215,32 @@ function Footer() {
   const year = new Date().getFullYear();
   const footerGroups = [
     {
-      title: "Product",
+      title: "Core calculators",
       links: [
         ["Calculator", "/calculator"],
-        ["Pricing", "/pricing"],
-        ["Tax Guide", "/guide"],
-        ["FAQ", "/faq"]
+        ["PAYE Calculator Nigeria", "/paye-calculator-nigeria"],
+        ["VAT Calculator Nigeria", "/vat-calculator-nigeria"],
+        ["Company tax calculator", "/calculator?tab=company"]
       ]
     },
     {
-      title: "Company",
-      links: [["Home", "/"], ["Contact", "/contact"], ...(isAuthenticated ? [] : [["Create account", "/register"]])]
+      title: "Business tools",
+      links: [
+        ["Profit Calculator Nigeria", "/profit-calculator-nigeria"],
+        ["Loan Calculator Nigeria", "/loan-calculator-nigeria"],
+        ["Business Expense Tracker", "/business-expense-tracker"]
+      ]
+    },
+    {
+      title: "Learn",
+      links: [["Home", "/"], ["About", "/about"], ["Tax Guide", "/guide"], ["FAQ", "/faq"], ["Contact", "/contact"]]
     },
     {
       title: "Account",
       links: [
         ["Dashboard", "/dashboard"],
         ["Login", "/login"],
+        ...(isAuthenticated ? [] : [["Create account", "/register"]]),
         ["Privacy", "/privacy"],
         ["Terms", "/terms"]
       ]
@@ -179,13 +250,13 @@ function Footer() {
   return (
     <footer className="site-footer">
       <div className="footer-brand">
-        <div className="footer-brand-lockup">
-          <img className="footer-logo" src="/naija-tax-calculator-logo.png" alt="Naija Tax Calculator logo" />
+        <NavLink to="/" className="footer-brand-lockup">
+          <img className="footer-logo" src="/naija-tax-calculator-logo.svg" alt="Naija Tax Calculator logo" loading="lazy" width="38" height="38" />
           <div>
             <strong>Naija Tax Calculator</strong>
-            <p>Nigerian PAYE and company-tax estimates in one place.</p>
+            <p>Nigerian PAYE, VAT, loan, and company-tax estimates in one place.</p>
           </div>
-        </div>
+        </NavLink>
       </div>
       <div className="footer-grid">
         {footerGroups.map(group => (
@@ -216,8 +287,10 @@ export default function Layout() {
       <Header />
       <main className="page-shell">
         <Outlet />
+        <AdSlot className="shell-ad shell-ad-bottom" label="Pre-footer placement for responsive ads and sponsored links" />
       </main>
       <Footer />
+      <StickyMobileCta />
     </div>
   );
 }

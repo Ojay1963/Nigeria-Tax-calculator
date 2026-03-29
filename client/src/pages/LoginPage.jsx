@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import SeoHead from "../components/SeoHead";
 import SectionHeading from "../components/SectionHeading";
 import { useAuth } from "../context/AuthContext";
 
@@ -34,6 +35,15 @@ export default function LoginPage() {
 
   return (
     <div className="page-stack">
+      <SeoHead
+        title="Log In | Naija Tax Calculator"
+        description="Log in to Naija Tax Calculator to manage your account, saved activity, and support-related actions."
+        schema={[
+          { "@context": "https://schema.org", "@type": "WebPage", name: "Log In", description: "Login page for Naija Tax Calculator.", url: "/login" },
+          { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: "/" }, { "@type": "ListItem", position: 2, name: "Login", item: "/login" }] }
+        ]}
+        canonicalPath="/login"
+      />
       <section className="content-card auth-layout">
         <div>
           <SectionHeading

@@ -1,7 +1,9 @@
 import { useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { initializePaystackCheckout } from "../api/http";
+import EmptyState from "../components/EmptyState";
 import PageHero from "../components/PageHero";
+import SeoHead from "../components/SeoHead";
 import SectionHeading from "../components/SectionHeading";
 import { useAuth } from "../context/AuthContext";
 
@@ -143,17 +145,26 @@ export default function ReportsPage() {
 
   return (
     <div className="page-stack">
+      <SeoHead
+        title="PDF Tax Reports | Naija Tax Calculator"
+        description="Order reviewed PDF tax reports from Naija Tax Calculator for PAYE and company tax summaries you can print or share."
+        schema={[
+          { "@context": "https://schema.org", "@type": "WebPage", name: "PDF Tax Reports", description: "Paid PDF report page for Naija Tax Calculator.", url: "/reports" },
+          { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: "/" }, { "@type": "ListItem", position: 2, name: "Reports", item: "/reports" }] }
+        ]}
+        canonicalPath="/reports"
+      />
       <PageHero
         eyebrow="Reports"
-        title="Sell premium PDF tax reports from the calculator"
-        copy="Use this page for the paid-report flow: free on-screen result, then an order for a reviewed or branded PDF summary."
+        title="Order reviewed PDF tax reports"
+        copy="Use this page when you want a printable, reviewed, or client-ready PDF summary after your PAYE or company tax calculation."
       />
       <section className="content-card split-card">
         <div>
           <SectionHeading
             eyebrow="Preview"
-            title="Give users a useful preview before the paid order"
-            copy="A free preview builds trust. The paid offer is the reviewed or branded PDF version for sharing, filing prep, or client communication."
+            title="Preview what your report can look like"
+            copy="A free preview helps you review the numbers first. The paid report gives you a more polished PDF for sharing, filing preparation, or internal review."
           />
           <div className="support-grid">
             <div className="feature-card">
@@ -174,7 +185,12 @@ export default function ReportsPage() {
               Open printable preview
             </button>
           ) : (
-            <p className="note-text">Run a calculation first if you want this page prefilled with a live result preview.</p>
+            <EmptyState
+              title="No preview loaded"
+              copy="Run a calculation first if you want this page prefilled with a live result preview."
+              icon="PDF"
+              action={<a className="button-secondary" href="/calculator">Go to calculator</a>}
+            />
           )}
         </div>
         <form className="form-grid" onSubmit={handleSubmit}>

@@ -22,6 +22,9 @@
   --font-button: 0.94rem;
   --font-nav: 0.88rem;
   --font-card-title: 1.16rem;
+  --radius-large: 26px;
+  --radius-medium: 20px;
+  --shadow-soft: 0 14px 34px rgba(10, 49, 84, 0.06);
 }
 
 * {
@@ -133,6 +136,7 @@ textarea {
   display: flex;
   align-items: center;
   gap: 10px;
+  text-decoration: none;
 }
 
 .brand-wordmark {
@@ -302,7 +306,7 @@ textarea {
   position: absolute;
   top: calc(100% + 12px);
   left: 0;
-  min-width: 190px;
+  min-width: 220px;
   display: none;
   flex-direction: column;
   gap: 4px;
@@ -368,6 +372,18 @@ textarea {
   cursor: pointer;
 }
 
+.install-button {
+  border-color: rgba(240, 138, 36, 0.54);
+  color: #f5c47b;
+}
+
+.install-hint {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: rgba(255, 248, 237, 0.72);
+  font-size: 0.8rem;
+}
+
 .action-link {
   color: rgba(255, 248, 237, 0.82);
 }
@@ -375,11 +391,13 @@ textarea {
 .page-shell {
   padding: 14px min(6vw, 56px) 40px;
   font-size: var(--font-body);
+  width: min(100%, 1320px);
+  margin: 0 auto;
 }
 
 .page-stack {
   display: grid;
-  gap: 20px;
+  gap: 24px;
 }
 
 .landing-hero {
@@ -388,9 +406,9 @@ textarea {
   border-radius: 28px;
   min-height: 620px;
   background:
-    linear-gradient(90deg, rgba(7, 12, 18, 0.88) 0%, rgba(10, 18, 28, 0.55) 54%, rgba(18, 20, 26, 0.92) 100%),
-    url("https://commons.wikimedia.org/wiki/Special:FilePath/City%20gate.png")
-      center/cover no-repeat;
+    radial-gradient(circle at top left, rgba(240, 138, 36, 0.18), transparent 24%),
+    radial-gradient(circle at right center, rgba(18, 91, 154, 0.22), transparent 28%),
+    linear-gradient(90deg, rgba(7, 12, 18, 0.96) 0%, rgba(10, 18, 28, 0.85) 54%, rgba(18, 20, 26, 0.98) 100%);
   box-shadow: 0 22px 60px rgba(5, 10, 18, 0.2);
 }
 
@@ -444,9 +462,15 @@ textarea {
 
 .landing-floating-row {
   display: grid;
-  grid-template-columns: minmax(280px, 1.2fr) repeat(3, minmax(120px, 0.5fr));
+  grid-template-columns: minmax(280px, 1.2fr) minmax(280px, 0.9fr);
   gap: 12px;
   align-items: stretch;
+}
+
+.landing-stat-strip {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
 }
 
 .floating-alert-card,
@@ -626,14 +650,14 @@ textarea {
   border: 1px solid var(--line);
   box-shadow: var(--shadow);
   backdrop-filter: blur(10px);
-  border-radius: 24px;
+  border-radius: var(--radius-large);
 }
 
 .page-hero {
   display: grid;
   grid-template-columns: 1.15fr 0.85fr;
-  gap: 20px;
-  padding: 24px;
+  gap: 22px;
+  padding: 28px;
 }
 
 .page-hero-copy {
@@ -727,8 +751,26 @@ textarea {
 .faq-item {
   background: var(--surface-strong);
   border: 1px solid rgba(20, 33, 38, 0.08);
-  border-radius: 18px;
-  padding: 16px;
+  border-radius: var(--radius-medium);
+  padding: 18px;
+  box-shadow: var(--shadow-soft);
+}
+
+.card-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 42px;
+  height: 26px;
+  padding: 0 8px;
+  border-radius: 999px;
+  background: rgba(18, 91, 154, 0.1);
+  color: var(--brand-deep);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
 }
 
 .trust-strip {
@@ -768,7 +810,7 @@ textarea {
 }
 
 .content-card {
-  padding: 22px;
+  padding: 26px;
 }
 
 .section-heading {
@@ -808,10 +850,119 @@ textarea {
   gap: 14px;
 }
 
+.homepage-hero-lite {
+  min-height: auto;
+}
+
+.popular-tools-band {
+  display: grid;
+  gap: 14px;
+  padding: 18px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(8px);
+}
+
+.popular-tools-head {
+  display: grid;
+  gap: 4px;
+}
+
+.popular-tools-head strong {
+  font-family: "Fraunces", serif;
+  font-size: 1.3rem;
+}
+
+.popular-tools-head span {
+  color: rgba(255, 248, 237, 0.78);
+}
+
+.popular-tools-grid,
+.reading-grid,
+.article-grid,
+.keyword-section-list {
+  display: grid;
+  gap: 16px;
+}
+
+.popular-tools-grid,
+.keyword-section-list {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.popular-tool-card {
+  display: grid;
+  gap: 12px;
+  padding: 18px;
+  border-radius: 22px;
+  background: rgba(10, 18, 28, 0.62);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  min-height: 100%;
+  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.popular-tool-card h2,
+.article-card h3 {
+  margin: 0;
+  font-family: "Fraunces", serif;
+}
+
+.popular-tool-card h2 {
+  font-size: 1.16rem;
+}
+
+.popular-tool-card p,
+.article-card p {
+  margin: 0;
+  color: rgba(255, 248, 237, 0.84);
+}
+
+.homepage-primary-cta {
+  min-width: 190px;
+  box-shadow: 0 16px 36px rgba(240, 138, 36, 0.24);
+}
+
+.reading-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.article-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.article-card {
+  display: grid;
+  gap: 14px;
+}
+
 .text-link {
   color: var(--brand-deep);
   font-weight: 800;
   text-decoration: none;
+}
+
+.feature-card,
+.metric-card,
+.journey-card,
+.popular-tool-card,
+.business-profit-summary-card,
+.expense-tracker-summary-card,
+.expense-tracker-list-card,
+.expense-tracker-monthly-card {
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.feature-card:hover,
+.metric-card:hover,
+.journey-card:hover,
+.popular-tool-card:hover,
+.business-profit-summary-card:hover,
+.expense-tracker-summary-card:hover,
+.expense-tracker-list-card:hover,
+.expense-tracker-monthly-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 40px rgba(10, 49, 84, 0.1);
 }
 
 .text-link:hover {
@@ -820,7 +971,7 @@ textarea {
 
 .auth-switch-text {
   margin: 0;
-  color: var(--ink-muted);
+  color: var(--muted);
 }
 
 .auth-helper-row {
@@ -912,7 +1063,7 @@ textarea {
 .dashboard-row {
   border: 1px solid rgba(20, 33, 38, 0.08);
   border-radius: 16px;
-  background: rgba(255, 255, 255, 0.92);
+  background: rgba(255, 255, 255, 0.94);
   overflow: hidden;
 }
 
@@ -937,6 +1088,7 @@ textarea {
 
 .dashboard-row-main strong {
   font-size: 0.98rem;
+  color: var(--brand-deep);
 }
 
 .dashboard-row-main span,
@@ -963,6 +1115,7 @@ textarea {
   gap: 12px;
   padding: 0 14px 14px;
   border-top: 1px solid rgba(20, 33, 38, 0.06);
+  background: rgba(248, 251, 255, 0.7);
 }
 
 .dashboard-row-content {
@@ -973,6 +1126,13 @@ textarea {
 
 .dashboard-row-content p {
   margin: 0;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(20, 33, 38, 0.05);
+}
+
+.dashboard-row-content p:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
 }
 
 .dashboard-record-head {
@@ -982,27 +1142,60 @@ textarea {
   gap: 12px;
 }
 
-.dashboard-badge {
+.status-pill {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
+  gap: 8px;
+  width: fit-content;
+  max-width: 100%;
   border-radius: 999px;
-  padding: 6px 10px;
-  font-size: 0.78rem;
+  padding: 7px 10px;
+  font-size: 0.8rem;
   font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  white-space: nowrap;
+  letter-spacing: 0.03em;
+  line-height: 1.2;
 }
 
-.dashboard-badge.success {
+.status-pill.compact {
+  padding: 6px 9px;
+  font-size: 0.76rem;
+}
+
+.status-pill.success {
   background: rgba(23, 102, 71, 0.12);
   color: var(--success);
 }
 
-.dashboard-badge.neutral {
+.status-pill.warning {
+  background: rgba(240, 138, 36, 0.14);
+  color: #9a580f;
+}
+
+.status-pill.error {
+  background: rgba(159, 47, 47, 0.12);
+  color: var(--danger);
+}
+
+.status-pill.neutral {
   background: rgba(18, 91, 154, 0.1);
   color: var(--brand-deep);
+}
+
+.status-pill-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  background: currentColor;
+  color: white;
+  flex-shrink: 0;
+}
+
+.status-pill-icon-svg {
+  width: 12px;
+  height: 12px;
 }
 
 .dashboard-actions {
@@ -1020,6 +1213,10 @@ textarea {
 .feature-link-card:hover {
   border-color: rgba(18, 91, 154, 0.18);
   box-shadow: 0 16px 34px rgba(10, 49, 84, 0.08);
+}
+
+.stat-link-card {
+  scroll-margin-top: 120px;
 }
 
 .split-card {
@@ -1046,7 +1243,8 @@ textarea {
 .cta-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 12px;
+  align-items: center;
 }
 
 .button-primary,
@@ -1057,15 +1255,15 @@ textarea {
   width: max-content;
   max-width: 100%;
   min-width: 0;
-  padding: 11px 16px;
-  border-radius: 12px;
+  padding: 12px 18px;
+  border-radius: 14px;
   font-size: var(--font-button);
-  font-weight: 600;
+  font-weight: 700;
   white-space: nowrap;
   text-decoration: none;
   border: none;
   cursor: pointer;
-  transition: transform 180ms ease, box-shadow 180ms ease, opacity 180ms ease;
+  transition: transform 180ms ease, box-shadow 180ms ease, opacity 180ms ease, border-color 180ms ease, background 180ms ease;
 }
 
 .button-primary {
@@ -1077,6 +1275,7 @@ textarea {
 .button-secondary {
   background: rgba(255, 255, 255, 0.9);
   border: 1px solid rgba(20, 33, 38, 0.08);
+  color: var(--brand-deep);
 }
 
 .button-primary:hover,
@@ -1089,8 +1288,57 @@ button:hover {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
+.calculator-tabs {
+  display: inline-flex;
+  gap: 8px;
+  padding: 6px;
+  border: 1px solid rgba(20, 33, 38, 0.08);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.calculator-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.calculator-tab.is-active {
+  background: rgba(18, 91, 154, 0.1);
+  color: var(--brand-deep);
+}
+
+.calculator-tab-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border-radius: 999px;
+  background: rgba(23, 102, 71, 0.12);
+  color: var(--success);
+}
+
+.calculator-tab-check {
+  font-size: 0.82rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
 .calculator-card {
   padding: 20px;
+}
+
+.calculator-card-hidden {
+  display: none;
 }
 
 .form-grid {
@@ -1165,8 +1413,12 @@ button:hover {
 
 .result-panel {
   display: grid;
-  gap: 12px;
+  gap: 0;
   font-size: 0.98rem;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(20, 33, 38, 0.08);
+  border-radius: 16px;
+  overflow: hidden;
 }
 
 .result-stack {
@@ -1178,6 +1430,22 @@ button:hover {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
+}
+
+.result-action-bar {
+  position: sticky;
+  bottom: 16px;
+  padding: 12px;
+  border: 1px solid rgba(20, 33, 38, 0.08);
+  border-radius: 16px;
+  background: rgba(248, 251, 255, 0.92);
+  box-shadow: 0 10px 24px rgba(10, 49, 84, 0.08);
+  transition: box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.result-action-bar.has-shadow {
+  border-color: rgba(18, 91, 154, 0.14);
+  box-shadow: 0 18px 34px rgba(10, 49, 84, 0.14);
 }
 
 .result-actions .button-secondary,
@@ -1215,6 +1483,363 @@ button:hover {
   color: rgba(255, 255, 255, 0.82);
 }
 
+.ad-slot {
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  min-height: 250px;
+  padding: 20px 18px;
+  border: 1px dashed rgba(18, 91, 154, 0.2);
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at top right, rgba(240, 138, 36, 0.08), transparent 30%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(245, 250, 255, 0.94));
+  color: var(--brand-deep);
+}
+
+.ad-slot-compact {
+  min-height: 190px;
+  padding: 18px 16px;
+}
+
+.ad-slot-label {
+  display: inline-flex;
+  width: fit-content;
+  padding: 0;
+  background: transparent;
+  color: rgba(10, 49, 84, 0.82);
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+}
+
+.shell-ad,
+.mid-content-ad {
+  margin-top: 4px;
+}
+
+.shell-ad-bottom {
+  margin-top: 24px;
+}
+
+.business-profit-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr);
+  gap: 20px;
+  align-items: start;
+}
+
+.business-profit-main,
+.business-profit-side,
+.business-profit-note-card,
+.business-profit-note-list,
+.business-profit-note-item,
+.business-profit-result,
+.business-profit-result-grid,
+.business-profit-summary-card {
+  display: grid;
+}
+
+.business-profit-main,
+.business-profit-note-card,
+.business-profit-result {
+  gap: 16px;
+}
+
+.business-profit-form {
+  gap: 16px;
+}
+
+.business-profit-submit {
+  margin-top: 4px;
+}
+
+.business-profit-highlight {
+  background:
+    radial-gradient(circle at top right, rgba(255, 255, 255, 0.16), transparent 30%),
+    linear-gradient(135deg, #0a3154 0%, #125b9a 58%, #f08a24 100%);
+}
+
+.business-profit-result {
+  margin-top: 4px;
+}
+
+.business-profit-result-grid {
+  grid-template-columns: minmax(0, 1.2fr) minmax(240px, 0.8fr);
+  gap: 14px;
+}
+
+.business-profit-summary-card,
+.business-profit-note-card {
+  border: 1px solid rgba(20, 33, 38, 0.08);
+  border-radius: 20px;
+  background:
+    linear-gradient(180deg, rgba(217, 235, 255, 0.55), rgba(255, 255, 255, 0.95));
+  box-shadow: var(--shadow);
+}
+
+.business-profit-summary-card {
+  align-content: start;
+  gap: 10px;
+  padding: 18px;
+}
+
+.business-profit-summary-card strong,
+.business-profit-note-item strong {
+  font-family: "Fraunces", serif;
+  font-size: 1.06rem;
+}
+
+.business-profit-summary-card p,
+.business-profit-note-item p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.business-profit-note-card {
+  padding: 20px;
+  position: sticky;
+  top: 108px;
+}
+
+.business-profit-note-list {
+  gap: 14px;
+}
+
+.business-profit-note-item {
+  gap: 6px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(20, 33, 38, 0.08);
+}
+
+.business-profit-note-item:first-child {
+  padding-top: 0;
+  border-top: 0;
+}
+
+.expense-tracker-layout,
+.expense-tracker-main,
+.expense-tracker-side,
+.expense-tracker-form,
+.expense-tracker-summary-grid,
+.expense-tracker-list-grid,
+.expense-tracker-list,
+.expense-tracker-monthly-card,
+.expense-tracker-monthly-list,
+.expense-tracker-actions,
+.expense-tracker-entry-main,
+.expense-tracker-month-metrics,
+.expense-tracker-highlight {
+  display: grid;
+}
+
+.expense-tracker-layout {
+  grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+  gap: 20px;
+  align-items: start;
+}
+
+.expense-tracker-main,
+.expense-tracker-form,
+.expense-tracker-highlight {
+  gap: 16px;
+}
+
+.expense-tracker-type-row {
+  display: inline-flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.expense-tracker-type {
+  border: 1px solid rgba(18, 91, 154, 0.14);
+  background: rgba(18, 91, 154, 0.08);
+  color: var(--brand-deep);
+  border-radius: 999px;
+  padding: 10px 14px;
+  font-weight: 700;
+}
+
+.expense-tracker-type.is-active {
+  background: linear-gradient(135deg, rgba(18, 91, 154, 0.14), rgba(31, 127, 204, 0.2));
+  border-color: rgba(18, 91, 154, 0.24);
+}
+
+.expense-tracker-type-expense.is-active {
+  background: linear-gradient(135deg, rgba(240, 138, 36, 0.14), rgba(255, 240, 223, 0.5));
+  color: #8a4300;
+  border-color: rgba(240, 138, 36, 0.22);
+}
+
+.expense-tracker-form-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.expense-tracker-date-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+}
+
+.expense-tracker-date-clear {
+  width: auto;
+  min-width: 0;
+  white-space: nowrap;
+}
+
+.expense-tracker-summary-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.expense-tracker-summary-card,
+.expense-tracker-list-card,
+.expense-tracker-monthly-card {
+  border: 1px solid rgba(20, 33, 38, 0.08);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.86);
+  box-shadow: var(--shadow);
+}
+
+.expense-tracker-summary-card {
+  padding: 18px;
+}
+
+.expense-tracker-summary-card span {
+  display: block;
+  color: var(--muted);
+  font-size: 0.86rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 10px;
+}
+
+.expense-tracker-summary-card strong {
+  display: block;
+  font-family: "Fraunces", serif;
+  font-size: 1.6rem;
+  line-height: 1.1;
+}
+
+.expense-tracker-summary-card.success {
+  background: linear-gradient(180deg, rgba(225, 247, 235, 0.8), rgba(255, 255, 255, 0.96));
+}
+
+.expense-tracker-summary-card.warning {
+  background: linear-gradient(180deg, rgba(255, 240, 223, 0.76), rgba(255, 255, 255, 0.96));
+}
+
+.expense-tracker-summary-card.neutral,
+.expense-tracker-summary-card.danger {
+  background: linear-gradient(180deg, rgba(217, 235, 255, 0.76), rgba(255, 255, 255, 0.96));
+}
+
+.expense-tracker-profit-box {
+  background:
+    radial-gradient(circle at top right, rgba(255, 255, 255, 0.16), transparent 28%),
+    linear-gradient(135deg, #0a3154 0%, #125b9a 72%, #2a90df 100%);
+}
+
+.expense-tracker-actions {
+  grid-template-columns: repeat(2, minmax(0, max-content));
+  gap: 10px;
+}
+
+.expense-tracker-list-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.expense-tracker-list-card,
+.expense-tracker-monthly-card {
+  padding: 18px;
+}
+
+.expense-tracker-list-heading {
+  margin-bottom: 14px;
+}
+
+.expense-tracker-list-heading h2 {
+  font-size: 1.25rem;
+}
+
+.expense-tracker-list {
+  gap: 12px;
+}
+
+.expense-tracker-entry {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 14px;
+  border: 1px solid rgba(20, 33, 38, 0.08);
+  border-radius: 16px;
+  background: rgba(248, 251, 255, 0.82);
+}
+
+.expense-tracker-entry-main {
+  gap: 6px;
+}
+
+.expense-tracker-entry-main strong,
+.expense-tracker-month-row strong {
+  font-size: 1rem;
+}
+
+.expense-tracker-entry-main span,
+.expense-tracker-month-metrics span {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.expense-tracker-entry-side {
+  display: grid;
+  gap: 8px;
+  justify-items: end;
+  text-align: right;
+}
+
+.expense-tracker-delete {
+  border: 1px solid rgba(159, 47, 47, 0.16);
+  background: rgba(159, 47, 47, 0.08);
+  color: var(--danger);
+  border-radius: 999px;
+  padding: 7px 11px;
+  font-size: 0.86rem;
+  font-weight: 700;
+}
+
+.expense-tracker-monthly-card {
+  position: sticky;
+  top: 108px;
+}
+
+.expense-tracker-monthly-list {
+  gap: 12px;
+}
+
+.expense-tracker-month-row {
+  display: grid;
+  gap: 10px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(20, 33, 38, 0.08);
+}
+
+.expense-tracker-month-row:first-child {
+  padding-top: 0;
+  border-top: 0;
+}
+
+.expense-tracker-month-metrics {
+  gap: 6px;
+}
+
 .company-highlight {
   background: linear-gradient(135deg, #8a4300 0%, var(--accent) 100%);
 }
@@ -1225,13 +1850,75 @@ button:hover {
   gap: 16px;
   align-items: center;
   font-size: 1.02rem;
+  padding: 12px 14px;
+  border-bottom: 1px solid rgba(20, 33, 38, 0.06);
+}
+
+.result-row:last-of-type {
+  border-bottom: 0;
 }
 
 .source-list {
   margin: 0;
   padding-left: 20px;
   display: grid;
-  gap: 12px;
+  gap: 10px;
+}
+
+.reading-column {
+  max-width: 620px;
+}
+
+.empty-state {
+  display: grid;
+  gap: 8px;
+  padding: 18px;
+  border: 1px dashed rgba(20, 33, 38, 0.14);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.empty-state-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  min-width: 44px;
+  height: 26px;
+  padding: 0 8px;
+  border-radius: 999px;
+  background: rgba(18, 91, 154, 0.1);
+  color: var(--brand-deep);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.empty-state strong {
+  font-family: "Fraunces", serif;
+  font-size: 1.12rem;
+}
+
+.empty-state p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.empty-state-action {
+  margin-top: 4px;
+}
+
+.deferred-section {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 700px;
+}
+
+#paid-reports,
+#billing-history,
+#support-tickets,
+#saved-calculations {
+  scroll-margin-top: 120px;
 }
 
 .improvement-list {
@@ -1347,8 +2034,13 @@ button:hover {
 .site-footer {
   display: grid;
   grid-template-columns: 1.05fr 1.95fr;
-  gap: 14px;
-  padding: 0 min(5vw, 52px) 14px;
+  gap: 18px;
+  padding: 12px min(5vw, 52px) 16px;
+  margin-top: 14px;
+  background: linear-gradient(180deg, rgba(3, 7, 12, 0.96), rgba(5, 10, 18, 0.96));
+  border-top: 1px solid rgba(240, 138, 36, 0.14);
+  border-radius: 22px;
+  box-shadow: 0 14px 30px rgba(4, 9, 20, 0.18);
 }
 
 .footer-brand {
@@ -1361,6 +2053,7 @@ button:hover {
   display: flex;
   align-items: center;
   gap: 10px;
+  text-decoration: none;
 }
 
 .footer-logo {
@@ -1374,33 +2067,34 @@ button:hover {
 
 .footer-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
 }
 
 .footer-column {
   display: grid;
-  gap: 6px;
+  gap: 8px;
+  align-content: start;
 }
 
 .footer-column span {
   text-transform: uppercase;
   letter-spacing: 0.08em;
   font-size: 0.68rem;
-  color: var(--muted);
+  color: rgba(255, 216, 159, 0.72);
   font-weight: 800;
 }
 
 .footer-link {
   text-decoration: none;
-  color: var(--text);
+  color: rgba(255, 248, 237, 0.84);
   line-height: 1.3;
   font-size: 0.94rem;
   transition: color 160ms ease, transform 160ms ease;
 }
 
 .footer-link:hover {
-  color: var(--brand-deep);
+  color: #f5a43f;
   transform: translateX(2px);
 }
 
@@ -1411,15 +2105,25 @@ button:hover {
   justify-content: flex-start;
   gap: 12px;
   padding-top: 8px;
-  border-top: 1px solid rgba(19, 34, 58, 0.08);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .footer-meta-dot {
   width: 4px;
   height: 4px;
   border-radius: 999px;
-  background: rgba(19, 34, 58, 0.24);
+  background: rgba(255, 216, 159, 0.3);
   flex-shrink: 0;
+}
+
+.footer-brand strong,
+.footer-brand p,
+.footer-meta p {
+  color: rgba(255, 248, 237, 0.84);
+}
+
+.sticky-mobile-cta {
+  display: none;
 }
 
 @media (max-width: 960px) {
@@ -1436,15 +2140,61 @@ button:hover {
     display: grid;
   }
 
-  .header-main,
   .landing-hero-grid,
   .landing-floating-row {
     grid-template-columns: 1fr;
   }
 
+  .popular-tools-grid,
+  .reading-grid,
+  .article-grid,
+  .keyword-section-list {
+    grid-template-columns: 1fr;
+  }
+
+  .business-profit-layout,
+  .business-profit-result-grid,
+  .expense-tracker-layout,
+  .expense-tracker-list-grid,
+  .expense-tracker-form-grid,
+  .expense-tracker-summary-grid,
+  .expense-tracker-date-row {
+    grid-template-columns: 1fr;
+  }
+
+  .business-profit-note-card,
+  .expense-tracker-monthly-card {
+    position: static;
+    top: auto;
+  }
+
+  .header-main {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+    row-gap: 14px;
+  }
+
+  .brand-block {
+    min-width: 0;
+  }
+
+  .brand-identity {
+    min-width: 0;
+    align-items: flex-start;
+  }
+
+  .brand-wordmark {
+    min-width: 0;
+  }
+
+  .brand-wordmark strong {
+    line-height: 1.05;
+  }
+
   .menu-toggle {
     display: inline-flex;
     justify-self: end;
+    align-self: start;
   }
 
   .site-nav,
@@ -1465,6 +2215,7 @@ button:hover {
   .site-nav {
     padding-top: 10px;
     border-top: 1px solid rgba(255, 255, 255, 0.08);
+    grid-column: 1 / -1;
   }
 
   .site-nav .nav-link,
@@ -1472,6 +2223,8 @@ button:hover {
   .nav-dropdown-trigger {
     width: 100%;
     padding: 10px 0;
+    text-align: left;
+    justify-content: flex-start;
   }
 
   .site-nav .nav-link.active {
@@ -1487,10 +2240,33 @@ button:hover {
     position: static;
     min-width: 100%;
     margin-top: 4px;
+    padding: 6px 0 0;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+  }
+
+  .nav-dropdown-item {
+    padding: 10px 0 10px 14px;
   }
 
   .header-actions {
     padding-top: 2px;
+    grid-column: 1 / -1;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding-top: 12px;
+  }
+
+  .header-actions .nav-link,
+  .header-actions .nav-button,
+  .header-actions .nav-user {
+    width: 100%;
+    justify-content: flex-start;
+    text-align: left;
+  }
+
+  .header-actions .nav-user {
+    border-radius: 12px;
   }
 
   .feature-grid {
@@ -1522,12 +2298,25 @@ button:hover {
     padding-right: 18px;
   }
 
+  .page-shell {
+    padding-bottom: 112px;
+  }
+
   .header-main {
     padding: 16px;
   }
 
+  .brand-identity {
+    gap: 8px;
+  }
+
   .brand-wordmark strong {
-    font-size: 1.2rem;
+    font-size: 1.08rem;
+    letter-spacing: 0.04em;
+  }
+
+  .brand-kicker {
+    font-size: 0.58rem;
   }
 
   .landing-hero {
@@ -1543,9 +2332,32 @@ button:hover {
     font-size: 3.2rem;
   }
 
+  .landing-hero-main h1 {
+    font-size: clamp(2.3rem, 9vw, 3.2rem);
+    line-height: 1.02;
+  }
+
   .site-footer,
   .footer-grid {
     grid-template-columns: 1fr;
+  }
+
+  .business-profit-note-card {
+    padding: 18px;
+  }
+
+  .expense-tracker-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .expense-tracker-entry {
+    flex-direction: column;
+  }
+
+  .expense-tracker-entry-side {
+    width: 100%;
+    justify-items: start;
+    text-align: left;
   }
 
   .dashboard-stat-grid,
@@ -1558,6 +2370,21 @@ button:hover {
   .content-card,
   .calculator-card {
     border-radius: 22px;
-    padding: 18px;
+    padding: 20px;
+  }
+
+  .sticky-mobile-cta {
+    display: block;
+    position: fixed;
+    left: 16px;
+    right: 16px;
+    bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+    z-index: 30;
+  }
+
+  .sticky-mobile-cta-link {
+    width: 100%;
+    justify-content: center;
+    box-shadow: 0 18px 34px rgba(10, 49, 84, 0.24);
   }
 }

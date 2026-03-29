@@ -1,9 +1,19 @@
 import PageHero from "../components/PageHero";
+import SeoHead from "../components/SeoHead";
 import SectionHeading from "../components/SectionHeading";
 
 export default function TermsPage() {
   return (
     <div className="page-stack">
+      <SeoHead
+        title="Terms of Use | Naija Tax Calculator"
+        description="Read the Naija Tax Calculator terms of use and important notes about estimates, user responsibility, and service updates."
+        schema={[
+          { "@context": "https://schema.org", "@type": "WebPage", name: "Terms of Use", description: "Terms page for Naija Tax Calculator.", url: "/terms" },
+          { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: "/" }, { "@type": "ListItem", position: 2, name: "Terms", item: "/terms" }] }
+        ]}
+        canonicalPath="/terms"
+      />
       <PageHero
         eyebrow="Terms"
         title="Terms of use"

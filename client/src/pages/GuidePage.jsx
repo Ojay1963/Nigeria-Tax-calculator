@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getTaxAssumptions } from "../api/http";
 import PageHero from "../components/PageHero";
+import SeoHead from "../components/SeoHead";
 import SectionHeading from "../components/SectionHeading";
 import { implementationNotes, sourceLinks } from "../lib/assumptions";
 
@@ -39,6 +40,29 @@ export default function GuidePage() {
 
   return (
     <div className="page-stack">
+      <SeoHead
+        title="Nigeria Tax Guide | Naija Tax Calculator"
+        description="Read the Naija Tax Calculator guide for assumptions, thresholds, and source links behind the Nigerian PAYE and company tax tools."
+        schema={[
+          {
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            name: "Nigeria Tax Guide",
+            description: "A reference page for assumptions, thresholds, and source links behind Naija Tax Calculator.",
+            url: "/guide"
+          },
+          {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              { "@type": "ListItem", position: 1, name: "Home", item: "/" },
+              { "@type": "ListItem", position: 2, name: "Guide", item: "/guide" }
+            ]
+          }
+        ]}
+        canonicalPath="/guide"
+      />
+
       <PageHero
         eyebrow="Guide"
         title="Tax guide"
@@ -67,7 +91,7 @@ export default function GuidePage() {
       </section>
 
       <section className="content-card split-card">
-        <div>
+        <div className="reading-column">
           <SectionHeading
             eyebrow="Current assumptions"
             title="Current assumptions"
@@ -80,7 +104,7 @@ export default function GuidePage() {
           </ul>
           {status ? <p className="note-text">{status}</p> : null}
         </div>
-        <div>
+        <div className="reading-column">
           <SectionHeading
             eyebrow="Official reading"
             title="Source links"

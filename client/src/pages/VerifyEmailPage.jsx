@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useLocation, useSearchParams } from "react-router-dom";
+import SeoHead from "../components/SeoHead";
 import SectionHeading from "../components/SectionHeading";
+import StatusPill from "../components/StatusPill";
 import { useAuth } from "../context/AuthContext";
 
 export default function VerifyEmailPage() {
@@ -41,6 +43,11 @@ export default function VerifyEmailPage() {
 
   return (
     <div className="page-stack">
+      <SeoHead
+        title="Verify Email | Naija Tax Calculator"
+        description="Verify your Naija Tax Calculator account email or request a fresh verification link."
+        canonicalPath="/verify-email"
+      />
       <section className="content-card auth-layout">
         <div>
           <SectionHeading
@@ -48,9 +55,7 @@ export default function VerifyEmailPage() {
             title="Verify your account or request a new link"
             copy="If you opened this page from your email, the verification runs automatically. If not, request another message below."
           />
-          {status.message ? (
-            <p className={status.type === "error" ? "error-text" : "success-text"}>{status.message}</p>
-          ) : null}
+          {status.message ? <StatusPill label={status.message} variant={status.type === "error" ? "warning" : "success"} /> : null}
         </div>
         <form className="form-grid" onSubmit={handleResend}>
           <label className="field">

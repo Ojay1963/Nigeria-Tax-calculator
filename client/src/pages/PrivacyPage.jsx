@@ -1,9 +1,19 @@
 import PageHero from "../components/PageHero";
+import SeoHead from "../components/SeoHead";
 import SectionHeading from "../components/SectionHeading";
 
 export default function PrivacyPage() {
   return (
     <div className="page-stack">
+      <SeoHead
+        title="Privacy Policy | Naija Tax Calculator"
+        description="Read the Naija Tax Calculator privacy policy for how account data, contact requests, and calculator activity may be handled."
+        schema={[
+          { "@context": "https://schema.org", "@type": "WebPage", name: "Privacy Policy", description: "Privacy page for Naija Tax Calculator.", url: "/privacy" },
+          { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: "/" }, { "@type": "ListItem", position: 2, name: "Privacy", item: "/privacy" }] }
+        ]}
+        canonicalPath="/privacy"
+      />
       <PageHero
         eyebrow="Privacy"
         title="Privacy policy"

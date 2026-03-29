@@ -2,6 +2,7 @@ import { startTransition, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { createSupportLead, sendContact } from "../api/http";
 import PageHero from "../components/PageHero";
+import SeoHead from "../components/SeoHead";
 import SectionHeading from "../components/SectionHeading";
 import { useAuth } from "../context/AuthContext";
 
@@ -53,14 +54,17 @@ export default function ContactPage() {
     setLeadStatus({ type: "", message: "" });
 
     try {
-      await createSupportLead({
-        type: "support_lead",
-        ...leadForm,
-        context: location.state?.context || {}
-      }, token);
+      await createSupportLead(
+        {
+          type: "support_lead",
+          ...leadForm,
+          context: location.state?.context || {}
+        },
+        token
+      );
       setLeadStatus({
         type: "success",
-        message: "Support lead submitted. You can now follow up from the admin workflow."
+        message: "Follow-up request submitted successfully. Someone can now review your request and get back to you."
       });
     } catch (error) {
       setLeadStatus({ type: "error", message: error.message });
@@ -71,36 +75,59 @@ export default function ContactPage() {
 
   return (
     <div className="page-stack">
+      <SeoHead
+        title="Contact Naija Tax Calculator | Tax Support and Questions"
+        description="Contact Naija Tax Calculator for PAYE help, company tax questions, calculator support, or business tax follow-up."
+        schema={[
+          {
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            name: "Contact Naija Tax Calculator",
+            description: "Support and follow-up page for users who need tax help or calculator guidance.",
+            url: "/contact"
+          },
+          {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              { "@type": "ListItem", position: 1, name: "Home", item: "/" },
+              { "@type": "ListItem", position: 2, name: "Contact", item: "/contact" }
+            ]
+          }
+        ]}
+        canonicalPath="/contact"
+      />
+
       <PageHero
         eyebrow="Contact"
-        title="Contact support"
-        copy="Send a question, support request, or tax review enquiry."
+        title="Contact Naija Tax Calculator support"
+        copy="Send a question, request help with a calculation, or ask for follow-up support for PAYE, company tax, VAT, or business planning."
         aside={
           <div className="hero-note-card">
             <strong>Need help?</strong>
-            <p>Use the first form for support and the second for follow-up leads.</p>
+            <p>Use the first form for direct support and the second if you want a follow-up conversation later.</p>
           </div>
         }
       />
+
       <section className="content-card split-card">
-        <div>
+        <div className="reading-column">
           <SectionHeading
             eyebrow="Contact"
             title="Support form"
-            copy="Best for product questions and tax-estimate follow-up."
+            copy="Best for calculator questions, tax-estimate clarification, and general support."
           />
           <div className="contact-aside">
             <p>Helpful details to include:</p>
             <ul className="source-list">
-              <li>Whether your question is about PAYE or company tax.</li>
-              <li>The tax year or payroll period.</li>
-              <li>The key figures involved.</li>
+              <li>Whether your question is about PAYE, VAT, company tax, or another tool.</li>
+              <li>The tax year or business period involved.</li>
+              <li>The key figures or result you want help reviewing.</li>
             </ul>
             <p className="note-text">
-              {isAuthenticated
-                ? `Signed in as ${user?.email}.`
-                : "You can send a message without signing in."}
+              {isAuthenticated ? `Signed in as ${user?.email}.` : "You can send a message without signing in."}
             </p>
+            <p className="note-text">Last updated March 28, 2026. Built for simple Nigerian tax-planning support needs.</p>
           </div>
         </div>
 
@@ -111,18 +138,11 @@ export default function ContactPage() {
           </label>
           <label className="field">
             <span>Email</span>
-            <input
-              type="email"
-              value={form.email}
-              onChange={event => setForm({ ...form, email: event.target.value })}
-            />
+            <input type="email" value={form.email} onChange={event => setForm({ ...form, email: event.target.value })} />
           </label>
           <label className="field">
             <span>I am a...</span>
-            <select
-              value={form.audience}
-              onChange={event => setForm({ ...form, audience: event.target.value })}
-            >
+            <select value={form.audience} onChange={event => setForm({ ...form, audience: event.target.value })}>
               <option>Employee</option>
               <option>Founder</option>
               <option>Finance Manager</option>
@@ -131,29 +151,23 @@ export default function ContactPage() {
           </label>
           <label className="field field-wide">
             <span>Message</span>
-            <textarea
-              rows="6"
-              value={form.message}
-              onChange={event => setForm({ ...form, message: event.target.value })}
-            />
+            <textarea rows="6" value={form.message} onChange={event => setForm({ ...form, message: event.target.value })} />
           </label>
 
           <button className="button-primary" type="submit" disabled={submitting}>
             {submitting ? "Sending..." : "Send message"}
           </button>
 
-          {status.message ? (
-            <p className={status.type === "error" ? "error-text" : "success-text"}>{status.message}</p>
-          ) : null}
+          {status.message ? <p className={status.type === "error" ? "error-text" : "success-text"}>{status.message}</p> : null}
         </form>
       </section>
 
       <section className="content-card split-card">
-        <div>
+        <div className="reading-column">
           <SectionHeading
-            eyebrow="Tax support leads"
-            title="Request a follow-up"
-            copy="Use this if you want us to get back to you later."
+            eyebrow="Follow-up support"
+            title="Request a follow-up conversation"
+            copy="Use this if you want a later follow-up for a business question, team setup, or more detailed tax support."
           />
         </div>
 
@@ -184,12 +198,10 @@ export default function ContactPage() {
           </label>
 
           <button className="button-primary" type="submit" disabled={leadSubmitting}>
-            {leadSubmitting ? "Submitting..." : "Submit support lead"}
+            {leadSubmitting ? "Submitting..." : "Request follow-up"}
           </button>
 
-          {leadStatus.message ? (
-            <p className={leadStatus.type === "error" ? "error-text" : "success-text"}>{leadStatus.message}</p>
-          ) : null}
+          {leadStatus.message ? <p className={leadStatus.type === "error" ? "error-text" : "success-text"}>{leadStatus.message}</p> : null}
         </form>
       </section>
     </div>

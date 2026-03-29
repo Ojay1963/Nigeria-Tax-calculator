@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import SeoHead from "../components/SeoHead";
 import SectionHeading from "../components/SectionHeading";
+import StatusPill from "../components/StatusPill";
 import { useAuth } from "../context/AuthContext";
 
 export default function ResetPasswordPage() {
@@ -52,6 +54,15 @@ export default function ResetPasswordPage() {
 
   return (
     <div className="page-stack">
+      <SeoHead
+        title="Reset Password | Naija Tax Calculator"
+        description="Set a new password for your Naija Tax Calculator account and return to login securely."
+        schema={[
+          { "@context": "https://schema.org", "@type": "WebPage", name: "Reset Password", description: "Password reset page for Naija Tax Calculator.", url: "/reset-password" },
+          { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: "/" }, { "@type": "ListItem", position: 2, name: "Reset Password", item: "/reset-password" }] }
+        ]}
+        canonicalPath="/reset-password"
+      />
       <section className="content-card auth-layout">
         <div>
           <SectionHeading
@@ -80,9 +91,7 @@ export default function ResetPasswordPage() {
           <button className="button-primary" type="submit" disabled={submitting}>
             {submitting ? "Saving..." : "Reset password"}
           </button>
-          {status.message ? (
-            <p className={status.type === "error" ? "error-text" : "success-text"}>{status.message}</p>
-          ) : null}
+          {status.message ? <StatusPill label={status.message} variant={status.type === "error" ? "warning" : "success"} /> : null}
           <div className="auth-helper-row auth-helper-row-stack">
             <p className="auth-switch-text">
               Need a fresh link?{" "}

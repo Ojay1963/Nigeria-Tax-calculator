@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getPricingPlans, initializePaystackCheckout } from "../api/http";
 import PageHero from "../components/PageHero";
+import SeoHead from "../components/SeoHead";
 import SectionHeading from "../components/SectionHeading";
 import { useAuth } from "../context/AuthContext";
 
@@ -32,10 +33,13 @@ export default function PricingPage() {
     setStatus({ type: "", message: "" });
 
     try {
-      const response = await initializePaystackCheckout({
-        type: "subscription",
-        ...form
-      }, token);
+      const response = await initializePaystackCheckout(
+        {
+          type: "subscription",
+          ...form
+        },
+        token
+      );
       window.location.assign(response.data.authorizationUrl);
     } catch (error) {
       setStatus({ type: "error", message: error.message });
@@ -46,14 +50,37 @@ export default function PricingPage() {
 
   return (
     <div className="page-stack">
+      <SeoHead
+        title="Naija Tax Calculator Pricing | Reports, Consultations, and Business Plans"
+        description="View Naija Tax Calculator pricing for reviewed PDF reports, consultations, and business support plans."
+        schema={[
+          {
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            name: "Naija Tax Calculator Pricing",
+            description: "Pricing page for reports, consultations, and business tax support plans.",
+            url: "/pricing"
+          },
+          {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              { "@type": "ListItem", position: 1, name: "Home", item: "/" },
+              { "@type": "ListItem", position: 2, name: "Pricing", item: "/pricing" }
+            ]
+          }
+        ]}
+        canonicalPath="/pricing"
+      />
+
       <PageHero
         eyebrow="Pricing"
-        title="Monetize the calculator with services, reports, and business plans"
-        copy="Use the calculator for free, then move into paid help when you need a reviewed PDF, consultation time, or a business workflow setup."
+        title="Pricing for reports, consultations, and business support"
+        copy="Use the calculator for free, then choose a paid option when you need a reviewed PDF, one-on-one support, or a business-focused workflow."
         aside={
           <div className="hero-note-card">
-            <strong>Best revenue mix</strong>
-            <p>Support leads, consultations, paid PDF reports, and recurring business plans.</p>
+            <strong>Built for real next steps</strong>
+            <p>Useful for payroll teams, founders, finance managers, and users who need more than a quick estimate.</p>
           </div>
         }
       />
@@ -61,8 +88,8 @@ export default function PricingPage() {
       <section className="content-card">
         <SectionHeading
           eyebrow="Plans"
-          title="Packages built around how tax users actually buy"
-          copy="Most users start free, then pay when they need a human review, a formal report, or a business workflow."
+          title="Packages for users who need more than a calculator result"
+          copy="Most people start free, then upgrade when they need a reviewed report, professional support, or a recurring business setup."
         />
         <div className="feature-grid">
           {plans.map(plan => (
@@ -101,8 +128,8 @@ export default function PricingPage() {
         <div>
           <SectionHeading
             eyebrow="Business"
-            title="What a business subscription is meant to unlock"
-            copy="This is the recurring offer for SMEs, payroll teams, and finance users who need more than a one-off estimate."
+            title="What a business plan can help you do"
+            copy="This option is best for SMEs, payroll teams, and finance users who need more than a one-off estimate."
           />
           <div className="support-grid">
             <div className="support-card">Saved employee and company scenarios</div>
@@ -112,8 +139,8 @@ export default function PricingPage() {
           </div>
         </div>
         <div className="improvement-list">
-          <div className="improvement-item">Use the calculator free, then upgrade when your team needs history, exports, and recurring access.</div>
-          <div className="improvement-item">The first conversion target is often support or consultation. The recurring offer comes after trust is built.</div>
+          <div className="improvement-item">Start free, then upgrade when your team needs history, exports, support, or recurring access.</div>
+          <div className="improvement-item">This plan works best after you understand your workflow and want more consistency.</div>
           <Link className="button-primary" to="/contact">
             Talk about business setup
           </Link>
@@ -124,8 +151,8 @@ export default function PricingPage() {
         <div>
           <SectionHeading
             eyebrow="Subscription request"
-            title="Turn business interest into a recurring-revenue conversation"
-            copy="Use this form when an SME, payroll team, or finance lead wants a recurring plan instead of a one-off calculation."
+            title="Request a business plan or support package"
+            copy="Use this form if your SME, payroll team, or finance lead needs a recurring plan instead of a one-off calculation."
           />
           <div className="hero-note-card">
             <strong>Paystack checkout</strong>

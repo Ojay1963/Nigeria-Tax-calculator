@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import SeoHead from "../components/SeoHead";
 import SectionHeading from "../components/SectionHeading";
 import { useAuth } from "../context/AuthContext";
 
@@ -33,6 +34,11 @@ export default function ForgotPasswordPage() {
 
   return (
     <div className="page-stack">
+      <SeoHead
+        title="Forgot Password | Naija Tax Calculator"
+        description="Request a password reset link for your Naija Tax Calculator account."
+        canonicalPath="/forgot-password"
+      />
       <section className="content-card auth-layout">
         <div>
           <SectionHeading

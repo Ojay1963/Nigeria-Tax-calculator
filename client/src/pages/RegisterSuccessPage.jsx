@@ -1,4 +1,5 @@
 import { Link, Navigate, useLocation } from "react-router-dom";
+import SeoHead from "../components/SeoHead";
 import SectionHeading from "../components/SectionHeading";
 
 export default function RegisterSuccessPage() {
@@ -11,6 +12,11 @@ export default function RegisterSuccessPage() {
 
   return (
     <div className="page-stack">
+      <SeoHead
+        title="Account Created | Naija Tax Calculator"
+        description="Your Naija Tax Calculator account was created. Verify your email to activate it."
+        canonicalPath="/register/success"
+      />
       <section className="content-card auth-layout">
         <div>
           <SectionHeading
